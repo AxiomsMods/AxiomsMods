@@ -13,7 +13,7 @@
     if (THEMES.indexOf(name) === -1) name = 'emerald';
     root.setAttribute('data-theme', name);
     var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute('content', '#000000');
+    if (m) m.setAttribute('content', '#090A0F');
     return name;
   }
   function remember(name) {

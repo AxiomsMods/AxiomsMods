@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Terms — Axiom Mods</title>
 <meta name="description" content="Terms and disclaimer for Axiom Mods.">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#090A0F">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cg%20stroke%3D%22%23000%22%20stroke-opacity%3D%22.35%22%20stroke-width%3D%22.7%22%20stroke-linejoin%3D%22round%22%3E%3Cpolygon%20points%3D%224%2C24%2016%2C10%2022%2C24%22%20fill%3D%22%2314532d%22%2F%3E%3Cpolygon%20points%3D%2216%2C10%2032%2C10%2022%2C24%22%20fill%3D%22%2322c55e%22%2F%3E%3Cpolygon%20points%3D%2232%2C10%2042%2C24%2022%2C24%22%20fill%3D%22%238ff0b4%22%2F%3E%3Cpolygon%20points%3D%2232%2C10%2048%2C10%2042%2C24%22%20fill%3D%22%234ade80%22%2F%3E%3Cpolygon%20points%3D%2248%2C10%2060%2C24%2042%2C24%22%20fill%3D%22%2316a34a%22%2F%3E%3Cpolygon%20points%3D%224%2C24%2022%2C24%2032%2C56%22%20fill%3D%22%2315803d%22%2F%3E%3Cpolygon%20points%3D%2222%2C24%2032%2C24%2032%2C56%22%20fill%3D%22%2322c55e%22%2F%3E%3Cpolygon%20points%3D%2232%2C24%2042%2C24%2032%2C56%22%20fill%3D%22%230f6a33%22%2F%3E%3Cpolygon%20points%3D%2242%2C24%2060%2C24%2032%2C56%22%20fill%3D%22%230d4a25%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 <script src="site-theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,33 +13,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="no-r">
+<body class="no-side">
 <a class="skip" href="#main">Skip to content</a>
-<div class="progress" id="progress" aria-hidden="true"><i></i></div>
 <canvas id="stars" aria-hidden="true"></canvas>
+<div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"><i></i></div>
 
-<aside class="rail rail-l">
-  <a class="brand-link" href="index.html" aria-label="Axiom Mods — home">
-    <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Axiom green diamond logo">
-      <g stroke="#000" stroke-opacity=".35" stroke-width=".7" stroke-linejoin="round">
-        <polygon points="4,24 16,10 22,24" fill="#14532d"/>
-        <polygon points="16,10 32,10 22,24" fill="#22c55e"/>
-        <polygon points="32,10 42,24 22,24" fill="#8ff0b4"/>
-        <polygon points="32,10 48,10 42,24" fill="#4ade80"/>
-        <polygon points="48,10 60,24 42,24" fill="#16a34a"/>
-        <polygon points="4,24 22,24 32,56" fill="#15803d"/>
-        <polygon points="22,24 32,24 32,56" fill="#22c55e"/>
-        <polygon points="32,24 42,24 32,56" fill="#0f6a33"/>
-        <polygon points="42,24 60,24 32,56" fill="#0d4a25"/>
-      </g>
-    </svg>
-  </a>
-  <div class="brand-v" aria-hidden="true">Axiom<b>.</b></div>
-  <a class="rail-discord" data-discord href="https://discord.gg/nzPtPjvHE" target="_blank" rel="noopener noreferrer">Discord</a>
-</aside>
+<header class="nav" id="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html" aria-label="Axiom Mods — back to top"><svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#000" stroke-opacity=".35" stroke-width=".7" stroke-linejoin="round"><polygon points="4,24 16,10 22,24" fill="#14532d"/><polygon points="16,10 32,10 22,24" fill="#22c55e"/><polygon points="32,10 42,24 22,24" fill="#8ff0b4"/><polygon points="32,10 48,10 42,24" fill="#4ade80"/><polygon points="48,10 60,24 42,24" fill="#16a34a"/><polygon points="4,24 22,24 32,56" fill="#15803d"/><polygon points="22,24 32,24 32,56" fill="#22c55e"/><polygon points="32,24 42,24 32,56" fill="#0f6a33"/><polygon points="42,24 60,24 32,56" fill="#0d4a25"/></g></svg><span class="brand-name">Axiom<b>Mods</b></span></a>
+    <nav class="links" id="top-links" aria-label="Primary">
+      <a href="index.html#downloads">Mods</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#install">Install</a>
+      <a href="index.html#faq">FAQs</a>
+      <a href="index.html#discord">Community</a>
+    </nav>
+    <a class="btn btn-primary sheen" href="index.html#downloads"><span>Explore Mods</span></a>
+  </div>
+</header>
 
 <main id="main">
-  <article class="prose">
+  <article class="prose wrap">
     <a class="back" href="index.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="transform:scaleX(-1)"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>Back to downloads</a>
     <h1 style="margin-top:28px">Terms &amp; disclaimer</h1>
     <p class="meta">Last updated 25 October 2026</p>

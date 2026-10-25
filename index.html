@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Axiom Mods — Fabric mods for Minecraft 1.21.11</title>
 <meta name="description" content="Axiom Mods: a short list of Fabric mods for Minecraft 1.21.11. Spawner Protect, Meteor Client, Glazed, Rig Master and Tpa Macro V2. Help and changelogs in Discord.">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#090A0F">
 <meta property="og:title" content="Axiom Mods — Fabric mods for Minecraft 1.21.11">
 <meta property="og:description" content="A short list of Fabric mods for Minecraft 1.21.11. Help and changelogs in Discord.">
 <meta property="og:type" content="website">
@@ -18,61 +18,80 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<div class="progress" id="progress" aria-hidden="true"><i></i></div>
 <canvas id="stars" aria-hidden="true"></canvas>
+<div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"><i></i></div>
 
-<!-- ============ Left rail: logo + brand ============ -->
-<aside class="rail rail-l">
-  <a class="brand-link" href="#top" aria-label="Axiom Mods — back to top">
-    <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Axiom green diamond logo">
-      <g stroke="#000" stroke-opacity=".35" stroke-width=".7" stroke-linejoin="round">
-        <polygon points="4,24 16,10 22,24" fill="#14532d"/>
-        <polygon points="16,10 32,10 22,24" fill="#22c55e"/>
-        <polygon points="32,10 42,24 22,24" fill="#8ff0b4"/>
-        <polygon points="32,10 48,10 42,24" fill="#4ade80"/>
-        <polygon points="48,10 60,24 42,24" fill="#16a34a"/>
-        <polygon points="4,24 22,24 32,56" fill="#15803d"/>
-        <polygon points="22,24 32,24 32,56" fill="#22c55e"/>
-        <polygon points="32,24 42,24 32,56" fill="#0f6a33"/>
-        <polygon points="42,24 60,24 32,56" fill="#0d4a25"/>
-      </g>
-    </svg>
-  </a>
-  <div class="brand-v" aria-hidden="true">Axiom<b>.</b></div>
-  <a class="rail-discord" data-discord href="https://discord.gg/nzPtPjvHE" target="_blank" rel="noopener noreferrer">Discord</a>
-</aside>
+<!-- ============ Top bar ============ -->
+<header class="nav" id="nav">
+  <div class="nav-in">
+    <button class="burger" id="burger" type="button" aria-label="Toggle sidebar" aria-controls="side" aria-expanded="false"><span></span><span></span><span></span></button>
+    <a class="brand" href="#top" aria-label="Axiom Mods — back to top"><svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#000" stroke-opacity=".35" stroke-width=".7" stroke-linejoin="round"><polygon points="4,24 16,10 22,24" fill="#14532d"/><polygon points="16,10 32,10 22,24" fill="#22c55e"/><polygon points="32,10 42,24 22,24" fill="#8ff0b4"/><polygon points="32,10 48,10 42,24" fill="#4ade80"/><polygon points="48,10 60,24 42,24" fill="#16a34a"/><polygon points="4,24 22,24 32,56" fill="#15803d"/><polygon points="22,24 32,24 32,56" fill="#22c55e"/><polygon points="32,24 42,24 32,56" fill="#0f6a33"/><polygon points="42,24 60,24 32,56" fill="#0d4a25"/></g></svg><span class="brand-name">Axiom<b>Mods</b></span></a>
+    <nav class="links" id="top-links" aria-label="Primary">
+      <a href="#downloads">Mods</a>
+      <a href="#features">Features</a>
+      <a href="#install">Install</a>
+      <a href="#faq">FAQs</a>
+      <a href="#discord">Community</a>
+    </nav>
+    <a class="btn btn-primary sheen" href="#downloads"><span>Explore Mods</span></a>
+  </div>
+</header>
 
-<!-- ============ Right rail: download categories ============ -->
-<aside class="rail rail-r" aria-label="Download categories">
-  <p class="rail-h">Downloads</p>
-  <nav class="tabs" id="rail-tabs">
-<!--FALLBACK:tabs-->
-<button class="tab" type="button" data-cat="all" aria-pressed="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"></rect><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"></rect><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"></rect></svg><span class="lbl">Everything</span><span class="n">5</span></button><button class="tab" type="button" data-cat="Utility" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"></path></svg><span class="lbl">Utility</span><span class="n">2</span></button><button class="tab" type="button" data-cat="Clients" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6L12 3Z"></path></svg><span class="lbl">Clients</span><span class="n">2</span></button><button class="tab" type="button" data-cat="Macros" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"></path></svg><span class="lbl">Macros</span><span class="n">1</span></button>
-<!--/FALLBACK:tabs-->
+<!-- ============ Sidebar ============ -->
+<div class="scrim" id="scrim"></div>
+<aside class="side" id="side" aria-label="Browse mods">
+  <p class="side-h">Browse mods</p>
+  <nav class="cats" id="side-cats" aria-label="Mod categories"><i class="ind"></i></nav>
+  <p class="side-h">Jump to</p>
+  <nav class="jump" id="jump" aria-label="Sections">
+    <a href="#top"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7v8.5a.5.5 0 0 1-.5.5H15v-5.5H9V20H4.5a.5.5 0 0 1-.5-.5V11Z"/></svg>Home</a>
+    <a href="#features"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9l-5.2 2.8 1-5.9L3.5 9.7l5.9-.8L12 3.5Z"/></svg>Features</a>
+    <a href="#downloads"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5M4.5 19.5h15"/></svg>Downloads</a>
+    <a href="#install"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6.5a4 4 0 0 0 4.9 4.9L10 20.8a2.1 2.1 0 0 1-3-3l9.4-9.4a4 4 0 0 0-1.9-1.9Z"/></svg>Install guide</a>
+    <a href="#faq"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.2 1-1.2 1.8M12 16.8h.01"/></svg>FAQs</a>
+    <a href="terms.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V20.5H7V3.5Z"/><path d="M14 3.5v4h4"/></svg>Terms</a>
   </nav>
-  <p class="rail-foot">Files sit on a free host. Read the notices above the downloads first.</p>
+  <div class="side-card">
+    <h4>Need a hand?</h4>
+    <p>Changelogs, setup notes and support live in the Discord.</p>
+    <a class="btn btn-primary sm block" data-discord href="https://discord.gg/nzPtPjvHE" target="_blank" rel="noopener noreferrer"><span>Join the Discord</span></a>
+  </div>
+  <p class="side-foot">Files sit on a free host. Read the notices above the downloads first.</p>
 </aside>
 
 <main id="main">
   <span id="top"></span>
 
-  <div class="announce" id="announce" role="region" aria-label="Announcement">
+  <div class="announce" id="announce" role="region" aria-label="Announcement" hidden>
     <span class="tag">New</span>
-    <p>Spawner Protect v1.0 is out — get alerted when players get near your spawners.</p>
-    <a class="go" href="#spawner-protect"><span>Get it</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
+    <p></p>
+    <a class="go" href="#downloads"><span>Get it</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
     <button class="x" type="button" aria-label="Dismiss announcement"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
 
   <!-- ============ Hero ============ -->
   <header class="hero wrap">
-    <p class="eyebrow reveal"><span class="v" id="hero-ver">Fabric 1.21.11</span><span class="live"><i class="dot"></i><span id="hero-live">5 mods available</span></span></p>
+    <p class="eyebrow reveal"><span class="v" id="hero-ver">Fabric 1.21.11</span><span class="live"><i class="dot"></i><span id="hero-live">Mods available</span></span></p>
     <h1 id="hero-title" class="reveal" style="--d:1"><span class="w">Five mods.</span> <span class="w">One version.</span> <em class="w">Nothing else.</em></h1>
     <p class="lead reveal" style="--d:2">A short list, kept short on purpose. Everything here is built for Minecraft 1.21.11 on Fabric, with help and changelogs waiting in the Discord.</p>
     <div class="hero-cta reveal" style="--d:3">
       <a class="btn btn-primary" href="#downloads"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5M4.5 19.5h15"/></svg><span>Browse downloads</span></a>
       <a class="btn" data-discord href="https://discord.gg/nzPtPjvHE" target="_blank" rel="noopener noreferrer"><span>Join the Discord</span></a>
     </div>
+    <div class="stats reveal" id="stats" style="--d:4"></div>
   </header>
+
+  <!-- ============ Features ============ -->
+  <section id="features" class="wrap" aria-labelledby="ft-h">
+    <div class="sec-head reveal"><h2 id="ft-h">Why Axiom</h2><p>Small on purpose</p></div>
+    <div class="features">
+      <article class="feat reveal"><span class="fi"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2.5 4.5 13.5H12L11 21.5l8.5-11H12l1-8Z"/></svg></span><h3>One version, no guessing</h3><p>Every mod targets Minecraft 1.21.11 on Fabric. Nothing is built for other versions, so there is nothing to mix up.</p></article>
+      <article class="feat reveal" style="--d:1"><span class="fi"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg></span><h3>A plain .jar, nothing else</h3><p>Each download is a single <code>.jar</code>. If what you get isn’t one, delete it and ask in the Discord.</p></article>
+      <article class="feat reveal" style="--d:2"><span class="fi"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10H10l-4.5 3.5v-3.5H4v-10Z"/></svg></span><h3>Help where it happens</h3><p>Changelogs land in the Discord first, along with setup notes and support when something breaks.</p></article>
+      <article class="feat reveal" style="--d:3"><span class="fi"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 7-5 5 5 5M15.5 7l5 5-5 5M13.4 4.5l-2.8 15"/></svg></span><h3>Open where it counts</h3><p>Mods marked <b>Open source</b> can be read by anyone. For the rest, VirusTotal gives you a second opinion on any file.</p></article>
+    </div>
+  </section>
 
   <!-- ============ Downloads ============ -->
   <section id="downloads" class="wrap" aria-labelledby="dl-h">
@@ -92,36 +111,36 @@
           <h3>Turn on an adblocker before you download</h3>
           <p>Our files sit on a free host that pays for itself with ads, and some of those ads pretend to be download buttons. Click only the real <b>Download</b> button. Never click:</p>
           <ul>
-            <li><span>a flashing banner</span></li>
-            <li><span>a fake “your file is ready” box</span></li>
-            <li><span>anything asking you to install an extension or an <b>.exe</b></span></li>
+            <li>a flashing banner</li>
+            <li>a fake “your file is ready” box</li>
+            <li>anything asking you to install an extension or an <b>.exe</b></li>
           </ul>
           <p>Every mod here is a plain <code>.jar</code> and nothing else. If what you downloaded isn’t a <code>.jar</code>, delete it.</p>
         </div>
       </div>
     </div>
 
-    <div class="tabs tabs-inline" id="inline-tabs" role="group" aria-label="Filter downloads">
-<!--FALLBACK:inline-tabs-->
-<button class="tab" type="button" data-cat="all" aria-pressed="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"></rect><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"></rect><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"></rect><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"></rect></svg><span class="lbl">Everything</span><span class="n">5</span></button><button class="tab" type="button" data-cat="Utility" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"></path></svg><span class="lbl">Utility</span><span class="n">2</span></button><button class="tab" type="button" data-cat="Clients" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6L12 3Z"></path></svg><span class="lbl">Clients</span><span class="n">2</span></button><button class="tab" type="button" data-cat="Macros" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"></path></svg><span class="lbl">Macros</span><span class="n">1</span></button>
-<!--/FALLBACK:inline-tabs-->
+    <div class="toolbar reveal">
+      <div class="search">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+        <input id="search" type="search" placeholder="Search mods…" autocomplete="off" spellcheck="false" aria-label="Search mods">
+        <kbd aria-hidden="true">/</kbd>
+      </div>
+      <div class="pills-scroll"><div class="pills" id="pills" role="group" aria-label="Filter downloads"><i class="ind"></i></div></div>
     </div>
+    <p class="result-line" id="result-line" aria-live="polite"></p>
 
-    <div class="grid reveal" id="grid" aria-live="polite">
-<!--FALLBACK:grid-->
-<article class="card featured" id="spawner-protect" data-cat="Utility" style="--a:#23c55e"><div class="card-top"><div class="tile"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2.2"></rect><path d="M4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16"></path><rect x="10.3" y="10.3" width="3.4" height="3.4" rx=".6" fill="currentColor"></rect></svg></div><span class="pill">1.21.11</span></div><div class="name-row"><h3>Spawner Protect</h3><span class="badge">New</span><span class="badge">v1.0</span></div><div class="desc-wrap"><p class="desc">Watches your spawners while you're away. Uses paid APIs to locate your spawners and alert you when players get near them.</p><button class="more" type="button" aria-expanded="false">More</button></div><div class="card-foot"><a class="btn btn-primary dl" href="https://www.dropbox.com/scl/fi/wasfvtzata7utzyzxmlu3/vexxoprotect-v1.0-1.21.11.jar?rlkey=9xs8bwbv707f8peqajdpmbap5&amp;st=vvc6wpwk&amp;dl=1" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5M4.5 19.5h15"></path></svg><span>Download</span></a><p class="hint">Adblocker on — ignore any other button on that page</p></div></article><article class="card" id="meteor-client" data-cat="Clients" style="--a:#8ff0b4"><div class="card-top"><div class="tile"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="15.5" cy="8.5" r="4.5"></circle><path d="M12.3 11.7 4 20M9.6 8.2 6 12M15.8 13.4 12.4 16.8"></path></svg></div><span class="pill">1.21.11</span></div><div class="name-row"><h3>Meteor Client</h3><span class="badge">Flagship</span></div><div class="desc-wrap"><p class="desc">The main client. Full feature set, and the base everything else here is built around.</p><button class="more" type="button" aria-expanded="false">More</button></div><span class="oss"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 7-5 5 5 5M15.5 7l5 5-5 5M13.4 4.5l-2.8 15"></path></svg>Open source</span><div class="reqs" role="note"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6 2.4 20h19.2L12 3.6Z"></path><path d="M12 10v4.6M12 17.6h.01"></path></svg><span>Install Glazed alongside Meteor Client for full compatibility.</span></div><div class="card-foot"><a class="btn btn-primary dl" href="https://www.dropbox.com/scl/fi/ax6maw2kvllba3r9j7a7y/meteor-client-1.21.11-81.jar?rlkey=sip03dt7k66tujsoziey7qn7u&amp;st=uso3f85u&amp;dl=1" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5M4.5 19.5h15"></path></svg><span>Download</span></a><p class="hint">Adblocker on — ignore any other button on that page</p></div></article><article class="card" id="glazed" data-cat="Clients" style="--a:#2dd4bf"><div class="card-top"><div class="tile"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="3"></circle><path d="m6.6 8.2 1.5 1M16 6.4l-1 1.7M18 13.6l-1.7-.4M8.2 17l1.3-1.3"></path></svg></div><span class="pill">1.21.11</span></div><div class="name-row"><h3>Glazed</h3><span class="badge">Pairs with Meteor</span></div><div class="desc-wrap"><p class="desc">Built to run with Meteor Client. Changelog and setup notes are posted in the Discord.</p><button class="more" type="button" aria-expanded="false">More</button></div><div class="reqs" role="note"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6 2.4 20h19.2L12 3.6Z"></path><path d="M12 10v4.6M12 17.6h.01"></path></svg><span>Requires Meteor Client to work.</span></div><div class="card-foot"><a class="btn btn-primary dl" href="https://www.dropbox.com/scl/fi/yz4hsqtvywh6dlm02gxhm/glazed-1.21.11-v19.jar?rlkey=e8k75doltynjky510i5foi1ic&amp;st=dsac869b&amp;dl=1" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5M4.5 19.5h15"></path></svg><span>Download</span></a><p class="hint">Adblocker on — ignore any other button on that page</p></div></article><article class="card" id="rig-master" data-cat="Utility" style="--a:#a3e635"><div class="card-top"><div class="tile"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 6 21M12 3l6 18M8.4 14.5h7.2M10.2 9h3.6M4 21h16"></path></svg></div><span class="pill">1.21.11</span></div><div class="name-row"><h3>Rig Master</h3></div><div class="desc-wrap"><p class="desc">Join the Discord for the full breakdown — details, changelog and support all live there.</p><button class="more" type="button" aria-expanded="false">More</button></div><div class="card-foot"><a class="btn btn-primary dl" href="https://www.dropbox.com/scl/fi/fdpmxw7pflp3jlc7d1cr0/Rigmaster-1.21.11-v3.jar?rlkey=djrj0mpd18972i6rjxy5n0g91&amp;st=vf81p97f&amp;dl=1" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5M4.5 19.5h15"></path></svg><span>Download</span></a><p class="hint">Adblocker on — ignore any other button on that page</p></div></article><article class="card" id="tpa-macro-v2" data-cat="Macros" style="--a:#4ade80"><div class="card-top"><div class="tile"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h11m-4-4 4 4-4 4"></path><path d="M20 5v14"></path></svg></div><span class="pill">1.21.11</span></div><div class="name-row"><h3>Tpa Macro V2</h3><span class="badge">V2</span></div><div class="desc-wrap"><p class="desc">The latest version. Rundown and support are posted in the Discord.</p><button class="more" type="button" aria-expanded="false">More</button></div><div class="card-foot"><a class="btn btn-primary dl" href="https://www.dropbox.com/scl/fi/ulic244mj2yqvvvx3o5vt/Tpamacro-1.21.11-v1.jar?rlkey=85gtrjpvulhgsd728tcmcm9t1&amp;st=9cljpe86&amp;dl=1" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5M4.5 19.5h15"></path></svg><span>Download</span></a><p class="hint">Adblocker on — ignore any other button on that page</p></div></article>
-<!--/FALLBACK:grid-->
-    </div>
+    <div class="grid" id="grid" aria-live="polite"><p class="empty">Loading mods…</p></div>
   </section>
 
   <!-- ============ Install guide ============ -->
   <section id="install" class="wrap" aria-labelledby="in-h">
     <div class="sec-head reveal"><h2 id="in-h">Install guide</h2><p>Four steps</p></div>
     <div class="steps">
-      <div class="step reveal"><span class="num">01</span><h3>Install Fabric</h3><p>Get the <a href="https://fabricmc.net/use/installer/" target="_blank" rel="noopener noreferrer">Fabric installer</a>, choose Minecraft <code>1.21.11</code> and let it create a launcher profile.</p></div>
+      <div class="step reveal"><span class="num">01</span><h3>Install Fabric</h3><p>Get the <a href="https://fabricmc.net/use/installer/" target="_blank" rel="noopener noreferrer">Fabric installer</a>, choose Minecraft <code>1.21.11</code> and let it create a launcher profile.</p><button class="copy" type="button" data-copy="1.21.11"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.2"/><path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg><span>Copy version</span></button></div>
       <div class="step reveal" style="--d:1"><span class="num">02</span><h3>Add Fabric API</h3><p>Download <a href="https://modrinth.com/mod/fabric-api" target="_blank" rel="noopener noreferrer">Fabric API</a> for 1.21.11. It goes in the same <code>mods</code> folder as everything else.</p></div>
       <div class="step reveal" style="--d:2"><span class="num">03</span><h3>Adblocker on, then download</h3><p>Switch your adblocker on, press <b>Download</b> on the mods you want, and ignore every other button on the page.</p></div>
-      <div class="step reveal" style="--d:3"><span class="num">04</span><h3>Drop the .jar files in</h3><p>Put them in <code>.minecraft/mods</code> (Windows: press <code>Win + R</code> and enter <code>%appdata%\.minecraft\mods</code>), then launch the Fabric profile.</p></div>
+      <div class="step reveal" style="--d:3"><span class="num">04</span><h3>Drop the .jar files in</h3><p>Put them in <code>.minecraft/mods</code> (Windows: press <code>Win + R</code> and enter the path below), then launch the Fabric profile.</p><button class="copy" type="button" data-copy="%appdata%\.minecraft\mods"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.2"/><path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg><span>Copy Windows path</span></button></div>
     </div>
   </section>
 
@@ -160,22 +179,26 @@
     </div>
   </section>
 
-  <!-- ============ Discord CTA ============ -->
+  <!-- ============ Community ============ -->
   <section id="discord" class="wrap" aria-labelledby="dc-h">
     <div class="cta reveal">
       <div>
         <h2 id="dc-h">Changelogs, setup notes and help live in the Discord.</h2>
         <p>New versions land there first. If something breaks, that’s where to ask.</p>
       </div>
-      <a class="btn btn-primary" data-discord href="https://discord.gg/nzPtPjvHE" target="_blank" rel="noopener noreferrer"><span>Join the Discord</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
+      <div class="dcw" id="dcw">
+        <div class="dcw-top"><span class="dcw-logo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.3 7.2c1.1-.4 2.3-.6 3.7-.6s2.6.2 3.7.6M7 17.3c-1.4-.5-2.4-1.1-3-1.7.2-3.6 1.2-6.6 2.6-9.1 1.1-.5 2.2-.8 3.2-.9l.5 1.2M17 17.3c1.4-.5 2.4-1.1 3-1.7-.2-3.6-1.2-6.6-2.6-9.1-1.1-.5-2.2-.8-3.2-.9l-.5 1.2M9 16.7c1.9.7 4.1.7 6 0"/><circle cx="9.3" cy="12.2" r="1.1"/><circle cx="14.7" cy="12.2" r="1.1"/></svg></span><div><b id="dc-name">Axiom Discord</b><small>Community &amp; support</small></div></div>
+        <div class="dcw-counts" id="dc-counts" hidden>
+          <span><i></i><b id="dc-online">0</b> online</span>
+          <span><i class="off"></i><b id="dc-members">0</b> members</span>
+        </div>
+        <a class="btn btn-primary block sheen" data-discord href="https://discord.gg/nzPtPjvHE" target="_blank" rel="noopener noreferrer"><span>Join the Discord</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
+      </div>
     </div>
   </section>
 
   <footer class="wrap">
-    <span class="f-brand">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><g stroke="#000" stroke-opacity=".35" stroke-width=".7" stroke-linejoin="round"><polygon points="4,24 16,10 22,24" fill="#14532d"/><polygon points="16,10 32,10 22,24" fill="#22c55e"/><polygon points="32,10 42,24 22,24" fill="#8ff0b4"/><polygon points="32,10 48,10 42,24" fill="#4ade80"/><polygon points="48,10 60,24 42,24" fill="#16a34a"/><polygon points="4,24 22,24 32,56" fill="#15803d"/><polygon points="22,24 32,24 32,56" fill="#22c55e"/><polygon points="32,24 42,24 32,56" fill="#0f6a33"/><polygon points="42,24 60,24 32,56" fill="#0d4a25"/></g></svg>
-      Axiom
-    </span>
+    <span class="f-brand"><svg viewBox="0 0 64 64" aria-hidden="true"><g stroke="#000" stroke-opacity=".35" stroke-width=".7" stroke-linejoin="round"><polygon points="4,24 16,10 22,24" fill="#14532d"/><polygon points="16,10 32,10 22,24" fill="#22c55e"/><polygon points="32,10 42,24 22,24" fill="#8ff0b4"/><polygon points="32,10 48,10 42,24" fill="#4ade80"/><polygon points="48,10 60,24 42,24" fill="#16a34a"/><polygon points="4,24 22,24 32,56" fill="#15803d"/><polygon points="22,24 32,24 32,56" fill="#22c55e"/><polygon points="32,24 42,24 32,56" fill="#0f6a33"/><polygon points="42,24 60,24 32,56" fill="#0d4a25"/></g></svg>Axiom</span>
     <span>Made by k35c</span>
     <nav aria-label="Footer">
       <a href="#downloads">Downloads</a>
@@ -188,6 +211,120 @@
   </footer>
 </main>
 
+<!-- ============ Details modal ============ -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-bg" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="m-title" tabindex="-1">
+    <button class="modal-x" type="button" data-close aria-label="Close"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ============ Effects widget ============ -->
+<div class="fx" id="fx">
+  <div class="fx-panel" id="fx-panel" role="group" aria-label="Effects">
+    <h4>Ambient effects</h4>
+    <label class="sw"><span>Starlight</span><input type="checkbox" data-fx="stars" checked><span class="track"></span></label>
+    <label class="sw"><span>Shooting stars</span><input type="checkbox" data-fx="shooting" checked><span class="track"></span></label>
+    <label class="sw"><span>Cursor glow</span><input type="checkbox" data-fx="cursor" checked><span class="track"></span></label>
+    <div class="range"><label for="fx-density"><span>Star density</span><output id="fx-density-out">100%</output></label><input id="fx-density" type="range" min="0.4" max="2" step="0.1" value="1" data-fx="density"></div>
+  </div>
+  <button class="fx-btn" id="fx-btn" type="button" aria-label="Ambient effects" aria-expanded="false" aria-controls="fx-panel"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z"/><path d="M19 16l.7 1.8L21.5 18.5l-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7L19 16Z"/></svg></button>
+</div>
+
+<script type="application/json" id="fallback-data">
+{
+  "theme": "emerald",
+  "announcement": {
+    "enabled": true,
+    "id": "spawner-protect-v1",
+    "tag": "New",
+    "text": "Spawner Protect v1.0 is out — get alerted when players get near your spawners.",
+    "linkText": "Get it",
+    "link": "#spawner-protect"
+  },
+  "links": {
+    "discord": "https://discord.gg/nzPtPjvHE"
+  },
+  "mods": [
+    {
+      "id": "spawner-protect",
+      "name": "Spawner Protect",
+      "description": "Watches your spawners while you're away. Uses paid APIs to locate your spawners and alert you when players get near them.",
+      "badges": ["New", "v1.0"],
+      "icon": "spawner",
+      "accent": "#23c55e",
+      "category": "Utility",
+      "mc": "1.21.11",
+      "url": "https://www.dropbox.com/scl/fi/wasfvtzata7utzyzxmlu3/vexxoprotect-v1.0-1.21.11.jar?rlkey=9xs8bwbv707f8peqajdpmbap5&st=vvc6wpwk&dl=1",
+      "note": "",
+      "featured": true,
+      "openSource": false,
+      "updating": false
+    },
+    {
+      "id": "meteor-client",
+      "name": "Meteor Client",
+      "description": "The main client. Full feature set, and the base everything else here is built around.",
+      "badges": ["Flagship"],
+      "icon": "meteor",
+      "accent": "#8ff0b4",
+      "category": "Clients",
+      "mc": "1.21.11",
+      "url": "https://www.dropbox.com/scl/fi/ax6maw2kvllba3r9j7a7y/meteor-client-1.21.11-81.jar?rlkey=sip03dt7k66tujsoziey7qn7u&st=uso3f85u&dl=1",
+      "note": "Install Glazed alongside Meteor Client for full compatibility.",
+      "featured": false,
+      "openSource": true,
+      "updating": false
+    },
+    {
+      "id": "glazed",
+      "name": "Glazed",
+      "description": "Built to run with Meteor Client. Changelog and setup notes are posted in the Discord.",
+      "badges": ["Pairs with Meteor"],
+      "icon": "glazed",
+      "accent": "#2dd4bf",
+      "category": "Clients",
+      "mc": "1.21.11",
+      "url": "https://www.dropbox.com/scl/fi/yz4hsqtvywh6dlm02gxhm/glazed-1.21.11-v19.jar?rlkey=e8k75doltynjky510i5foi1ic&st=dsac869b&dl=1",
+      "note": "Requires Meteor Client to work.",
+      "featured": false,
+      "openSource": false,
+      "updating": false
+    },
+    {
+      "id": "rig-master",
+      "name": "Rig Master",
+      "description": "Join the Discord for the full breakdown — details, changelog and support all live there.",
+      "badges": [],
+      "icon": "rig",
+      "accent": "#a3e635",
+      "category": "Utility",
+      "mc": "1.21.11",
+      "url": "https://www.dropbox.com/scl/fi/fdpmxw7pflp3jlc7d1cr0/Rigmaster-1.21.11-v3.jar?rlkey=djrj0mpd18972i6rjxy5n0g91&st=vf81p97f&dl=1",
+      "note": "",
+      "featured": false,
+      "openSource": false,
+      "updating": false
+    },
+    {
+      "id": "tpa-macro-v2",
+      "name": "Tpa Macro V2",
+      "description": "The latest version. Rundown and support are posted in the Discord.",
+      "badges": ["V2"],
+      "icon": "tpa",
+      "accent": "#4ade80",
+      "category": "Macros",
+      "mc": "1.21.11",
+      "url": "https://www.dropbox.com/scl/fi/ulic244mj2yqvvvx3o5vt/Tpamacro-1.21.11-v1.jar?rlkey=85gtrjpvulhgsd728tcmcm9t1&st=9cljpe86&dl=1",
+      "note": "",
+      "featured": false,
+      "openSource": false,
+      "updating": false
+    }
+  ]
+}
+</script>
 <script src="script.js" defer></script>
 </body>
 </html>
