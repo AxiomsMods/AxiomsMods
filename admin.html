@@ -93,8 +93,8 @@
 
   .switches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0 18px; }
   .sw { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border-radius: 13px; border: 1px solid var(--line); cursor: pointer; transition: border-color .25s, background .25s; }
-  .sw:has(input:checked) { border-color: rgba(34,197,94,.4); background: rgba(34,197,94,.07); }
-  .sw.warn:has(input:checked) { border-color: rgba(245,184,61,.45); background: rgba(245,184,61,.07); }
+  .sw.on { border-color: rgba(34,197,94,.4); background: rgba(34,197,94,.07); }
+  .sw.warn.on { border-color: rgba(245,184,61,.45); background: rgba(245,184,61,.07); }
   .sw input { position: absolute; opacity: 0; pointer-events: none; }
   .sw i { position: relative; flex: none; width: 34px; height: 20px; margin-top: 1px; border-radius: 99px; background: #1b2a22; transition: background .25s; }
   .sw i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #5d776b; transition: transform .3s var(--ease), background .25s; }
@@ -199,20 +199,24 @@
   <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14.5 4.5h3a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-3M10 16l4-4-4-4M14 12H4.5"/></symbol>
   <symbol id="b-discord" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M20.3 4.4a19.8 19.8 0 0 0-4.9-1.5l-.6 1.2a18.3 18.3 0 0 0-5.5 0L8.7 2.9a19.7 19.7 0 0 0-4.9 1.5C.7 9-.2 13.6.2 18.1a19.9 19.9 0 0 0 6 3c.5-.6.9-1.3 1.2-2a13 13 0 0 1-1.9-.9l.4-.3a14.2 14.2 0 0 0 12.1 0l.4.3c-.6.4-1.2.7-1.9.9.4.7.8 1.4 1.3 2a19.8 19.8 0 0 0 6-3c.5-5.2-.9-9.7-3.5-13.7ZM8 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></symbol>
 
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4M8.2 13.2l7.6 4"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 19.5c.6-3.3 3.3-5.5 6.5-5.5s5.9 2.2 6.5 5.5"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 6.6M17.5 14.2c2.1.7 3.6 2.6 4 5.3"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.6L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.6l1.7-2.1M20 20v-4.5h-4.5"/></symbol>
+
   <!-- Mod icons -->
-  <symbol id="m-spawner" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M3.5 9h17M3.5 15h17M9 3.5v17M15 3.5v17"/><path fill="currentColor" fill-opacity=".5" stroke="none" d="M12 9.6c1.4 1.2 1.9 2.2 1.9 3a1.9 1.9 0 0 1-3.8 0c0-.8.5-1.8 1.9-3Z"/></symbol>
-  <symbol id="m-meteor" viewBox="0 0 24 24"><circle cx="15.5" cy="15.5" r="4.2"/><path d="M3.5 3.5 12.3 12.3M6.5 3.8 13.2 10.5M3.8 6.5l6.7 6.7"/><circle cx="16.5" cy="14.5" r="1" fill="currentColor" stroke="none"/></symbol>
-  <symbol id="m-glazed" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="3"/><path d="M8.2 6.9l.6 1M15.4 7.4l-.4 1M17.2 13.5l-1-.3M7.3 15.6l.9-.6M12.6 17.8v-1"/></symbol>
-  <symbol id="m-rig" viewBox="0 0 24 24"><path d="M4.5 19.5 13 11"/><path d="M11.5 4.5c3 0 5.5 1.2 7.5 3.5-2.4-.5-4.6-.2-6.5 1L10 6.5c.4-.9.9-1.5 1.5-2Z"/><circle cx="17" cy="17" r="2.6"/><path d="M17 13.4v1M17 19.6v1M20.6 17h-1M14.4 17h-1"/></symbol>
-  <symbol id="m-tpa" viewBox="0 0 24 24"><path d="M4 8h13m0 0-3.5-3.5M17 8l-3.5 3.5"/><path d="M20 16H7m0 0 3.5-3.5M7 16l3.5 3.5"/></symbol>
-  <symbol id="m-sword" viewBox="0 0 24 24"><path d="M14.5 3.5h6v6L10 20l-2-2Z"/><path d="m5 15 4 4M3.5 20.5 6 18"/></symbol>
-  <symbol id="m-pickaxe" viewBox="0 0 24 24"><path d="M4 9.5C7.5 5.2 12.8 3.5 18 4.5c.9 4.9-.8 10.3-5 13.5"/><path d="M14 10 4.5 19.5"/></symbol>
-  <symbol id="m-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.6c0 4.5 3.2 8.2 7.5 9.4 4.3-1.2 7.5-4.9 7.5-9.4V6Z"/><path d="M12 3v18"/></symbol>
+  <symbol id="m-spawner" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M3.5 9h17M3.5 15h17M9 3.5v17M15 3.5v17"/><path fill="currentColor" fill-opacity=".45" d="M12 10.3c1.2 1 1.6 1.9 1.6 2.6a1.6 1.6 0 0 1-3.2 0c0-.7.4-1.6 1.6-2.6Z"/></symbol>
+  <symbol id="m-meteor" viewBox="0 0 24 24"><circle cx="15.5" cy="8.5" r="4"/><path d="M12.6 11.4 4 20M10 9 5 14M15 14l-5 5"/></symbol>
+  <symbol id="m-glazed" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M7.5 6.5 8.5 8M16 6l-.8 1.6M18 13l-1.6.4M7 16.5l1.4-1M14 17.8l-.4-1.6"/></symbol>
+  <symbol id="m-rig" viewBox="0 0 24 24"><path d="M14.5 4.5c3 0 5.5 1.7 6.5 4-2.2-1-4.6-1.3-7-.8M9.5 4.5c-3 0-5.5 1.7-6.5 4 2.2-1 4.6-1.3 7-.8"/><path d="M12 6.5V21"/><path d="M10 6.5h4"/></symbol>
+  <symbol id="m-tpa" viewBox="0 0 24 24"><path d="M4 8h13m0 0-3.5-3.5M17 8l-3.5 3.5M20 16H7m0 0 3.5-3.5M7 16l3.5 3.5"/></symbol>
+  <symbol id="m-sword" viewBox="0 0 24 24"><path d="M14.5 3.5H20.5V9.5L10 20l-6-6L14.5 3.5Z"/><path d="m4 20 2-2M7.5 13.5l3 3"/></symbol>
+  <symbol id="m-pickaxe" viewBox="0 0 24 24"><path d="M4.5 9C8 5 13.5 3.5 19 4.5 18 5.5 16.5 6 15 6.5"/><path d="M15 6.5 5 20.5M15 6.5c1 1.5 1.5 3 1.5 4.5"/></symbol>
+  <symbol id="m-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6L12 3Z"/></symbol>
   <symbol id="m-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
-  <symbol id="m-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8Z"/></symbol>
-  <symbol id="m-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></symbol>
-  <symbol id="m-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5h6.5l-1 8 8.5-11h-6.5Z"/></symbol>
-  <symbol id="m-map" viewBox="0 0 24 24"><path d="m3.5 6 5.5-2.5 6 2.5 5.5-2.5v14.5L15 20.5l-6-2.5-5.5 2.5Z"/><path d="M9 3.5v14.5M15 6v14.5"/></symbol>
+  <symbol id="m-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9L12 3.5Z"/></symbol>
+  <symbol id="m-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="m3 8 9 5 9-5M12 13v8"/></symbol>
+  <symbol id="m-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H12L11 21.5l8.5-11H12l1-8Z"/></symbol>
+  <symbol id="m-map" viewBox="0 0 24 24"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4Z"/><path d="M9 4v14M15 6v14"/></symbol>
   <symbol id="m-crystal" viewBox="0 0 24 24"><path d="M12 2.5 18 9l-6 12.5L6 9Z"/><path d="M6 9h12M12 2.5 9.5 9 12 21.5 14.5 9Z"/></symbol>
   <symbol id="m-potion" viewBox="0 0 24 24"><path d="M9.5 3.5h5M10.5 3.5v5L5.6 16.6A2.6 2.6 0 0 0 7.8 20.5h8.4a2.6 2.6 0 0 0 2.2-3.9L13.5 8.5v-5"/><path d="M7.4 14.5h9.2"/></symbol>
   <symbol id="m-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m15.5 8.5-2 5-5 2 2-5Z"/></symbol>
@@ -303,6 +307,15 @@
           <label class="field"><span>Discord invite</span><input class="in" id="lk-discord" placeholder="https://discord.gg/…"><small>Every "Join Discord" button uses this.</small></label>
           <label class="field"><span>YouTube video (optional)</span><input class="in" id="lk-youtube" placeholder="https://youtu.be/…"></label>
         </div>
+        <div class="pane-h" style="margin-top:28px"><div><h2>Discord numbers</h2><p>Always shown on the site. When Discord allows it, visitors see the live figures instead.</p></div>
+          <button class="btn btn-line btn-sm" id="dc-refresh" type="button"><svg class="ic"><use href="#i-refresh"/></svg>Get from Discord</button></div>
+        <div class="box">
+          <div class="row2">
+            <label class="field"><span>Members</span><input class="in" id="dc-members" type="number" min="0" inputmode="numeric"></label>
+            <label class="field"><span>Online</span><input class="in" id="dc-online" type="number" min="0" inputmode="numeric"></label>
+          </div>
+          <p class="err" id="dc-msg" style="color:var(--mute);margin-top:0"></p>
+        </div>
       </div>
 
       <div data-pane="activity" class="hidden">
@@ -329,7 +342,8 @@
 (() => {
   'use strict';
   const DATA_PATH = 'site-data.json';
-  const ICONS = ['spawner','meteor','glazed','rig','tpa','sword','pickaxe','shield','eye','star','box','bolt','map','crystal','potion','compass','chest'];
+  // the same icon set as the Vexxo Mods admin panel, plus four extras
+  const ICONS = ['spawner','meteor','glazed','rig','tpa','sword','pickaxe','eye','star','box','bolt','shield','map','crystal','potion','compass','chest'];
   const SWATCHES = ['34, 197, 94','45, 212, 191','56, 189, 248','167, 139, 250','251, 113, 133','251, 146, 60','250, 204, 21','226, 232, 240'];
   const NEW_CAT = '__new__';
 
@@ -472,10 +486,10 @@
         </div>
         <div class="mod-b">
           <div class="switches">
-            <label class="sw"><input type="checkbox" data-f="featured" ${m.featured ? 'checked' : ''}><i></i><span><b>Featured</b><small>Big card at the top</small></span></label>
-            <label class="sw"><input type="checkbox" data-f="new" ${m.new ? 'checked' : ''}><i></i><span><b>New</b><small>Shows in "Just added"</small></span></label>
-            <label class="sw"><input type="checkbox" data-f="openSource" ${m.openSource ? 'checked' : ''}><i></i><span><b>Open source</b><small>Adds the open-source line</small></span></label>
-            <label class="sw warn"><input type="checkbox" data-f="updating" ${m.updating ? 'checked' : ''}><i></i><span><b>Updating</b><small>Hides the download for now</small></span></label>
+            <label class="sw${m.featured ? ' on' : ''}"><input type="checkbox" data-f="featured" ${m.featured ? 'checked' : ''}><i></i><span><b>Featured</b><small>Big card at the top</small></span></label>
+            <label class="sw${m.new ? ' on' : ''}"><input type="checkbox" data-f="new" ${m.new ? 'checked' : ''}><i></i><span><b>New</b><small>Shows in "Just added"</small></span></label>
+            <label class="sw${m.openSource ? ' on' : ''}"><input type="checkbox" data-f="openSource" ${m.openSource ? 'checked' : ''}><i></i><span><b>Open source</b><small>Adds the open-source line</small></span></label>
+            <label class="sw warn${m.updating ? ' on' : ''}"><input type="checkbox" data-f="updating" ${m.updating ? 'checked' : ''}><i></i><span><b>Updating</b><small>Hides the download for now</small></span></label>
           </div>
           <label class="field"><span>Download link</span>
             <div class="with-btn"><input class="in" data-f="url" value="${esc(m.url)}" placeholder="https://…" spellcheck="false"><a class="btn btn-line btn-sm" data-act="test" href="${isUrl(m.url) ? esc(m.url) : '#'}" target="_blank" rel="noopener noreferrer"><svg class="ic"><use href="#i-ext"/></svg>Test link</a></div>
@@ -489,6 +503,10 @@
             <label class="field"><span>Category</span><select class="sel" data-f="category">${catOpts}</select></label>
             <label class="field"><span>Minecraft version</span><input class="in" data-f="mc" value="${esc(m.mc || '1.21.11')}"></label>
             <label class="field"><span>Badges</span><input class="in" data-f="badges" value="${esc((m.badges || []).join(', '))}" placeholder="New, v1.0"></label>
+          </div>
+          <div class="row2">
+            <label class="field"><span>Needs another mod</span><select class="sel" data-f="requires"><option value="">Nothing — works on its own</option>${data.mods.filter(x => x !== m).map(x => `<option value="${esc(x.id)}" ${(m.requires || [])[0] === x.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select><small>When someone downloads this, the site offers them that one too.</small></label>
+            <label class="field"><span>Last updated</span><input class="in" type="date" data-f="updated" value="${esc(m.updated || '')}"><small>Set to today automatically when you change the link.</small></label>
           </div>
           <label class="field"><span>Requirement or warning</span><input class="in" data-f="note" value="${esc(m.note)}" placeholder="Optional — e.g. Requires Meteor Client to work."><small>Shows as an amber bar on the card.</small></label>
           ${m.featured ? `<label class="field"><span>Feature list</span><textarea class="ta" data-f="features" placeholder="One per line">${esc((m.features || []).join('\n'))}</textarea><small>One per line. Shown on the featured card.</small></label>` : ''}
@@ -525,11 +543,12 @@
     else if (f === 'features') m.features = el.value.split('\n').map(s => s.trim()).filter(Boolean);
     else if (f === 'accent') { m.accent = hexRgb(el.value); card.querySelectorAll('.colors button').forEach(b => b.classList.toggle('on', b.dataset.v === m.accent)); }
     else if (['featured', 'new', 'openSource', 'updating'].includes(f)) m[f] = el.checked;
-    else if (f === 'category') return;   // handled on change
+    else if (f === 'category' || f === 'requires') return;   // handled on change
     else m[f] = el.value;
     if (f === 'name' && m._autoId) m.id = slug(m.name);
     if (f === 'id') delete m._autoId;
     if (f === 'url') { const t = card.querySelector('[data-act="test"]'); t.href = isUrl(m.url) ? m.url.trim() : '#'; }
+    if (el.type === 'checkbox') { const lab = el.closest('.sw'); if (lab) lab.classList.toggle('on', el.checked); }
     if (f === 'featured') { renderMods(); }
     else refreshHead(card, m);
     updatePub();
@@ -537,6 +556,7 @@
   $('#mods').addEventListener('change', e => {
     const el = e.target;
     if (el.dataset.f === 'icon' || el.type === 'checkbox') { el.dispatchEvent(new Event('input', { bubbles: true })); return; }
+    if (el.dataset.f === 'requires') { const m2 = modOf(el); m2.requires = el.value ? [el.value] : []; updatePub(); return; }
     if (el.dataset.f !== 'category') return;
     const m = modOf(el);
     if (el.value === NEW_CAT) {
@@ -574,7 +594,7 @@
   $('#add-mod').addEventListener('click', () => {
     const m = { _key: ++keySeq, _autoId: true, id: 'new-mod', name: 'New mod', category: 'Utility', icon: 'box', accent: '34, 197, 94',
       featured: false, new: true, openSource: false, updating: false, badges: ['New'], description: 'Join the Discord for the full breakdown.',
-      features: [], note: '', mc: (data.site && data.site.version) || '1.21.11', file: '', url: '' };
+      features: [], note: '', mc: (data.site && data.site.version) || '1.21.11', file: '', url: '', requires: [], updated: new Date().toISOString().slice(0, 10) };
     data.mods.push(m); open.add(m._key); renderMods(); updatePub();
     document.querySelector(`.mod[data-key="${m._key}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
@@ -611,7 +631,29 @@
     .forEach(s => { $(s).addEventListener('input', annChanged); $(s).addEventListener('change', annChanged); });
 
   /* ---------- links ---------- */
-  function renderLinks() { $('#lk-discord').value = data.links.discord || ''; $('#lk-youtube').value = data.links.youtube || ''; }
+  function renderLinks() {
+    $('#lk-discord').value = data.links.discord || ''; $('#lk-youtube').value = data.links.youtube || '';
+    data.discord = data.discord || { members: 0, online: 0 };
+    $('#dc-members').value = data.discord.members || ''; $('#dc-online').value = data.discord.online || '';
+  }
+  $('#dc-members').addEventListener('input', e => { data.discord.members = Math.max(0, parseInt(e.target.value, 10) || 0); updatePub(); });
+  $('#dc-online').addEventListener('input', e => { data.discord.online = Math.max(0, parseInt(e.target.value, 10) || 0); updatePub(); });
+  $('#dc-refresh').addEventListener('click', async () => {
+    const m = String(data.links.discord || '').match(/(?:discord\.gg|discord(?:app)?\.com\/invite)\/([\w-]+)/i);
+    const msg = $('#dc-msg');
+    if (!m) { msg.textContent = 'Add your Discord invite above first.'; return; }
+    msg.textContent = 'Asking Discord…';
+    try {
+      const r = await fetch('https://discord.com/api/v9/invites/' + encodeURIComponent(m[1]) + '?with_counts=true');
+      const j = await r.json();
+      if (typeof j.approximate_member_count !== 'number') throw new Error('no counts');
+      data.discord = { members: j.approximate_member_count, online: j.approximate_presence_count || 0, checked: new Date().toISOString().slice(0, 10) };
+      renderLinks(); updatePub();
+      msg.textContent = `Got it: ${data.discord.members} members, ${data.discord.online} online. Press Publish to save.`;
+    } catch (e) {
+      msg.textContent = "Discord didn't answer from here. Type the numbers in yourself — they're on your server's invite card.";
+    }
+  });
   $('#lk-discord').addEventListener('input', e => { data.links.discord = e.target.value.trim(); updatePub(); });
   $('#lk-youtube').addEventListener('input', e => { data.links.youtube = e.target.value.trim(); updatePub(); });
 
@@ -686,6 +728,7 @@
     if ((before.mods || []).map(m => m.id).join() !== data.mods.map(m => m.id).filter(id => oldById.has(id)).join() && !parts.some(p => /Added|Removed/.test(p))) parts.push('Reordered mods');
     if (JSON.stringify(before.announcement) !== JSON.stringify(data.announcement)) parts.push('Updated the announcement');
     if (JSON.stringify(before.links) !== JSON.stringify(data.links)) parts.push('Updated links');
+    if (JSON.stringify(before.discord) !== JSON.stringify(data.discord)) parts.push('Updated Discord numbers');
     if (!parts.length) return 'Updated site';
     return parts.length > 3 ? `${parts.slice(0, 3).join(', ')} and ${parts.length - 3} more` : parts.join(', ');
   }
@@ -700,6 +743,9 @@
       const before = JSON.parse(original).announcement || {};
       const sig = x => [x.enabled, x.tag, x.title, x.text, x.linkText, x.link].join('|');
       if (sig(before) !== sig(data.announcement)) data.announcement.id = 'a' + Date.now().toString(36);
+      const prev = new Map((JSON.parse(original).mods || []).map(m => [m.id, m]));
+      const today = new Date().toISOString().slice(0, 10);
+      data.mods.forEach(m => { const o = prev.get(m.id); if (!o || o.url !== m.url) m.updated = today; });
       const message = describe() + by();
       log('Publishing…');
       const cur = await gh(`${repoPath()}/contents/${DATA_PATH}?ref=${encodeURIComponent(cfg.branch)}`, { allow404: true });

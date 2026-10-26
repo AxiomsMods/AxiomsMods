@@ -47,10 +47,28 @@ and put your name in "Your name for the activity log".
   the tab appears automatically.
 - Add, remove and reorder mods; change icons and colours.
 - **Announcement** — the bar at the top of the site, with a live preview.
-- **Links** — the Discord invite used by every button.
+- **Needs another mod** — e.g. set Glazed to need Meteor Client. When someone downloads
+  Glazed, the site offers them the Meteor Client download too.
+- **Last updated** — shows "Updated 3 days ago" on the card. It's set to today
+  automatically whenever you change a mod's download link.
+- **Links** — the Discord invite used by every button, plus the **member / online
+  numbers**. Press **Get from Discord** to fill them in, then Publish. The site
+  always shows these saved numbers and swaps in live ones when Discord answers.
 - **Activity** — every change, who made it, and when.
 
 Nothing changes on the live site until you press **Publish**.
+
+## Testing it on your computer
+
+You can double-click `index.html` to look at it before uploading — everything,
+including the Discord numbers, shows up. The admin panel only works once the site
+is on GitHub.
+
+## Sharing one mod
+
+Every card has a share button. It copies a link like
+`https://YOUR-NAME.github.io/axiom-mods/#mod/meteor-client` that jumps straight to
+that mod and makes it glow.
 
 ## About the download links
 
@@ -66,7 +84,7 @@ Swap them for your real file host's links in the admin panel when you're ready.
 | `script.js` | The starfield, download tabs, cards, FAQ and everything else that moves. |
 | `admin.html` | The admin panel. |
 | `site-data.json` | Mods, categories, announcement and links. Edited by the admin panel. |
-| `terms.html` | Terms & disclaimer. |
+| `terms.html` | Terms of service — bans and anything that happens to your PC aren't on us. |
 | `favicon.svg` | The diamond logo. |
 
 Made by k35c.
