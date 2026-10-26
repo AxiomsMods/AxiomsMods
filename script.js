@@ -43,7 +43,8 @@ function ready(fn) { if (document.readyState !== 'loading') fn(); else document.
 ready(function () {
   if (DATA) safely(function () { render(DATA); });
   safely(initSky);
-  safely(initGem);
+  safely(initTerms);
+  safely(initTicket);
   safely(initTabs);
   safely(initCards);
   safely(initAnnouncement);
@@ -83,6 +84,7 @@ function render(d) {
   var discord = safeUrl(d.links && d.links.discord);
   if (discord) $$('.js-discord').forEach(function (a) { a.href = discord; });
   if (d.discord) setCounts(d.discord.members, d.discord.online, false);
+  safely(function () { renderExtras(d); });
 
   var mods = liveMods(d);
   var grid = $('#grid');
@@ -371,6 +373,7 @@ function initCards() {
     var share = e.target.closest ? e.target.closest('[data-share]') : null;
     if (share) { shareMod(share.getAttribute('data-share')); return; }
     var a = e.target.closest ? e.target.closest('a.dl') : null; if (!a) return;
+    if (!termsAgreed()) { e.preventDefault(); openTerms(a.href); return; }
     if (!reduceMotion) {
       var r = a.getBoundingClientRect(); var size = Math.max(r.width, r.height) * 2;
       var dot = document.createElement('span'); dot.className = 'ripple';
@@ -702,7 +705,7 @@ function initSky() {
   // click empty sky to launch a shooting star from where you clicked
   document.addEventListener('click', function (e) {
     if (reduceMotion) return;
-    if (e.target.closest && e.target.closest('a,button,input,textarea,select,summary,label,.card,.notice,.qa,.join,.tabbar,canvas#gem3d,.step,.folder')) return;
+    if (e.target.closest && e.target.closest('a,button,input,textarea,select,summary,label,.card,.notice,.qa,.join,.tabbar,.launch,.modal,.step,.folder')) return;
     shoot(e.clientX, e.clientY, (Math.PI / 180) * (20 + Math.random() * 20));
   });
   var rt;
@@ -712,141 +715,266 @@ function initSky() {
 }
 
 /* =========================================================
-   The 3D diamond in the hero
-   A brilliant-cut gem built from real facets, lit by one light,
-   spinning slowly. Drag it to spin it yourself.
+   YouTube, launcher, staff online, ticket mod list
    ========================================================= */
-function initGem() {
-  var canvas = $('#gem3d'); if (!canvas || !canvas.getContext) return;
-  var ctx = canvas.getContext('2d');
-  var dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var size = 0;
+function renderExtras(d) {
+  var links = d.links || {};
+  var yt = safeUrl(links.youtube);
+  $$('.js-youtube').forEach(function (a) { if (yt) { a.href = yt; a.hidden = false; } else a.hidden = true; });
 
-  // geometry
-  var V = [], F = [];
-  var N = 8, i;
-  for (i = 0; i < N; i++) { var a = (i / N) * Math.PI * 2 + Math.PI / N; V.push([Math.cos(a) * 0.5, 0.42, Math.sin(a) * 0.5]); }            // table 0..7
-  for (i = 0; i < 2 * N; i++) { var b = (i / (2 * N)) * Math.PI * 2; V.push([Math.cos(b), 0.08, Math.sin(b)]); }                          // girdle top 8..23
-  for (i = 0; i < 2 * N; i++) { var c = (i / (2 * N)) * Math.PI * 2; V.push([Math.cos(c), 0.0, Math.sin(c)]); }                           // girdle bottom 24..39
-  V.push([0, -1.05, 0]);                                                                                                                  // culet 40
-  var T = function (k) { return k % N; }, G = function (k) { return N + (k % (2 * N)); }, B = function (k) { return 3 * N + (k % (2 * N)); };
-  var table = []; for (i = 0; i < N; i++) table.push(T(i)); F.push({ v: table, part: 'table' });
-  for (i = 0; i < N; i++) {
-    F.push({ v: [T(i), G(2 * i), G(2 * i + 1)], part: 'crown' });
-    F.push({ v: [T(i), G(2 * i + 1), T(i + 1)], part: 'star' });
-    F.push({ v: [T(i + 1), G(2 * i + 1), G(2 * i + 2)], part: 'crown' });
+  var launcher = safeUrl(links.launcher) || 'https://modrinth.com/app';
+  var ll = $('#launch-link'); if (ll) ll.href = launcher;
+
+  // the little launcher window lists the real mods
+  var wm = $('#win-mods');
+  if (wm) {
+    var names = ['Fabric API'].concat(liveMods(d).slice(0, 4).map(function (m) { return m.name; }));
+    wm.innerHTML = names.map(function (n, i) { return '<li style="--i:' + i + '"><span>' + esc(n) + '</span><em></em></li>'; }).join('');
   }
-  for (i = 0; i < 2 * N; i++) F.push({ v: [G(i), G(i + 1), B(i + 1), B(i)], part: 'girdle' });
-  for (i = 0; i < 2 * N; i++) F.push({ v: [B(i), B(i + 1), 40], part: 'pav' });
-  // make every face wind outward
-  F.forEach(function (f) {
-    var p0 = V[f.v[0]], p1 = V[f.v[1]], p2 = V[f.v[2]];
-    var n = cross(sub(p1, p0), sub(p2, p0));
-    var cx = 0, cy = 0, cz = 0; f.v.forEach(function (k) { cx += V[k][0]; cy += V[k][1]; cz += V[k][2]; });
-    if (n[0] * cx + n[1] * cy + n[2] * cz < 0) f.v.reverse();
-    f.seed = Math.random() * 6.28;
+
+  // staff online
+  var sup = d.support || {};
+  var staff = (sup.staff || []).filter(function (p) { return p && p.name; });
+  var on = staff.filter(function (p) { return p.online; });
+  var box = $('#staff');
+  if (box) {
+    box.className = 'staff' + (on.length ? ' is-on' : ' is-off');
+    $('#staff-title').textContent = on.length
+      ? on.length + ' staff online that can help'
+      : 'No staff online right now';
+    $('#staff-sub').textContent = on.length
+      ? 'Stuck? Make a ticket and a staff member will DM you on Discord.'
+      : 'Make a ticket anyway. We\'ll DM you on Discord as soon as someone\'s back.';
+    var sorted = on.concat(staff.filter(function (p) { return !p.online; }));
+    $('#staff-list').innerHTML = sorted.map(function (p) {
+      var initial = esc(String(p.name).trim().charAt(0).toUpperCase());
+      return '<li class="' + (p.online ? 'on' : 'off') + '"><span class="av">' + initial + '<i></i></span><span class="nm"><b>' + esc(p.name) + '</b>' +
+        (p.role ? '<small>' + esc(p.role) + '</small>' : '') + '</span><span class="st">' + (p.online ? 'Online' : 'Offline') + '</span></li>';
+    }).join('');
+    $('#staff-list').style.display = sorted.length ? '' : 'none';
+  }
+
+  // tickets switched off in the admin panel: send people to Discord instead
+  ticketsOn = sup.ticketsOn !== false && !!safeUrl(sup.webhook);
+  document.documentElement.classList.toggle('no-tickets', !ticketsOn);
+
+  var sel = $('#tk-mod');
+  if (sel) {
+    var cur = sel.value;
+    sel.innerHTML = '<option value="">Not about one mod</option>' + liveMods(d).map(function (m) { return '<option>' + esc(m.name) + '</option>'; }).join('');
+    sel.value = cur;
+  }
+}
+
+/* =========================================================
+   Modals (shared)
+   ========================================================= */
+var openModalEl = null, lastFocus = null;
+function openModal(el, focusSel) {
+  if (!el) return;
+  lastFocus = document.activeElement;
+  openModalEl = el;
+  el.classList.add('open');
+  document.documentElement.classList.add('modal-open');
+  setTimeout(function () { var f = focusSel ? $(focusSel, el) : null; if (f) try { f.focus(); } catch (e) {} }, 60);
+}
+function closeModal(el) {
+  el = el || openModalEl; if (!el) return;
+  el.classList.remove('open');
+  document.documentElement.classList.remove('modal-open');
+  openModalEl = null;
+  if (lastFocus && lastFocus.focus) try { lastFocus.focus(); } catch (e) {}
+}
+document.addEventListener('keydown', function (e) {
+  if (!openModalEl) return;
+  if ((e.key === 'Escape' || e.key === 'Esc') && openModalEl.id !== 'terms-modal') closeModal();
+  if (e.key === 'Tab') { // keep focus inside the box
+    var f = $$('a[href],button:not([disabled]),input:not([type=hidden]):not([tabindex="-1"]),select,textarea,[tabindex="0"]', openModalEl)
+      .filter(function (x) { return x.offsetWidth || x.offsetHeight; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+});
+
+/* =========================================================
+   Terms: everyone agrees once before downloading
+   ========================================================= */
+var TERMS_KEY = 'axiom_terms_v1';
+var termsMem = false, pendingDownload = null;
+function termsAgreed() { return termsMem || store(TERMS_KEY) === 'yes'; }
+function openTerms(href) {
+  pendingDownload = href || null;
+  openModal($('#terms-modal'), '#tm-check');
+}
+function initTerms() {
+  var m = $('#terms-modal'); if (!m) return;
+  var check = $('#tm-check'), btn = $('#tm-agree');
+  check.addEventListener('change', function () { btn.disabled = !check.checked; m.classList.toggle('ticked', check.checked); });
+  btn.addEventListener('click', function () {
+    if (!check.checked) return;
+    termsMem = true; store(TERMS_KEY, 'yes');
+    closeModal(m);
+    var go = pendingDownload; pendingDownload = null;
+    if (go) { toast('Thanks, you\'re all set', 'Your download is starting.'); setTimeout(function () { location.href = go; }, 350); }
+    else toast('Thanks, you\'re all set', 'Enjoy the mods. Adblocker on!', { icon: 'i-check' });
+  });
+  if (!termsAgreed() && !/^#mod\//.test(location.hash)) setTimeout(function () { if (!termsAgreed() && !openModalEl) openTerms(); }, 900);
+  // the requirement toast's button is a download too
+  var act = $('#toast-act');
+  if (act) act.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a') : null;
+    if (a && !termsAgreed()) { e.preventDefault(); openTerms(a.href); }
+  });
+}
+
+/* =========================================================
+   Tickets → Discord webhook
+   ========================================================= */
+var ticketsOn = true;
+var TK = { cooldownMin: 10, perDay: 3, minChars: 20, maxImg: 8 * 1024 * 1024 };
+function tkLog() { try { return JSON.parse(store('axiom_tk') || '[]').filter(function (t) { return Date.now() - t < 864e5; }); } catch (e) { return []; } }
+var tkMem = [];
+function tkHistory() { var a = tkLog(); return a.length >= tkMem.length ? a : tkMem; }
+function tkWait() {
+  var h = tkHistory(); if (!h.length) return 0;
+  if (h.length >= TK.perDay) return Math.max(0, h[0] + 864e5 - Date.now());
+  return Math.max(0, h[h.length - 1] + TK.cooldownMin * 6e4 - Date.now());
+}
+function mins(ms) { var m = Math.ceil(ms / 6e4); return m >= 60 ? Math.ceil(m / 60) + ' hour' + (Math.ceil(m / 60) > 1 ? 's' : '') : m + ' minute' + (m > 1 ? 's' : ''); }
+function noPing(s) { return String(s).replace(/@(everyone|here)/gi, '@​$1').replace(/<@[!&]?\d+>/g, '[mention]'); }
+
+function initTicket() {
+  var m = $('#ticket-modal'); if (!m) return;
+  var form = $('#tk-form'), done = $('#tk-done');
+  var user = $('#tk-user'), issue = $('#tk-issue'), err = $('#tk-err'), send = $('#tk-send');
+  var drop = $('#tk-drop'), file = $('#tk-file'), prev = $('#tk-prev'), dropIn = $('#tk-drop-in');
+  var image = null, openedAt = 0, topic = 'Download problem', sending = false, lastText = store('axiom_tk_last') || '';
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('[data-ticket]') : null;
+    if (t) {
+      e.preventDefault();
+      if (!ticketsOn) { var dc = $('.js-discord'); if (dc) window.open(dc.href, '_blank'); return; }
+      var menu = $('#menu'); if (menu && menu.classList.contains('open')) { var mb = $('#menu-btn'); if (mb) mb.click(); }
+      form.hidden = false; done.hidden = true; openedAt = Date.now(); showErr('');
+      var w = tkWait(); if (w) showErr('You\'ve sent a ticket recently. You can send another in ' + mins(w) + '. Need it faster? Ask in the Discord.');
+      openModal(m, '#tk-user');
+      return;
+    }
+    if (openModalEl === m && e.target.closest && e.target.closest('[data-close]')) closeModal(m);
   });
 
-  function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
-  function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
-  function norm(a) { var l = Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; }
-  var L = norm([-0.45, 0.75, 0.65]);
-  var H = norm([L[0], L[1], L[2] + 1]);
-  var L2 = norm([0.35, -0.55, 0.75]);   // soft fill light from below so the pavilion glows
+  $$('#tk-topics button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $$('#tk-topics button').forEach(function (x) { x.setAttribute('aria-checked', x === b ? 'true' : 'false'); });
+      topic = b.getAttribute('data-v');
+    });
+  });
 
-  var rotY = 0.4, rotX = 0.24, tiltX = 0, tiltTarget = 0, vel = 0, dragging = false, lastX = 0, lastT = 0;
-  var sparkles = [], nextSparkle = 0, autoSpeed = reduceMotion ? 0.12 : 0.42;
+  issue.addEventListener('input', function () {
+    var n = issue.value.length; $('#tk-count').textContent = n + ' / 1500';
+    $('#tk-count').className = 'tk-count' + (n > 1400 ? ' hot' : '');
+    var left = TK.minChars - issue.value.trim().length;
+    $('#tk-issue-hint').textContent = left > 0 ? left + ' more character' + (left > 1 ? 's' : '') + ' needed.' : 'Looks good.';
+    issue.parentNode.classList.toggle('ok', left <= 0);
+  });
+  user.addEventListener('input', function () {
+    user.value = user.value.replace(/^@+/, '').replace(/\s+/g, '');
+    user.closest('.tk-field').classList.toggle('ok', validUser(user.value));
+  });
 
-  function resize() {
-    var r = canvas.getBoundingClientRect(); size = Math.max(10, Math.min(r.width, r.height));
-    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  function validUser(v) { return /^[a-z0-9_.]{2,32}$/i.test(v) || /^.{2,32}#\d{4}$/.test(v); }
+
+  // screenshot: paste, drop or pick
+  function take(f) {
+    if (!f) return;
+    if (!/^image\/(png|jpe?g|gif|webp)$/i.test(f.type)) { showErr('That file isn\'t a picture. Use PNG, JPG, GIF or WebP.'); return; }
+    if (f.size > TK.maxImg) { showErr('That picture is over 8 MB. Try a smaller screenshot.'); return; }
+    image = f; showErr('');
+    var url = (window.URL || window.webkitURL).createObjectURL(f);
+    $('#tk-img').src = url;
+    $('#tk-img-name').textContent = f.name && f.name !== 'image.png' ? f.name : 'Pasted screenshot';
+    $('#tk-img-size').textContent = (f.size / 1024 > 1024 ? (f.size / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(f.size / 1024)) + ' KB');
+    prev.hidden = false; dropIn.hidden = true; drop.classList.add('has');
   }
-
-  function shade(f, n, t) {
-    var d = Math.max(0, n[0] * L[0] + n[1] * L[1] + n[2] * L[2]) + 0.42 * Math.max(0, n[0] * L2[0] + n[1] * L2[1] + n[2] * L2[2]);
-    var s = Math.pow(Math.max(0, n[0] * H[0] + n[1] * H[1] + n[2] * H[2]), 60) * 0.75;
-    var fire = 0.08 * Math.sin(t * 0.002 + f.seed);                       // the facets shimmer a little
-    var k = Math.max(0, Math.min(1, 0.12 + d * 0.72 + fire + (f.part === 'table' ? 0.08 : 0) + (f.part === 'pav' ? -0.06 : 0)));
-    // deep forest -> emerald -> mint
-    var r = k < 0.5 ? 6 + (34 - 6) * (k / 0.5) : 34 + (187 - 34) * ((k - 0.5) / 0.5);
-    var g = k < 0.5 ? 46 + (197 - 46) * (k / 0.5) : 197 + (247 - 197) * ((k - 0.5) / 0.5);
-    var b = k < 0.5 ? 26 + (94 - 26) * (k / 0.5) : 94 + (208 - 94) * ((k - 0.5) / 0.5);
-    r = Math.min(255, r + s * 255); g = Math.min(255, g + s * 255); b = Math.min(255, b + s * 255);
-    return 'rgb(' + (r | 0) + ',' + (g | 0) + ',' + (b | 0) + ')';
-  }
-
-  function frame(t) {
-    var dt = lastT ? Math.min(0.05, (t - lastT) / 1000) : 0.016; lastT = t;
-    if (!dragging) { vel += (autoSpeed - vel) * 0.03; rotY += vel * dt; }
-    tiltX += (tiltTarget - tiltX) * 0.08;
-    var ax = rotX + tiltX, cy = Math.cos(rotY), sy = Math.sin(rotY), cx = Math.cos(ax), sx = Math.sin(ax);
-    var bob = reduceMotion ? 0 : Math.sin(t * 0.0012) * 0.04;
-
-    var P = V.map(function (p) {
-      var x = p[0] * cy + p[2] * sy, z = -p[0] * sy + p[2] * cy, y = p[1] + bob;
-      var y2 = y * cx - z * sx, z2 = y * sx + z * cx;
-      return [x, y2, z2];
-    });
-    var w = canvas.width / dpr, h = canvas.height / dpr, S = size * 0.34, f = 3.4;
-    function proj(p) { var k = f / (f - p[2]); return [w / 2 + p[0] * S * k, h / 2 - p[1] * S * k]; }
-
-    var faces = [];
-    F.forEach(function (fc) {
-      var a = P[fc.v[0]], b = P[fc.v[1]], c = P[fc.v[2]];
-      var n = norm(cross(sub(b, a), sub(c, a)));
-      if (n[2] <= 0) return;                                   // facing away
-      var z = 0; fc.v.forEach(function (k) { z += P[k][2]; });
-      faces.push({ f: fc, n: n, z: z / fc.v.length });
-    });
-    faces.sort(function (p, q) { return p.z - q.z; });
-
-    ctx.clearRect(0, 0, w, h);
-    faces.forEach(function (o) {
-      ctx.beginPath();
-      o.f.v.forEach(function (k, j) { var q = proj(P[k]); if (j) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); });
-      ctx.closePath();
-      ctx.fillStyle = shade(o.f, o.n, t); ctx.fill();
-      ctx.strokeStyle = 'rgba(225,255,238,.28)'; ctx.lineWidth = 1; ctx.lineJoin = 'round'; ctx.stroke();
-    });
-
-    // sparkles catch on the facets
-    if (!reduceMotion && t > nextSparkle) {
-      var vis = faces.filter(function (o) { return o.n[2] > 0.5; });
-      if (vis.length) { var o = vis[(Math.random() * vis.length) | 0]; var q = proj(P[o.f.v[0]]); sparkles.push({ x: q[0], y: q[1], life: 0 }); }
-      nextSparkle = t + 260 + Math.random() * 520;
+  function clearImg() { image = null; prev.hidden = true; dropIn.hidden = false; drop.classList.remove('has'); file.value = ''; }
+  drop.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#tk-rm')) return; if (!image) file.click(); });
+  drop.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !image) { e.preventDefault(); file.click(); } });
+  $('#tk-rm').addEventListener('click', function (e) { e.stopPropagation(); clearImg(); });
+  file.addEventListener('change', function () { take(file.files && file.files[0]); });
+  ['dragenter', 'dragover'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+  drop.addEventListener('drop', function (e) { var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; take(f); });
+  document.addEventListener('paste', function (e) {
+    if (openModalEl !== m || form.hidden) return;
+    var items = (e.clipboardData && e.clipboardData.items) || [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].kind === 'file' && /^image\//.test(items[i].type)) {
+        e.preventDefault(); take(items[i].getAsFile());
+        drop.classList.remove('pop'); void drop.offsetWidth; drop.classList.add('pop');
+        return;
+      }
     }
-    ctx.globalCompositeOperation = 'lighter';
-    for (var s = sparkles.length - 1; s >= 0; s--) {
-      var sp = sparkles[s]; sp.life += dt; if (sp.life > 0.7) { sparkles.splice(s, 1); continue; }
-      var k = Math.sin((sp.life / 0.7) * Math.PI), Lr = 4 + 12 * k;
-      ctx.globalAlpha = k; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.2;
-      ctx.beginPath(); ctx.moveTo(sp.x - Lr, sp.y); ctx.lineTo(sp.x + Lr, sp.y); ctx.moveTo(sp.x, sp.y - Lr); ctx.lineTo(sp.x, sp.y + Lr); ctx.stroke();
-      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(sp.x, sp.y, 1.6 * k + 0.4, 0, 6.2832); ctx.fill();
-    }
-    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
-    requestAnimationFrame(frame);
-  }
+  });
 
-  function px(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
-  function down(e) { dragging = true; lastX = px(e); vel = 0; }
-  function move(e) {
-    var r = canvas.getBoundingClientRect();
-    if (!dragging) { if (!e.touches) tiltTarget = ((e.clientY - r.top) / r.height - 0.5) * 0.5; return; }
-    var x = px(e); var dx = x - lastX; lastX = x;
-    rotY += dx * 0.012; vel = dx * 0.7;
-    if (e.cancelable && e.touches) e.preventDefault();
-  }
-  function up() { dragging = false; }
-  canvas.addEventListener('mousedown', down);
-  window.addEventListener('mousemove', move);
-  window.addEventListener('mouseup', up);
-  canvas.addEventListener('mouseleave', function () { tiltTarget = 0; });
-  canvas.addEventListener('touchstart', down, { passive: true });
-  canvas.addEventListener('touchmove', move, { passive: false });
-  canvas.addEventListener('touchend', up);
-  window.addEventListener('resize', resize);
-  resize(); requestAnimationFrame(frame);
+  function showErr(t) { err.textContent = t; err.className = 'tk-err' + (t ? ' show' : ''); }
+  function shake(el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); try { el.focus(); } catch (e) {} }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (sending) return;
+    var name = user.value.trim().replace(/^@+/, ''), text = issue.value.trim();
+    if ($('#tk-web').value) return;                                   // bots fill the hidden box
+    if (!validUser(name)) { showErr('Type your Discord username, like "steve_123" (letters, numbers, _ and .).'); shake(user.closest('.tk-at')); return; }
+    if (text.length < TK.minChars) { showErr('Tell us a little more about the issue (at least ' + TK.minChars + ' characters).'); shake(issue); return; }
+    if (Date.now() - openedAt < 4000) { showErr('Give it a second and press Send again.'); return; }
+    var w = tkWait(); if (w) { showErr('You\'ve sent a ticket recently. You can send another in ' + mins(w) + '.'); return; }
+    if (text === lastText) { showErr('You already sent this exact ticket. We\'ve got it, hang tight.'); return; }
+    var hook = safeUrl(DATA && DATA.support && DATA.support.webhook);
+    if (!/^https:\/\/(?:canary\.|ptb\.)?discord(?:app)?\.com\/api\/webhooks\/\d+\/[\w-]+$/.test(hook)) { showErr('Tickets aren\'t set up right now. Please ask in the Discord.'); return; }
+
+    var num = 'AX-' + String(Math.floor(1000 + Math.random() * 9000));
+    var mod = $('#tk-mod').value;
+    var embed = {
+      title: '🎫 New ticket · ' + num,
+      color: 0x22c55e,
+      fields: [
+        { name: 'Discord username', value: '`' + name.replace(/`/g, '') + '`', inline: true },
+        { name: 'Topic', value: topic, inline: true },
+        { name: 'Mod', value: mod || '—', inline: true },
+        { name: 'Issue', value: noPing(text).slice(0, 1024) }
+      ],
+      footer: { text: 'Sent from the Axiom Mods website' },
+      timestamp: new Date().toISOString()
+    };
+    if (image) embed.image = { url: 'attachment://' + (image.type === 'image/png' ? 'screenshot.png' : image.type === 'image/gif' ? 'screenshot.gif' : image.type === 'image/webp' ? 'screenshot.webp' : 'screenshot.jpg') };
+    var payload = {
+      username: 'Axiom Tickets',
+      content: '**New ticket ' + num + '** — add **' + name.replace(/[*_`~|]/g, '\\$&') + '** on Discord',
+      embeds: [embed],
+      allowed_mentions: { parse: [] }
+    };
+    var body = new FormData();
+    body.append('payload_json', JSON.stringify(payload));
+    if (image) body.append('files[0]', image, embed.image.url.replace('attachment://', ''));
+
+    sending = true; send.classList.add('busy'); send.disabled = true; $('#tk-send-txt').textContent = 'Sending…'; showErr('');
+    fetch(hook, { method: 'POST', body: body }).then(function (r) {
+      if (r.status === 429) throw { busy: true };
+      if (!r.ok) throw { status: r.status };
+      var h = tkHistory().concat(Date.now()); tkMem = h; store('axiom_tk', JSON.stringify(h));
+      lastText = text; store('axiom_tk_last', text);
+      $('#tk-num').textContent = '#' + num; $('#tk-who').textContent = '@' + name;
+      form.hidden = true; done.hidden = false;
+      form.reset(); clearImg(); issue.dispatchEvent(new Event('input'));
+      $$('.tk-field.ok', form).forEach(function (f) { f.classList.remove('ok'); });
+    }).catch(function (x) {
+      showErr(x && x.busy ? 'Lots of tickets right now. Wait a minute and try again.'
+        : 'Couldn\'t send your ticket. Check your connection, or make a ticket in the Discord instead.');
+    }).then(function () { sending = false; send.classList.remove('busy'); send.disabled = false; $('#tk-send-txt').textContent = 'Send ticket'; });
+  });
 }
 
 })();

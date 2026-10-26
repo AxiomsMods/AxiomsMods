@@ -48,6 +48,16 @@
   .ta { min-height: 86px; resize: vertical; line-height: 1.55; }
   .sel { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: none; }
   .in:focus, .ta:focus, .sel:focus { outline: none; border-color: rgba(34,197,94,.7); background: rgba(34,197,94,.06); }
+  .staff-row { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr) auto auto; gap: 10px; align-items: center; padding: 10px; border-radius: 14px; border: 1px solid var(--line); margin-bottom: 8px; background: rgba(255,255,255,.015); }
+  .staff-row .in { height: 42px; }
+  .staff-row .sw { padding: 8px 12px; align-items: center; white-space: nowrap; }
+  .staff-row .sw b { font-size: .84rem; }
+  .icon-btn { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; border-radius: 11px; border: 1px solid var(--line-2); color: var(--mute); }
+  .icon-btn:hover { color: var(--red); border-color: rgba(251,113,133,.4); }
+  .note { display: flex; gap: 10px; padding: 12px 14px; border-radius: 13px; font-size: .84rem; line-height: 1.5; color: #ffe4ad; background: rgba(245,184,61,.07); border: 1px solid rgba(245,184,61,.28); margin-top: 4px; }
+  .note .ic { width: 18px; height: 18px; flex: none; color: var(--amber); margin-top: 1px; }
+  .hook-wrap { display: flex; gap: 8px; }
+  .hook-wrap .in { flex: 1; min-width: 0; font-family: var(--f-mono); font-size: .82rem; }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .row3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; }
   .check { display: flex; align-items: center; gap: 10px; font-size: .92rem; color: var(--mute); cursor: pointer; }
@@ -148,6 +158,7 @@
     .side button { white-space: nowrap; }
     .switches { grid-template-columns: 1fr 1fr; }
     .row2, .row3 { grid-template-columns: 1fr; }
+    .staff-row { grid-template-columns: 1fr 1fr; }
     .a-who { display: none; }
     .pub span.txt { display: none; }
   }
@@ -202,6 +213,14 @@
   <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4M8.2 13.2l7.6 4"/></symbol>
   <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 19.5c.6-3.3 3.3-5.5 6.5-5.5s5.9 2.2 6.5 5.5"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 6.6M17.5 14.2c2.1.7 3.6 2.6 4 5.3"/></symbol>
   <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.6L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.6l1.7-2.1M20 20v-4.5h-4.5"/></symbol>
+
+  <symbol id="b-youtube" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2C.5 9.1.5 12 .5 12s0 2.9.5 4.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-4.8.5-4.8s0-2.9-.5-4.8ZM9.7 15.4V8.6l5.9 3.4-5.9 3.4Z"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3.5 8.5V6.5a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v2a3.5 3.5 0 0 0 0 7v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-2a3.5 3.5 0 0 0 0-7Z"/><path d="M14.5 5.5v13" stroke-dasharray="2 2.4"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.2"/><circle cx="9" cy="10" r="1.8"/><path d="m4 17.5 5-4.5 4 3.5 3-2.5 4 3.5"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M20.5 3.5 10 14M20.5 3.5 14 20.5l-4-6.5-6.5-4 17-6.5Z"/></symbol>
+  <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M14 4.5c3-1.3 5.5-1 5.5-1s.3 2.5-1 5.5l-6.5 6.5-4-4L14 4.5Z"/><path d="m8 11.5-3.5.5-1.5 2.5 4 .5M12.5 16l-.5 3.5-2.5 1.5-.5-4M7.5 16.5c-1.5.5-2.5 2.5-2.5 2.5s2-1 2.5-2.5"/><circle cx="15" cy="9" r="1.4"/></symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4.5 14v-2a7.5 7.5 0 0 1 15 0v2"/><rect x="3.5" y="13.5" width="4" height="6" rx="1.4"/><rect x="16.5" y="13.5" width="4" height="6" rx="1.4"/><path d="M18.5 19.5c0 1.2-1.5 2-4 2h-1.5"/></symbol>
+  <symbol id="i-paste" viewBox="0 0 24 24"><rect x="5.5" y="4.5" width="13" height="16" rx="2"/><path d="M9 4.5V3.5h6v1M9 11h6M9 15h4"/></symbol>
 
   <!-- Mod icons -->
   <symbol id="m-spawner" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M3.5 9h17M3.5 15h17M9 3.5v17M15 3.5v17"/><path fill="currentColor" fill-opacity=".45" d="M12 10.3c1.2 1 1.6 1.9 1.6 2.6a1.6 1.6 0 0 1-3.2 0c0-.7.4-1.6 1.6-2.6Z"/></symbol>
@@ -271,6 +290,7 @@
     <nav class="side" aria-label="Admin sections">
       <button class="on" data-pane="mods"><svg class="ic"><use href="#i-box"/></svg>Mods</button>
       <button data-pane="announce"><svg class="ic"><use href="#i-bell"/></svg>Announcement</button>
+      <button data-pane="support"><svg class="ic"><use href="#i-headset"/></svg>Support</button>
       <button data-pane="links"><svg class="ic"><use href="#i-link"/></svg>Links</button>
       <button data-pane="activity"><svg class="ic"><use href="#i-history"/></svg>Activity</button>
     </nav>
@@ -301,11 +321,31 @@
         </div>
       </div>
 
+      <div data-pane="support" class="hidden">
+        <div class="pane-h"><div><h2>Staff online</h2><p>Shown under the Discord box on the site. Flip yourself online when you can help.</p></div>
+          <button class="btn btn-line btn-sm" id="st-add" type="button"><svg class="ic"><use href="#i-plus"/></svg>Add staff</button></div>
+        <div class="box"><div id="st-list"></div><p id="st-empty" style="color:var(--faint);font-size:.88rem">No staff added. The site will say nobody's online.</p></div>
+
+        <div class="pane-h" style="margin-top:28px"><div><h2>Tickets</h2><p>The "Make a ticket" form on the site sends to this Discord webhook.</p></div>
+          <button class="btn btn-line btn-sm" id="tk-test" type="button"><svg class="ic"><use href="#i-send"/></svg>Send test ticket</button></div>
+        <div class="box">
+          <div class="switches" style="grid-template-columns:1fr;margin-top:0">
+            <label class="sw" id="tk-on-wrap"><input type="checkbox" id="tk-on"><i></i><span><b>Tickets on the website</b><small>Off: every "Make a ticket" button opens the Discord instead.</small></span></label>
+          </div>
+          <label class="field"><span>Discord webhook link</span>
+            <div class="hook-wrap"><input class="in" id="tk-hook" type="password" autocomplete="off" spellcheck="false" placeholder="https://discord.com/api/webhooks/…"><button class="btn btn-line btn-sm" id="tk-show" type="button">Show</button></div>
+            <small>Discord: channel settings → Integrations → Webhooks → New webhook → Copy webhook URL.</small></label>
+          <p class="err" id="tk-msg" style="color:var(--mute);margin-top:0"></p>
+          <div class="note"><svg class="ic"><use href="#i-alert"/></svg><span>This link is inside the site's code, so a determined person could find it. The site limits each visitor to 1 ticket every 10 minutes and 3 a day, and blocks @everyone pings. If someone spams it anyway: delete the webhook in Discord, make a new one, paste it here and Publish.</span></div>
+        </div>
+      </div>
+
       <div data-pane="links" class="hidden">
         <div class="pane-h"><div><h2>Links</h2><p>Used everywhere on the site.</p></div></div>
         <div class="box">
           <label class="field"><span>Discord invite</span><input class="in" id="lk-discord" placeholder="https://discord.gg/…"><small>Every "Join Discord" button uses this.</small></label>
-          <label class="field"><span>YouTube video (optional)</span><input class="in" id="lk-youtube" placeholder="https://youtu.be/…"></label>
+          <label class="field"><span>YouTube channel (optional)</span><input class="in" id="lk-youtube" placeholder="https://www.youtube.com/@yourchannel"><small>Shows a YouTube button in the top bar, menu and footer. Leave empty to hide it.</small></label>
+          <label class="field"><span>Suggested launcher</span><input class="in" id="lk-launcher" placeholder="https://modrinth.com/app"><small>Where the "Get Modrinth App" button goes. Keep it on the official download page.</small></label>
         </div>
         <div class="pane-h" style="margin-top:28px"><div><h2>Discord numbers</h2><p>Always shown on the site. When Discord allows it, visitors see the live figures instead.</p></div>
           <button class="btn btn-line btn-sm" id="dc-refresh" type="button"><svg class="ic"><use href="#i-refresh"/></svg>Get from Discord</button></div>
@@ -442,6 +482,8 @@
     data.mods = Array.isArray(data.mods) ? data.mods : [];
     data.announcement = data.announcement || { enabled: false };
     data.links = data.links || {};
+    data.support = data.support || { ticketsOn: true, webhook: '', staff: [] };
+    data.support.staff = Array.isArray(data.support.staff) ? data.support.staff : [];
     data.site = data.site || { version: '1.21.11', loader: 'Fabric' };
     original = strip(data);
     data.mods.forEach(m => { m._key = ++keySeq; });
@@ -449,7 +491,7 @@
     renderAll(); updatePub();
   }
 
-  function renderAll() { renderMods(); renderAnnouncement(); renderLinks(); }
+  function renderAll() { renderMods(); renderAnnouncement(); renderLinks(); renderSupport(); }
 
   /* ---------- mods ---------- */
   const cats = () => {
@@ -633,6 +675,7 @@
   /* ---------- links ---------- */
   function renderLinks() {
     $('#lk-discord').value = data.links.discord || ''; $('#lk-youtube').value = data.links.youtube || '';
+    $('#lk-launcher').value = data.links.launcher || 'https://modrinth.com/app';
     data.discord = data.discord || { members: 0, online: 0 };
     $('#dc-members').value = data.discord.members || ''; $('#dc-online').value = data.discord.online || '';
   }
@@ -656,6 +699,53 @@
   });
   $('#lk-discord').addEventListener('input', e => { data.links.discord = e.target.value.trim(); updatePub(); });
   $('#lk-youtube').addEventListener('input', e => { data.links.youtube = e.target.value.trim(); updatePub(); });
+  $('#lk-launcher').addEventListener('input', e => { data.links.launcher = e.target.value.trim(); updatePub(); });
+
+  /* ---------- support: staff + tickets ---------- */
+  const HOOK_RE = /^https:\/\/(?:canary\.|ptb\.)?discord(?:app)?\.com\/api\/webhooks\/\d+\/[\w-]+$/;
+  function renderSupport() {
+    const sup = data.support;
+    $('#st-list').innerHTML = sup.staff.map((p, i) => `
+      <div class="staff-row" data-i="${i}">
+        <input class="in" data-s="name" value="${esc(p.name || '')}" placeholder="Discord name" maxlength="32">
+        <input class="in" data-s="role" value="${esc(p.role || '')}" placeholder="Role, e.g. Support" maxlength="24">
+        <label class="sw${p.online ? ' on' : ''}"><input type="checkbox" data-s="online" ${p.online ? 'checked' : ''}><i></i><span><b>${p.online ? 'Online' : 'Offline'}</b></span></label>
+        <button class="icon-btn" type="button" data-s-rm aria-label="Remove ${esc(p.name || 'staff member')}"><svg class="ic"><use href="#i-trash"/></svg></button>
+      </div>`).join('');
+    $('#st-empty').classList.toggle('hidden', sup.staff.length > 0);
+    $('#tk-on').checked = sup.ticketsOn !== false; $('#tk-on-wrap').classList.toggle('on', sup.ticketsOn !== false);
+    $('#tk-hook').value = sup.webhook || '';
+  }
+  const onStaff = e => {
+    const row = e.target.closest('.staff-row'); if (!row) return;
+    const p = data.support.staff[+row.dataset.i], k = e.target.dataset.s;
+    if (k === 'online') { p.online = e.target.checked; const lab = e.target.closest('.sw'); lab.classList.toggle('on', p.online); lab.querySelector('b').textContent = p.online ? 'Online' : 'Offline'; }
+    else if (k) p[k] = e.target.value;
+    updatePub();
+  };
+  $('#st-list').addEventListener('input', onStaff);
+  $('#st-list').addEventListener('change', e => { if (e.target.dataset.s === 'online') onStaff(e); });
+  $('#st-list').addEventListener('click', e => {
+    const b = e.target.closest('[data-s-rm]'); if (!b) return;
+    data.support.staff.splice(+b.closest('.staff-row').dataset.i, 1); renderSupport(); updatePub();
+  });
+  $('#st-add').addEventListener('click', () => {
+    data.support.staff.push({ name: '', role: 'Support', online: false }); renderSupport(); updatePub();
+    const rows = $$('.staff-row'); rows[rows.length - 1].querySelector('input').focus();
+  });
+  $('#tk-on').addEventListener('change', e => { data.support.ticketsOn = e.target.checked; $('#tk-on-wrap').classList.toggle('on', e.target.checked); updatePub(); });
+  $('#tk-hook').addEventListener('input', e => { data.support.webhook = e.target.value.trim(); updatePub(); });
+  $('#tk-show').addEventListener('click', () => { const h = $('#tk-hook'); const show = h.type === 'password'; h.type = show ? 'text' : 'password'; $('#tk-show').textContent = show ? 'Hide' : 'Show'; });
+  $('#tk-test').addEventListener('click', async () => {
+    const msg = $('#tk-msg'); const hook = (data.support.webhook || '').trim();
+    if (!HOOK_RE.test(hook)) { msg.style.color = 'var(--red)'; msg.textContent = 'Paste a Discord webhook link first.'; return; }
+    msg.style.color = 'var(--mute)'; msg.textContent = 'Sending…';
+    try {
+      const r = await fetch(hook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: 'Axiom Tickets', allowed_mentions: { parse: [] }, embeds: [{ title: '\u2705 Test ticket', description: 'Tickets from the website will show up here. Sent from the admin panel by ' + (cfg.name || 'an admin') + '.', color: 0x22c55e }] }) });
+      if (!r.ok) throw new Error(r.status);
+      msg.style.color = 'var(--mint)'; msg.textContent = 'Sent. Check your Discord channel.';
+    } catch (e) { msg.style.color = 'var(--red)'; msg.textContent = 'Couldn\'t send. Check the webhook link is right and still exists in Discord.'; }
+  });
 
   /* ---------- panes ---------- */
   $$('.side button').forEach(b => b.addEventListener('click', () => {
@@ -707,6 +797,10 @@
       ids.add(m.id);
     }
     if (data.links.discord && !isUrl(data.links.discord)) return 'The Discord invite needs to be a full link starting with https://';
+    if (data.links.youtube && !isUrl(data.links.youtube)) return 'The YouTube link needs to be a full link starting with https://';
+    if (data.links.launcher && !isUrl(data.links.launcher)) return 'The launcher link needs to be a full link starting with https://';
+    if (data.support.webhook && !HOOK_RE.test(data.support.webhook)) return 'The ticket webhook doesn\'t look like a Discord webhook link.';
+    data.support.staff = data.support.staff.filter(p => String(p.name || '').trim()).map(p => ({ name: String(p.name).trim(), role: String(p.role || '').trim(), online: !!p.online }));
     return null;
   }
 
@@ -729,6 +823,11 @@
     if (JSON.stringify(before.announcement) !== JSON.stringify(data.announcement)) parts.push('Updated the announcement');
     if (JSON.stringify(before.links) !== JSON.stringify(data.links)) parts.push('Updated links');
     if (JSON.stringify(before.discord) !== JSON.stringify(data.discord)) parts.push('Updated Discord numbers');
+    const bs = before.support || { staff: [] }; const oldStaff = new Map((bs.staff || []).map(p => [p.name, p]));
+    data.support.staff.forEach(p => { const o = oldStaff.get(p.name); if (o && !!o.online !== !!p.online) parts.push(`${p.name} is ${p.online ? 'online' : 'offline'}`); else if (!o && p.name) parts.push(`Added staff ${p.name}`); });
+    (bs.staff || []).forEach(o => { if (!data.support.staff.some(p => p.name === o.name)) parts.push(`Removed staff ${o.name}`); });
+    if ((bs.ticketsOn !== false) !== (data.support.ticketsOn !== false)) parts.push(`Tickets turned ${data.support.ticketsOn !== false ? 'on' : 'off'}`);
+    if ((bs.webhook || '') !== (data.support.webhook || '')) parts.push('Changed ticket webhook');
     if (!parts.length) return 'Updated site';
     return parts.length > 3 ? `${parts.slice(0, 3).join(', ')} and ${parts.length - 3} more` : parts.join(', ');
   }

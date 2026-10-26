@@ -54,9 +54,31 @@ and put your name in "Your name for the activity log".
 - **Links** — the Discord invite used by every button, plus the **member / online
   numbers**. Press **Get from Discord** to fill them in, then Publish. The site
   always shows these saved numbers and swaps in live ones when Discord answers.
+- **Support** — your staff list. Flip someone **Online** and the site shows them under
+  the Discord box as "staff online that can help". Also holds the **ticket webhook**
+  (the Discord channel tickets arrive in), a switch to turn website tickets off, and a
+  **Send test ticket** button.
+- **Links** also has your **YouTube channel** (the red button appears once it's set) and
+  the **suggested launcher** link (Modrinth App's download page).
 - **Activity** — every change, who made it, and when.
 
 Nothing changes on the live site until you press **Publish**.
+
+## Tickets
+
+The "Make a ticket" form asks for the visitor's Discord username, what it's about, which
+mod, the issue, and an optional screenshot (they can paste it with Ctrl+V). It lands in
+your Discord channel with the username to add. Each visitor can send 1 ticket every 10
+minutes and 3 a day, and @everyone pings are blocked.
+
+The webhook link is visible in the site's code, so a determined person could still spam
+it. If that happens: in Discord delete the webhook, make a new one, paste it in
+**Support** and Publish. The old link stops working straight away.
+
+## Terms pop-up
+
+The first time someone visits, they have to tick "I agree" before they can download.
+It's remembered on their browser after that.
 
 ## Testing it on your computer
 

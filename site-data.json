@@ -14,12 +14,24 @@
   },
   "links": {
     "discord": "https://discord.gg/nzPtPjvHE",
-    "youtube": ""
+    "youtube": "",
+    "launcher": "https://modrinth.com/app"
   },
   "discord": {
     "members": 776,
     "online": 124,
     "checked": "2026-10-26"
+  },
+  "support": {
+    "ticketsOn": true,
+    "webhook": "https://discord.com/api/webhooks/1564123437860130899/9K9QCfa_K0OrRi46eotGZpGVgHym1WtXoGPmhbCpVK-j6QSvx_kfrDmvA5unrmMlMknW",
+    "staff": [
+      {
+        "name": "k35c",
+        "role": "Owner",
+        "online": true
+      }
+    ]
   },
   "mods": [
     {
