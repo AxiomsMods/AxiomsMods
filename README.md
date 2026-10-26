@@ -1,42 +1,72 @@
 # Axiom Mods
 
-A static site for a small Minecraft mods hub, plus an admin panel. Plain HTML, CSS and
-vanilla JS — no build step, made for GitHub Pages.
+A short list of tested Fabric mods for Minecraft 1.21.11.
+
+## Putting it online (GitHub Pages)
+
+1. Make a new GitHub repository (for example `axiom-mods`). Public is fine.
+2. Upload **all** of these files to the root of the repo, together:
+   `index.html`, `style.css`, `script.js`, `admin.html`, `terms.html`,
+   `site-data.json`, `favicon.svg`, `README.md`
+3. Go to the repo's **Settings → Pages**. Under "Build and deployment" pick
+   **Deploy from a branch**, branch **main**, folder **/ (root)**, and press Save.
+4. After a minute your site is live at `https://YOUR-NAME.github.io/axiom-mods/`.
+
+Always upload `index.html`, `style.css` and `script.js` as a set. If one is newer
+than the others the page can look broken.
+
+## The admin panel
+
+Open `https://YOUR-NAME.github.io/axiom-mods/admin.html`.
+
+**First time:** you need a GitHub token.
+
+1. Go to https://github.com/settings/personal-access-tokens/new
+2. Name it **Axiom admin**, pick an expiry.
+3. Repository access: **Only select repositories** → pick your site's repo.
+4. Permissions → Repository → **Contents: Read and write**.
+5. Press **Generate token** and copy it.
+
+On the admin sign-in page, type your GitHub name, the repo name, paste the token,
+and put your name in "Your name for the activity log".
+
+### Changing a download link
+
+1. Open **Mods** and click the mod.
+2. Paste the new link into **Download link**.
+3. Press **Test link** — it should start downloading the file.
+4. Press **Publish** at the bottom. The site updates in about a minute.
+
+### Everything else you can do
+
+- **Updating** switch — hides a mod's download and shows "Updating — back soon".
+- **Open source** switch — adds the open-source line to the card.
+- **New** switch — puts the mod in the "Just added" tab.
+- **Featured** switch — gives the mod the big card at the top.
+- **Category** — decides which tab the mod sits under. Pick "New category…" to make one;
+  the tab appears automatically.
+- Add, remove and reorder mods; change icons and colours.
+- **Announcement** — the bar at the top of the site, with a live preview.
+- **Links** — the Discord invite used by every button.
+- **Activity** — every change, who made it, and when.
+
+Nothing changes on the live site until you press **Publish**.
+
+## About the download links
+
+The five mods ship with **test links** (Dropbox) so the site works straight away.
+Swap them for your real file host's links in the admin panel when you're ready.
+
+## Files
 
 | File | What it is |
 |---|---|
-| `index.html` | The site. Includes a static copy of the downloads as a fallback. |
-| `style.css`, `script.js` | Look and behaviour (starfield, tabs, reveal, progress bar). |
-| `site-data.json` | **All the content**: mods, announcement, Discord link, theme. |
-| `site-theme.js` | Applies the colour theme before first paint. |
-| `admin.html` | Admin panel that edits `site-data.json` through the GitHub API. |
+| `index.html` | The site. Also holds a built-in copy of the mods, used if `site-data.json` can't load. |
+| `style.css` | All styling, for the site and the admin panel. |
+| `script.js` | The starfield, download tabs, cards, FAQ and everything else that moves. |
+| `admin.html` | The admin panel. |
+| `site-data.json` | Mods, categories, announcement and links. Edited by the admin panel. |
 | `terms.html` | Terms & disclaimer. |
+| `favicon.svg` | The diamond logo. |
 
-## Put it online
-1. Create a GitHub repo and upload all the files to the root of the `main` branch.
-2. **Settings → Pages →** deploy from branch `main`, folder `/ (root)`.
-3. The site is at `https://<you>.github.io/<repo>/` and the admin at `…/admin.html`.
-
-## Using the admin
-1. Create a fine-grained token: GitHub → Settings → Developer settings → Fine-grained tokens.
-   Limit it to **this one repo**, permission **Contents: Read and write**, nothing else.
-2. Open `admin.html`, paste the token, check the repo name, enter your name, log in.
-3. **Mods** tab: edit anything, add, remove, reorder (↑ ↓). Each mod only needs a **download link**
-   (there is no file upload). **Updating** hides the download and shows “Updating — back soon”.
-4. **Site** tab: announcement bar, Discord link, theme.
-5. **Publish** commits `site-data.json`. The commit message lists what changed and ends with
-   ` — by YOUR NAME`; the **Activity** tab reads those back. Changes are live in about a minute.
-
-The token is kept in this browser only (localStorage if you tick “keep me signed in”, otherwise
-sessionStorage). It is sent only to `api.github.com`. Anyone can open `admin.html`, but nothing
-can be changed without a valid token.
-
-## Notes
-- The site fetches `site-data.json` with `cache: 'no-store'`. If that fails (for example when
-  opened from `file://`), it keeps the static copy inside `index.html`. That copy is a snapshot;
-  re-copy the rendered cards into `index.html` if you want it to match after big edits.
-- Test links: the five download URLs shipped in `site-data.json` are test links. Replace them in
-  the admin when the real file host is ready.
-- Preview a theme with `?theme=mint` (emerald, mint, moss, jade).
-- Download pages on free hosts show ads, so each card carries an adblocker reminder and the
-  page has a prominent warning. Keep those if you change the copy.
+Made by k35c.

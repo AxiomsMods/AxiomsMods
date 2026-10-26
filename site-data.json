@@ -1,91 +1,124 @@
 {
-  "theme": "emerald",
+  "site": {
+    "version": "1.21.11",
+    "loader": "Fabric"
+  },
   "announcement": {
     "enabled": true,
-    "id": "spawner-protect-v1",
+    "id": "welcome-1",
     "tag": "New",
-    "text": "Spawner Protect v1.0 is out — get alerted when players get near your spawners.",
-    "linkText": "Get it",
-    "link": "#spawner-protect"
+    "title": "Axiom Mods is live",
+    "text": "— five tested mods for 1.21.11.",
+    "linkText": "Browse",
+    "link": "#downloads"
   },
   "links": {
-    "discord": "https://discord.gg/nzPtPjvHE"
+    "discord": "https://discord.gg/nzPtPjvHE",
+    "youtube": ""
   },
   "mods": [
     {
       "id": "spawner-protect",
       "name": "Spawner Protect",
-      "description": "Watches your spawners while you're away. Uses paid APIs to locate your spawners and alert you when players get near them.",
-      "badges": ["New", "v1.0"],
-      "icon": "spawner",
-      "accent": "#23c55e",
       "category": "Utility",
-      "mc": "1.21.11",
-      "url": "https://www.dropbox.com/scl/fi/wasfvtzata7utzyzxmlu3/vexxoprotect-v1.0-1.21.11.jar?rlkey=9xs8bwbv707f8peqajdpmbap5&st=vvc6wpwk&dl=1",
-      "note": "",
+      "icon": "spawner",
+      "accent": "251, 146, 60",
       "featured": true,
+      "new": true,
       "openSource": false,
-      "updating": false
+      "updating": false,
+      "badges": [
+        "New",
+        "v1.0"
+      ],
+      "description": "Watches your spawners while you're away. Uses paid APIs to locate your spawners and alert you when players get near them.",
+      "features": [
+        "Locates your spawners",
+        "Alerts when players are near",
+        "Runs on paid APIs"
+      ],
+      "note": "",
+      "mc": "1.21.11",
+      "file": "vexxoprotect-v1.0-1.21.11.jar",
+      "url": "https://www.dropbox.com/scl/fi/wasfvtzata7utzyzxmlu3/vexxoprotect-v1.0-1.21.11.jar?rlkey=9xs8bwbv707f8peqajdpmbap5&st=vvc6wpwk&dl=1"
     },
     {
       "id": "meteor-client",
       "name": "Meteor Client",
-      "description": "The main client. Full feature set, and the base everything else here is built around.",
-      "badges": ["Flagship"],
-      "icon": "meteor",
-      "accent": "#8ff0b4",
       "category": "Clients",
-      "mc": "1.21.11",
-      "url": "https://www.dropbox.com/scl/fi/ax6maw2kvllba3r9j7a7y/meteor-client-1.21.11-81.jar?rlkey=sip03dt7k66tujsoziey7qn7u&st=uso3f85u&dl=1",
-      "note": "Install Glazed alongside Meteor Client for full compatibility.",
+      "icon": "meteor",
+      "accent": "167, 139, 250",
       "featured": false,
+      "new": false,
       "openSource": true,
-      "updating": false
+      "updating": false,
+      "badges": [
+        "Flagship"
+      ],
+      "description": "The main client. Full feature set, and the base everything else here is built around.",
+      "features": [],
+      "note": "Install Glazed alongside Meteor Client for full compatibility.",
+      "mc": "1.21.11",
+      "file": "meteor-client-1.21.11-81.jar",
+      "url": "https://www.dropbox.com/scl/fi/ax6maw2kvllba3r9j7a7y/meteor-client-1.21.11-81.jar?rlkey=sip03dt7k66tujsoziey7qn7u&st=uso3f85u&dl=1"
     },
     {
       "id": "glazed",
       "name": "Glazed",
-      "description": "Built to run with Meteor Client. Changelog and setup notes are posted in the Discord.",
-      "badges": ["Pairs with Meteor"],
-      "icon": "glazed",
-      "accent": "#2dd4bf",
       "category": "Clients",
-      "mc": "1.21.11",
-      "url": "https://www.dropbox.com/scl/fi/yz4hsqtvywh6dlm02gxhm/glazed-1.21.11-v19.jar?rlkey=e8k75doltynjky510i5foi1ic&st=dsac869b&dl=1",
-      "note": "Requires Meteor Client to work.",
+      "icon": "glazed",
+      "accent": "56, 189, 248",
       "featured": false,
+      "new": false,
       "openSource": false,
-      "updating": false
+      "updating": false,
+      "badges": [
+        "Pairs with Meteor"
+      ],
+      "description": "Built to run with Meteor Client. Changelog and setup notes are posted in the Discord.",
+      "features": [],
+      "note": "Requires Meteor Client to work.",
+      "mc": "1.21.11",
+      "file": "glazed-1.21.11-v19.jar",
+      "url": "https://www.dropbox.com/scl/fi/yz4hsqtvywh6dlm02gxhm/glazed-1.21.11-v19.jar?rlkey=e8k75doltynjky510i5foi1ic&st=dsac869b&dl=1"
     },
     {
       "id": "rig-master",
       "name": "Rig Master",
-      "description": "Join the Discord for the full breakdown — details, changelog and support all live there.",
-      "badges": [],
-      "icon": "rig",
-      "accent": "#a3e635",
       "category": "Utility",
-      "mc": "1.21.11",
-      "url": "https://www.dropbox.com/scl/fi/fdpmxw7pflp3jlc7d1cr0/Rigmaster-1.21.11-v3.jar?rlkey=djrj0mpd18972i6rjxy5n0g91&st=vf81p97f&dl=1",
-      "note": "",
+      "icon": "rig",
+      "accent": "251, 113, 133",
       "featured": false,
+      "new": false,
       "openSource": false,
-      "updating": false
+      "updating": false,
+      "badges": [],
+      "description": "Join the Discord for the full breakdown — details, changelog and support all live there.",
+      "features": [],
+      "note": "",
+      "mc": "1.21.11",
+      "file": "Rigmaster-1.21.11-v3.jar",
+      "url": "https://www.dropbox.com/scl/fi/fdpmxw7pflp3jlc7d1cr0/Rigmaster-1.21.11-v3.jar?rlkey=djrj0mpd18972i6rjxy5n0g91&st=vf81p97f&dl=1"
     },
     {
       "id": "tpa-macro-v2",
       "name": "Tpa Macro V2",
-      "description": "The latest version. Rundown and support are posted in the Discord.",
-      "badges": ["V2"],
-      "icon": "tpa",
-      "accent": "#4ade80",
       "category": "Macros",
-      "mc": "1.21.11",
-      "url": "https://www.dropbox.com/scl/fi/ulic244mj2yqvvvx3o5vt/Tpamacro-1.21.11-v1.jar?rlkey=85gtrjpvulhgsd728tcmcm9t1&st=9cljpe86&dl=1",
-      "note": "",
+      "icon": "tpa",
+      "accent": "45, 212, 191",
       "featured": false,
+      "new": false,
       "openSource": false,
-      "updating": false
+      "updating": false,
+      "badges": [
+        "V2"
+      ],
+      "description": "The latest version. Rundown and support are posted in the Discord.",
+      "features": [],
+      "note": "",
+      "mc": "1.21.11",
+      "file": "Tpamacro-1.21.11-v1.jar",
+      "url": "https://www.dropbox.com/scl/fi/ulic244mj2yqvvvx3o5vt/Tpamacro-1.21.11-v1.jar?rlkey=85gtrjpvulhgsd728tcmcm9t1&st=9cljpe86&dl=1"
     }
   ]
 }

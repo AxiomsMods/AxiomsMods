@@ -1,605 +1,728 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="emerald">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<title>Admin — Axiom Mods</title>
 <meta name="theme-color" content="#000000">
-<title>Axiom Admin</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cg%20stroke%3D%22%23000%22%20stroke-opacity%3D%22.35%22%20stroke-width%3D%22.7%22%20stroke-linejoin%3D%22round%22%3E%3Cpolygon%20points%3D%224%2C24%2016%2C10%2022%2C24%22%20fill%3D%22%2314532d%22%2F%3E%3Cpolygon%20points%3D%2216%2C10%2032%2C10%2022%2C24%22%20fill%3D%22%2322c55e%22%2F%3E%3Cpolygon%20points%3D%2232%2C10%2042%2C24%2022%2C24%22%20fill%3D%22%238ff0b4%22%2F%3E%3Cpolygon%20points%3D%2232%2C10%2048%2C10%2042%2C24%22%20fill%3D%22%234ade80%22%2F%3E%3Cpolygon%20points%3D%2248%2C10%2060%2C24%2042%2C24%22%20fill%3D%22%2316a34a%22%2F%3E%3Cpolygon%20points%3D%224%2C24%2022%2C24%2032%2C56%22%20fill%3D%22%2315803d%22%2F%3E%3Cpolygon%20points%3D%2222%2C24%2032%2C24%2032%2C56%22%20fill%3D%22%2322c55e%22%2F%3E%3Cpolygon%20points%3D%2232%2C24%2042%2C24%2032%2C56%22%20fill%3D%22%230f6a33%22%2F%3E%3Cpolygon%20points%3D%2242%2C24%2060%2C24%2032%2C56%22%20fill%3D%22%230d4a25%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <style>
-:root{--bg:#000;--ink:#e8f4ec;--ink-2:#9ab2a5;--ink-3:#72897c;--em:#23c55e;--em-deep:#15803d;--mint:#8ff0b4;--moss:#0d3a1d;--panel:#050d08;--line:rgba(143,240,180,.13);--line-2:rgba(143,240,180,.24);--warn:#f2c14e;--bad:#ff6b7a;--ease:cubic-bezier(.22,.8,.24,1);
---f:"Instrument Sans","Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;--fm:ui-monospace,"JetBrains Mono","SF Mono",Menlo,Consolas,monospace}
-:root[data-theme=mint]{--em:#4ade80;--em-deep:#22c55e;--mint:#c3f8d5;--moss:#14532d}
-:root[data-theme=moss]{--em:#1ea852;--em-deep:#166534;--mint:#7fc995;--moss:#0a2e16}
-:root[data-theme=jade]{--em:#10b981;--em-deep:#047857;--mint:#6ee7b7;--moss:#064e3b}
-*{box-sizing:border-box}
-body{margin:0;background:#000;color:var(--ink);font:400 15px/1.55 var(--f);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;background:radial-gradient(60% 40% at 0 100%,color-mix(in srgb,var(--moss) 80%,transparent),transparent 70%);pointer-events:none;z-index:0}
-[hidden]{display:none!important}
-h1,h2,h3,p{margin:0}
-button,input,select,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--mint);outline-offset:2px;border-radius:8px}
-a{color:var(--mint)}
-.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 20px 80px}
-.logo{width:34px;height:34px;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--em) 40%,transparent))}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-2);background:rgba(255,255,255,.02);border-radius:12px;padding:10px 16px;cursor:pointer;font-weight:600;transition:transform .25s var(--ease),border-color .25s,background .25s,box-shadow .25s}
-.btn:hover:not(:disabled){transform:translateY(-1px);border-color:color-mix(in srgb,var(--em) 60%,transparent);background:color-mix(in srgb,var(--em) 10%,transparent)}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.btn.primary{background:linear-gradient(135deg,var(--mint),var(--em) 60%,var(--em-deep));color:#02150a;border-color:transparent;box-shadow:0 8px 24px -8px color-mix(in srgb,var(--em) 60%,transparent)}
-.btn.primary:hover:not(:disabled){background:linear-gradient(135deg,#fff,var(--mint) 50%,var(--em))}
-.btn.danger:hover:not(:disabled){border-color:var(--bad);background:rgba(255,107,122,.1);color:#ffd0d5}
-.btn.sm{padding:7px 11px;font-size:13px;border-radius:10px}
-.btn.icon{padding:7px 9px}
-label.f{display:grid;gap:6px;font-size:13px;color:var(--ink-2);font-weight:500}
-input[type=text],input[type=url],input[type=password],select,textarea{width:100%;background:#020805;border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;color:var(--ink);transition:border-color .2s,box-shadow .2s}
-textarea{resize:vertical;min-height:76px}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--em);box-shadow:0 0 0 3px color-mix(in srgb,var(--em) 22%,transparent)}
-input.bad{border-color:var(--bad)}
-.hint{font-size:12.5px;color:var(--ink-3)}
-.card{background:linear-gradient(165deg,#061109,#010402);border:1px solid var(--line);border-radius:18px;padding:22px}
+  body { min-height: 100vh; background: radial-gradient(ellipse 90% 60% at 20% -10%, rgba(34,197,94,.08), transparent 60%), var(--void); }
+  .a-bar { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--line); background: rgba(0,0,0,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .a-bar .bar-in { max-width: 1120px; margin: 0 auto; padding: 12px 22px; display: flex; align-items: center; gap: 14px; }
+  .a-brand { display: flex; align-items: center; gap: 11px; font-family: var(--f-display); font-weight: 800; font-size: 1.05rem; }
+  .a-brand svg { width: 32px; height: 32px; filter: drop-shadow(0 0 12px rgba(34,197,94,.5)); }
+  .a-pill { font-family: var(--f-mono); font-size: .7rem; padding: 3px 9px; border-radius: 99px; color: var(--mint); border: 1px solid rgba(34,197,94,.35); background: rgba(34,197,94,.1); }
+  .a-bar .sp { flex: 1; }
+  .a-who { display: inline-flex; align-items: center; gap: 8px; font-size: .84rem; color: var(--mute); }
+  .a-who .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 8px var(--mint); }
 
-/* login */
-.login{min-height:100vh;display:grid;place-items:center;padding:30px 0}
-.login .card{width:min(460px,100%);display:grid;gap:16px}
-.login h1{font-size:26px;letter-spacing:-.02em;display:flex;gap:12px;align-items:center}
-.login .row{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-.chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-2)}
-.chk input{margin-top:3px;accent-color:var(--em)}
-.err{color:#ffd0d5;background:rgba(255,107,122,.1);border:1px solid rgba(255,107,122,.4);padding:10px 12px;border-radius:10px;font-size:14px}
+  .a-main { max-width: 1120px; margin: 0 auto; padding: 34px 22px 150px; }
 
-/* app */
-.top{position:sticky;top:0;z-index:30;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -20px 24px;padding:12px 20px}
-.top-in{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.top h1{font-size:18px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
-.sp{flex:1}
-.who{color:var(--ink-3);font-size:13px}
-.state{font:500 12px var(--fm);color:var(--ink-3);display:flex;gap:7px;align-items:center}
-.state i{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
-.state.dirty{color:var(--warn)}.state.dirty i{background:var(--warn);box-shadow:0 0 10px var(--warn)}
-.tabs{display:flex;gap:6px;margin-top:12px}
-.tab{border:0;background:transparent;padding:9px 16px;border-radius:999px;color:var(--ink-2);font-weight:600;cursor:pointer;transition:background .2s,color .2s}
-.tab:hover{color:#fff}
-.tab[aria-selected=true]{background:color-mix(in srgb,var(--em) 18%,transparent);color:#fff;box-shadow:inset 0 0 0 1px var(--line-2)}
-.banner{margin-bottom:18px;padding:12px 14px;border-radius:12px;border:1px solid var(--line-2);background:color-mix(in srgb,var(--em) 10%,#000)}
-.banner.bad{border-color:rgba(255,107,122,.5);background:rgba(255,107,122,.1);color:#ffd0d5}
+  /* Login */
+  .login { max-width: 540px; margin: 30px auto 0; padding: 32px; border-radius: 24px; border: 1px solid var(--line-2); background: rgba(5,12,8,.9); }
+  .login h1 { font-family: var(--f-display); font-size: 1.8rem; letter-spacing: -.02em; margin-bottom: 6px; }
+  .login > p { color: var(--mute); margin-bottom: 22px; }
+  .help { margin-top: 20px; padding: 16px 18px; border-radius: 16px; border: 1px solid var(--line); background: rgba(255,255,255,.02); font-size: .88rem; color: var(--mute); }
+  .help ol { list-style: decimal; padding-left: 20px; margin-top: 8px; display: grid; gap: 4px; }
+  .help a { color: var(--mint); font-weight: 700; }
+  .help b { color: var(--bone); }
+  .err { min-height: 1.4em; margin-top: 12px; color: var(--red); font-size: .9rem; font-weight: 600; }
+  details.more { margin: 4px 0 14px; }
+  details.more summary { cursor: pointer; color: var(--mute); font-size: .88rem; font-weight: 600; }
 
-/* mods */
-.mods{display:grid;gap:12px}
-.mod{border:1px solid var(--line);border-radius:16px;background:linear-gradient(165deg,#061109,#010402);transition:border-color .25s}
-.mod[open]{border-color:var(--line-2)}
-.mod>summary{list-style:none;display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;border-radius:16px}
-.mod>summary::-webkit-details-marker{display:none}
-.tile{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:none;color:#02150a}
-.tile svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.mod .t{min-width:0;flex:1}
-.mod .t b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mod .t span{font-size:12.5px;color:var(--ink-3)}
-.tag{font:600 10px var(--fm);letter-spacing:.12em;text-transform:uppercase;padding:4px 7px;border-radius:6px;border:1px solid var(--line-2);color:var(--mint);margin-left:6px}
-.tag.warn{color:var(--warn);border-color:rgba(242,193,78,.4)}
-.mod-body{padding:6px 16px 18px;display:grid;gap:14px;border-top:1px solid var(--line)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.color{display:flex;gap:8px}.color input[type=color]{width:46px;padding:2px;height:42px;flex:none;background:#020805;border:1px solid var(--line-2);border-radius:10px}
-.switches{display:flex;gap:10px;flex-wrap:wrap}
-.sw{display:flex;align-items:center;gap:10px;padding:9px 14px;border:1px solid var(--line);border-radius:12px;cursor:pointer;font-weight:500;user-select:none;transition:border-color .2s,background .2s}
-.sw:hover{border-color:var(--line-2)}
-.sw input{position:absolute;opacity:0;pointer-events:none}
-.sw i{width:36px;height:20px;border-radius:99px;background:#16231b;position:relative;transition:background .25s;flex:none}
-.sw i::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#7a9084;transition:transform .25s var(--ease),background .25s}
-.sw input:checked+i{background:var(--em-deep)}
-.sw input:checked+i::after{transform:translateX(16px);background:#fff}
-.sw input:focus-visible+i{outline:2px solid var(--mint);outline-offset:2px}
-.sw.on{border-color:color-mix(in srgb,var(--em) 45%,transparent);background:color-mix(in srgb,var(--em) 7%,transparent)}
-.sw.upd.on{border-color:rgba(242,193,78,.5);background:rgba(242,193,78,.08)}
-.sw.upd input:checked+i{background:#a8801f}
-.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.add{margin-top:14px;width:100%;border-style:dashed;padding:14px}
+  /* Forms */
+  .field { display: grid; gap: 6px; margin-bottom: 14px; }
+  .field > span { font-size: .8rem; font-weight: 700; color: var(--mute); }
+  .field small { color: var(--faint); font-size: .8rem; }
+  .in, .ta, .sel {
+    width: 100%; font: inherit; font-size: .94rem; color: var(--bone);
+    background: rgba(255,255,255,.035); border: 1px solid var(--line-2); border-radius: 11px; padding: 10px 12px;
+    transition: border-color .2s, background .2s;
+  }
+  .ta { min-height: 86px; resize: vertical; line-height: 1.55; }
+  .sel { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: none; }
+  .in:focus, .ta:focus, .sel:focus { outline: none; border-color: rgba(34,197,94,.7); background: rgba(34,197,94,.06); }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; }
+  .check { display: flex; align-items: center; gap: 10px; font-size: .92rem; color: var(--mute); cursor: pointer; }
+  .check input { width: 18px; height: 18px; accent-color: var(--emerald); }
+  .with-btn { display: flex; gap: 8px; }
+  .with-btn .in { flex: 1; min-width: 0; }
 
-/* site */
-.stack{display:grid;gap:18px}
-.themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.theme{border:1px solid var(--line);border-radius:14px;padding:12px;cursor:pointer;display:grid;gap:8px;background:#020805;text-align:left;transition:border-color .2s,transform .2s}
-.theme:hover{transform:translateY(-2px)}
-.theme[aria-pressed=true]{border-color:var(--em);box-shadow:0 0 0 3px color-mix(in srgb,var(--em) 20%,transparent)}
-.sw-row{display:flex;gap:4px}.sw-row i{flex:1;height:22px;border-radius:6px}
+  /* App layout */
+  .app { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: start; }
+  .side { position: sticky; top: 82px; display: grid; gap: 4px; padding: 10px; border-radius: 18px; border: 1px solid var(--line); background: rgba(5,12,8,.8); }
+  .side button { display: flex; align-items: center; gap: 11px; padding: 11px 12px; border-radius: 12px; color: var(--mute); font-weight: 600; text-align: left; }
+  .side button:hover { color: var(--bone); background: rgba(255,255,255,.035); }
+  .side button.on { color: #fff; background: rgba(34,197,94,.13); }
+  .side button.on .ic { color: var(--mint); }
+  .side .ic { width: 18px; height: 18px; }
+  .pane-h { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .pane-h h2 { font-family: var(--f-display); font-size: 1.6rem; letter-spacing: -.02em; }
+  .pane-h p { color: var(--mute); font-size: .92rem; margin-top: 4px; }
+  .box { padding: 22px; border-radius: 18px; border: 1px solid var(--line); background: rgba(5,12,8,.8); }
 
-/* activity */
-.log{display:grid;gap:8px;list-style:none;margin:0;padding:0}
-.log li{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#020805}
-.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;font-weight:700;background:linear-gradient(145deg,var(--mint),var(--em));color:#02150a}
-.log .m{min-width:0;flex:1}.log .m b{font-weight:600;word-break:break-word}
-.log .m span{display:block;font-size:12.5px;color:var(--ink-3)}
-.log a{font:500 12px var(--fm);text-decoration:none;color:var(--ink-3)}.log a:hover{color:var(--mint)}
+  /* Mod rows */
+  .mods { display: grid; gap: 10px; }
+  .mod { --acc: 34, 197, 94; border-radius: 18px; border: 1px solid var(--line); background: rgba(5,12,8,.85); transition: border-color .3s; }
+  .mod.open { border-color: rgba(var(--acc), .35); }
+  .mod-h { display: flex; align-items: center; gap: 14px; padding: 14px 16px; cursor: pointer; }
+  .mod-h .tile { width: 42px; height: 42px; border-radius: 12px; }
+  .mod-h .tile svg { width: 22px; height: 22px; }
+  .mod-t { min-width: 0; flex: 1; }
+  .mod-t b { display: block; font-family: var(--f-display); font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mod-t small { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 3px; font-size: .78rem; color: var(--faint); }
+  .chip { padding: 1px 8px; border-radius: 99px; border: 1px solid var(--line-2); font-weight: 700; }
+  .chip.g { color: var(--mint); border-color: rgba(34,197,94,.35); }
+  .chip.a { color: var(--amber); border-color: rgba(245,184,61,.4); }
+  .chip.r { color: var(--red); border-color: rgba(251,113,133,.4); }
+  .ib { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; color: var(--mute); border: 1px solid transparent; }
+  .ib:hover:not(:disabled) { color: var(--bone); background: rgba(255,255,255,.05); border-color: var(--line); }
+  .ib:disabled { opacity: .3; cursor: default; }
+  .ib .ic { width: 17px; height: 17px; }
+  .ib.chev .ic { transition: transform .35s var(--ease); }
+  .mod.open .ib.chev .ic { transform: rotate(180deg); }
+  .mod-b { display: none; padding: 4px 18px 20px; border-top: 1px solid var(--line); }
+  .mod.open .mod-b { display: block; }
 
-.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,30px);opacity:0;z-index:99;background:#06150b;border:1px solid var(--line-2);padding:12px 18px;border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.7);transition:.4s var(--ease);max-width:calc(100% - 32px)}
-.toast.show{transform:translate(-50%,0);opacity:1}
-.toast.bad{border-color:var(--bad)}
-@media(max-width:700px){.g2,.g3{grid-template-columns:1fr}.login .row{grid-template-columns:1fr}.top h1{font-size:15px}.mod>summary .tag{display:none}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  .switches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0 18px; }
+  .sw { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border-radius: 13px; border: 1px solid var(--line); cursor: pointer; transition: border-color .25s, background .25s; }
+  .sw:has(input:checked) { border-color: rgba(34,197,94,.4); background: rgba(34,197,94,.07); }
+  .sw.warn:has(input:checked) { border-color: rgba(245,184,61,.45); background: rgba(245,184,61,.07); }
+  .sw input { position: absolute; opacity: 0; pointer-events: none; }
+  .sw i { position: relative; flex: none; width: 34px; height: 20px; margin-top: 1px; border-radius: 99px; background: #1b2a22; transition: background .25s; }
+  .sw i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #5d776b; transition: transform .3s var(--ease), background .25s; }
+  .sw input:checked + i { background: rgba(34,197,94,.55); }
+  .sw.warn input:checked + i { background: rgba(245,184,61,.55); }
+  .sw input:checked + i::after { transform: translateX(14px); background: #fff; }
+  .sw input:focus-visible + i { outline: 2px solid var(--mint); outline-offset: 2px; }
+  .sw b { display: block; font-size: .88rem; }
+  .sw small { display: block; font-size: .74rem; color: var(--faint); line-height: 1.4; margin-top: 2px; }
+
+  .icons { display: flex; flex-wrap: wrap; gap: 6px; }
+  .icons label { cursor: pointer; }
+  .icons input { position: absolute; opacity: 0; pointer-events: none; }
+  .icons span { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 11px; border: 1px solid var(--line); color: var(--mute); transition: all .2s; }
+  .icons span svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .icons label:hover span { color: var(--bone); border-color: var(--line-2); }
+  .icons input:checked + span { color: rgb(var(--acc)); border-color: rgba(var(--acc), .6); background: rgba(var(--acc), .12); }
+  .icons input:focus-visible + span { outline: 2px solid var(--mint); outline-offset: 2px; }
+  .colors { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .colors button { width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(255,255,255,.12); }
+  .colors button.on { border-color: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,.2); }
+  .colors input[type=color] { width: 40px; height: 32px; border: 1px solid var(--line-2); border-radius: 9px; background: none; padding: 2px; cursor: pointer; }
+  .mod-del { margin-top: 6px; color: var(--red); border-color: rgba(251,113,133,.3); }
+  .mod-del:hover { background: rgba(251,113,133,.1) !important; border-color: rgba(251,113,133,.6) !important; }
+
+  /* Announcement preview */
+  .preview { margin-bottom: 18px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+  .preview .announce { margin: 0; }
+
+  /* Activity */
+  .acts { display: grid; gap: 8px; }
+  .act { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: rgba(5,12,8,.8); }
+  .act .av { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; flex: none; font-weight: 800; font-size: .86rem; color: #03160b; background: linear-gradient(135deg, var(--mint), var(--emerald)); }
+  .act b { display: block; font-size: .93rem; font-weight: 600; }
+  .act small { color: var(--faint); font-size: .8rem; }
+
+  /* Publish bar */
+  .pub { position: fixed; left: 50%; bottom: 20px; z-index: 60; transform: translate(-50%, 160%); transition: transform .5s var(--ease);
+    display: flex; align-items: center; gap: 14px; padding: 10px 10px 10px 18px; border-radius: 18px; max-width: calc(100% - 32px);
+    background: rgba(8,18,13,.96); border: 1px solid rgba(34,197,94,.35); box-shadow: 0 24px 60px -20px rgba(0,0,0,.9), 0 0 40px -18px rgba(34,197,94,.7); }
+  .pub.show { transform: translate(-50%, 0); }
+  .pub span { font-size: .9rem; font-weight: 600; white-space: nowrap; }
+  .pub .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--amber); margin-right: 8px; box-shadow: 0 0 8px var(--amber); }
+  .log { margin-top: 18px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: rgba(5,12,8,.9); font-size: .88rem; display: grid; gap: 4px; }
+  .log .ok { color: var(--mint); } .log .bad { color: var(--red); }
+  .log a { color: var(--mint); font-weight: 700; text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .side { position: static; display: flex; overflow-x: auto; }
+    .side button { white-space: nowrap; }
+    .switches { grid-template-columns: 1fr 1fr; }
+    .row2, .row3 { grid-template-columns: 1fr; }
+    .a-who { display: none; }
+    .pub span.txt { display: none; }
+  }
 </style>
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <!-- Brand -->
+  <symbol id="logo" viewBox="0 0 64 64">
+    <polygon points="4,24 20,8 26,24" fill="#6ee7b7"/>
+    <polygon points="20,8 44,8 38,24 26,24" fill="#bbf7d0"/>
+    <polygon points="44,8 60,24 38,24" fill="#34d399"/>
+    <polygon points="4,24 26,24 32,58" fill="#15803d"/>
+    <polygon points="26,24 38,24 32,58" fill="#22c55e"/>
+    <polygon points="38,24 60,24 32,58" fill="#0a5c33"/>
+    <polygon points="22,10 30,10 27.5,22 24,22" fill="#fff" fill-opacity=".55"/>
+    <polygon points="27,26 31,26 31.6,44" fill="#fff" fill-opacity=".28"/>
+    <polygon points="4,24 20,8 44,8 60,24 32,58" fill="none" stroke="#eafff3" stroke-opacity=".35" stroke-width="1" stroke-linejoin="round"/>
+  </symbol>
 
-<!-- ============ Login ============ -->
-<div class="wrap" id="loginView">
-  <div class="login">
-    <form class="card" id="loginForm" autocomplete="off">
-      <h1><svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#000" stroke-opacity=".35" stroke-width=".7" stroke-linejoin="round"><polygon points="4,24 16,10 22,24" fill="#14532d"/><polygon points="16,10 32,10 22,24" fill="#22c55e"/><polygon points="32,10 42,24 22,24" fill="#8ff0b4"/><polygon points="32,10 48,10 42,24" fill="#4ade80"/><polygon points="48,10 60,24 42,24" fill="#16a34a"/><polygon points="4,24 22,24 32,56" fill="#15803d"/><polygon points="22,24 32,24 32,56" fill="#22c55e"/><polygon points="32,24 42,24 32,56" fill="#0f6a33"/><polygon points="42,24 60,24 32,56" fill="#0d4a25"/></g></svg>Axiom admin</h1>
-      <p class="hint">Edits <code>site-data.json</code> in your GitHub repo. Use a fine-grained token limited to this one repo with <b>Contents: Read and write</b>. <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Create one</a>.</p>
-      <div class="err" id="loginErr" role="alert" hidden></div>
-      <label class="f">Access token<input type="password" id="lToken" required spellcheck="false" autocapitalize="off" placeholder="github_pat_…"></label>
-      <div class="row">
-        <label class="f">Repository<input type="text" id="lRepo" required spellcheck="false" autocapitalize="off" placeholder="owner/repo"></label>
-        <label class="f">Branch<input type="text" id="lBranch" value="main" required spellcheck="false" autocapitalize="off"></label>
-      </div>
-      <label class="f">Your name <span class="hint">— goes on every commit, e.g. “… — by k35c”</span><input type="text" id="lName" required maxlength="40" placeholder="k35c"></label>
-      <label class="chk"><input type="checkbox" id="lRemember" checked><span>Keep me signed in on this device. <span class="hint">Unticked, the token is forgotten when you close the tab.</span></span></label>
-      <button class="btn primary" type="submit" id="lGo">Log in</button>
-    </form>
+  <!-- UI -->
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5"/><path d="M4.5 16v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5V16"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.6c0 4.5 3.2 8.2 7.5 9.4 4.3-1.2 7.5-4.9 7.5-9.4V6Z"/><path d="m9 12 2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 4.2 2.8 17.5A2 2 0 0 0 4.5 20.5h15a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0Z"/><path d="M12 9.5v4.2M12 17h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.5 7 3.5 12l5 5M15.5 7l5 5-5 5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6.5 9.5 5.5 5.5 5.5-5.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5m0 0-6 6m6-6 6 6"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></symbol>
+  <symbol id="i-clients" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="12" rx="2.2"/><path d="M8.5 20h7M12 16.5V20"/><path d="m8 10 2 1.6L8 13.2M12.5 13.2h3.5"/></symbol>
+  <symbol id="i-utility" viewBox="0 0 24 24"><path d="M14.6 6.3a4 4 0 0 0-5.3 5.3L4 16.9 7.1 20l5.3-5.3a4 4 0 0 0 5.3-5.3l-2.5 2.5-2.6-.5-.5-2.6Z"/></symbol>
+  <symbol id="i-macros" viewBox="0 0 24 24"><path d="M3.5 12h4l2.5-6 4 12 2.5-6h4"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5 13.8 10.2 20.5 12l-6.7 1.8L12 20.5l-1.8-6.7L3.5 12l6.7-1.8Z"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.5 12.3V4.5a1 1 0 0 1 1-1h7.8l8.2 8.2a1.4 1.4 0 0 1 0 2l-6.6 6.6a1.4 1.4 0 0 1-2 0Z"/><circle cx="8" cy="8" r="1.4"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.5 7a2 2 0 0 1 2-2h4l2 2.4h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2Z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4.5h11.5A2.5 2.5 0 0 1 19 7v13H7.5A2.5 2.5 0 0 1 5 17.5Z"/><path d="M5 17.5A2.5 2.5 0 0 1 7.5 15H19"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.2 1-1.2 1.8v.5M12 17h.01"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5Z"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4.5h5.5V10M19.5 4.5 11 13"/><path d="M17 13.5v4.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 5 18V9a1.5 1.5 0 0 1 1.5-1.5H11"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 12.5h9l1-12.5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3.5 4.5V9H8M12 8v4.5l3 1.8"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14.5 4.5h3a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-3M10 16l4-4-4-4M14 12H4.5"/></symbol>
+  <symbol id="b-discord" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M20.3 4.4a19.8 19.8 0 0 0-4.9-1.5l-.6 1.2a18.3 18.3 0 0 0-5.5 0L8.7 2.9a19.7 19.7 0 0 0-4.9 1.5C.7 9-.2 13.6.2 18.1a19.9 19.9 0 0 0 6 3c.5-.6.9-1.3 1.2-2a13 13 0 0 1-1.9-.9l.4-.3a14.2 14.2 0 0 0 12.1 0l.4.3c-.6.4-1.2.7-1.9.9.4.7.8 1.4 1.3 2a19.8 19.8 0 0 0 6-3c.5-5.2-.9-9.7-3.5-13.7ZM8 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></symbol>
+
+  <!-- Mod icons -->
+  <symbol id="m-spawner" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M3.5 9h17M3.5 15h17M9 3.5v17M15 3.5v17"/><path fill="currentColor" fill-opacity=".5" stroke="none" d="M12 9.6c1.4 1.2 1.9 2.2 1.9 3a1.9 1.9 0 0 1-3.8 0c0-.8.5-1.8 1.9-3Z"/></symbol>
+  <symbol id="m-meteor" viewBox="0 0 24 24"><circle cx="15.5" cy="15.5" r="4.2"/><path d="M3.5 3.5 12.3 12.3M6.5 3.8 13.2 10.5M3.8 6.5l6.7 6.7"/><circle cx="16.5" cy="14.5" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="m-glazed" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="3"/><path d="M8.2 6.9l.6 1M15.4 7.4l-.4 1M17.2 13.5l-1-.3M7.3 15.6l.9-.6M12.6 17.8v-1"/></symbol>
+  <symbol id="m-rig" viewBox="0 0 24 24"><path d="M4.5 19.5 13 11"/><path d="M11.5 4.5c3 0 5.5 1.2 7.5 3.5-2.4-.5-4.6-.2-6.5 1L10 6.5c.4-.9.9-1.5 1.5-2Z"/><circle cx="17" cy="17" r="2.6"/><path d="M17 13.4v1M17 19.6v1M20.6 17h-1M14.4 17h-1"/></symbol>
+  <symbol id="m-tpa" viewBox="0 0 24 24"><path d="M4 8h13m0 0-3.5-3.5M17 8l-3.5 3.5"/><path d="M20 16H7m0 0 3.5-3.5M7 16l3.5 3.5"/></symbol>
+  <symbol id="m-sword" viewBox="0 0 24 24"><path d="M14.5 3.5h6v6L10 20l-2-2Z"/><path d="m5 15 4 4M3.5 20.5 6 18"/></symbol>
+  <symbol id="m-pickaxe" viewBox="0 0 24 24"><path d="M4 9.5C7.5 5.2 12.8 3.5 18 4.5c.9 4.9-.8 10.3-5 13.5"/><path d="M14 10 4.5 19.5"/></symbol>
+  <symbol id="m-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.6c0 4.5 3.2 8.2 7.5 9.4 4.3-1.2 7.5-4.9 7.5-9.4V6Z"/><path d="M12 3v18"/></symbol>
+  <symbol id="m-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="m-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8Z"/></symbol>
+  <symbol id="m-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></symbol>
+  <symbol id="m-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5h6.5l-1 8 8.5-11h-6.5Z"/></symbol>
+  <symbol id="m-map" viewBox="0 0 24 24"><path d="m3.5 6 5.5-2.5 6 2.5 5.5-2.5v14.5L15 20.5l-6-2.5-5.5 2.5Z"/><path d="M9 3.5v14.5M15 6v14.5"/></symbol>
+  <symbol id="m-crystal" viewBox="0 0 24 24"><path d="M12 2.5 18 9l-6 12.5L6 9Z"/><path d="M6 9h12M12 2.5 9.5 9 12 21.5 14.5 9Z"/></symbol>
+  <symbol id="m-potion" viewBox="0 0 24 24"><path d="M9.5 3.5h5M10.5 3.5v5L5.6 16.6A2.6 2.6 0 0 0 7.8 20.5h8.4a2.6 2.6 0 0 0 2.2-3.9L13.5 8.5v-5"/><path d="M7.4 14.5h9.2"/></symbol>
+  <symbol id="m-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m15.5 8.5-2 5-5 2 2-5Z"/></symbol>
+  <symbol id="m-chest" viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="13" rx="1.6"/><path d="M3.5 11h17M10.5 9.5h3v3.5h-3Z"/></symbol>
+</svg>
+
+<header class="a-bar">
+  <div class="bar-in">
+    <a class="a-brand" href="index.html"><svg><use href="#logo"/></svg>Axiom Mods</a>
+    <span class="a-pill">Admin</span>
+    <span class="sp"></span>
+    <span class="a-who hidden" id="who"><span class="dot"></span><span id="who-text"></span></span>
+    <a class="btn btn-line btn-sm" id="view-site" href="index.html" target="_blank" rel="noopener"><svg class="ic"><use href="#i-ext"/></svg>View site</a>
+    <button class="btn btn-line btn-sm hidden" id="logout"><svg class="ic"><use href="#i-logout"/></svg>Sign out</button>
   </div>
-</div>
+</header>
 
-<!-- ============ App ============ -->
-<div class="wrap" id="appView" hidden>
-  <header class="top">
-    <div class="top-in">
-      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><g stroke="#000" stroke-opacity=".35" stroke-width=".7" stroke-linejoin="round"><polygon points="4,24 16,10 22,24" fill="#14532d"/><polygon points="16,10 32,10 22,24" fill="#22c55e"/><polygon points="32,10 42,24 22,24" fill="#8ff0b4"/><polygon points="32,10 48,10 42,24" fill="#4ade80"/><polygon points="48,10 60,24 42,24" fill="#16a34a"/><polygon points="4,24 22,24 32,56" fill="#15803d"/><polygon points="22,24 32,24 32,56" fill="#22c55e"/><polygon points="32,24 42,24 32,56" fill="#0f6a33"/><polygon points="42,24 60,24 32,56" fill="#0d4a25"/></g></svg>
-      <h1>Axiom admin</h1>
-      <span class="who" id="who"></span>
-      <span class="sp"></span>
-      <span class="state" id="state"><i></i><span>No changes</span></span>
-      <button class="btn" id="reload" type="button">Reload</button>
-      <button class="btn primary" id="publish" type="button" disabled>Publish</button>
-      <button class="btn" id="logout" type="button">Log out</button>
+<main class="a-main">
+  <!-- Login -->
+  <section class="login hidden" id="login">
+    <h1>Sign in</h1>
+    <p>Edit the mods, download links and announcement on your site. Nothing changes until you press Publish.</p>
+    <form id="login-form" autocomplete="off">
+      <div class="row2">
+        <label class="field"><span>GitHub account</span><input class="in" id="owner" required spellcheck="false" placeholder="your-github-name"></label>
+        <label class="field"><span>Repository</span><input class="in" id="repo" required spellcheck="false" placeholder="axiom-mods"></label>
+      </div>
+      <details class="more"><summary>Branch (usually main)</summary>
+        <label class="field" style="margin-top:10px"><span>Branch</span><input class="in" id="branch" spellcheck="false" value="main"></label>
+      </details>
+      <label class="field"><span>Access token</span><input class="in" id="token" type="password" required spellcheck="false" placeholder="github_pat_…"></label>
+      <label class="field"><span>Your name for the activity log</span><input class="in" id="name" maxlength="30" placeholder="e.g. Jimmy"></label>
+      <label class="check" style="margin:4px 0 18px"><input type="checkbox" id="remember" checked> Keep me signed in on this device</label>
+      <button class="btn btn-solid" id="login-btn" type="submit" style="width:100%">Sign in</button>
+      <p class="err" id="login-err" role="alert"></p>
+    </form>
+    <div class="help">
+      <b>Need a token?</b> It takes a minute:
+      <ol>
+        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → New fine-grained token</a>.</li>
+        <li>Name it <b>Axiom admin</b> and pick an expiry.</li>
+        <li>Repository access: <b>Only select repositories</b> → choose your site's repo.</li>
+        <li>Permissions → Repository → <b>Contents: Read and write</b>.</li>
+        <li>Press <b>Generate token</b>, copy it, and paste it above.</li>
+      </ol>
+      <p style="margin-top:10px">The token stays in this browser only. Never share it — anyone with it can edit your site.</p>
     </div>
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" data-tab="mods" aria-selected="true">Mods</button>
-      <button class="tab" role="tab" data-tab="site" aria-selected="false">Site</button>
-      <button class="tab" role="tab" data-tab="activity" aria-selected="false">Activity</button>
-    </div>
-  </header>
-
-  <div class="banner bad" id="appErr" role="alert" hidden></div>
-
-  <section id="p-mods" role="tabpanel">
-    <div class="mods" id="mods"></div>
-    <button class="btn add" id="addMod" type="button">+ Add a mod</button>
   </section>
 
-  <section id="p-site" role="tabpanel" hidden>
-    <div class="stack">
-      <div class="card stack">
-        <h2>Announcement bar</h2>
-        <div class="switches"><label class="sw" id="swAnn"><input type="checkbox" id="annOn"><i></i>Show announcement</label></div>
-        <div class="g2">
-          <label class="f">Tag<input type="text" id="annTag" maxlength="20" placeholder="New"></label>
-          <label class="f">Link text<input type="text" id="annLinkText" maxlength="30" placeholder="Get it"></label>
+  <!-- App -->
+  <section class="app hidden" id="app">
+    <nav class="side" aria-label="Admin sections">
+      <button class="on" data-pane="mods"><svg class="ic"><use href="#i-box"/></svg>Mods</button>
+      <button data-pane="announce"><svg class="ic"><use href="#i-bell"/></svg>Announcement</button>
+      <button data-pane="links"><svg class="ic"><use href="#i-link"/></svg>Links</button>
+      <button data-pane="activity"><svg class="ic"><use href="#i-history"/></svg>Activity</button>
+    </nav>
+
+    <div>
+      <div data-pane="mods">
+        <div class="pane-h">
+          <div><h2>Mods</h2><p>Click a mod to edit it. To change a download, just paste a new link.</p></div>
+          <button class="btn btn-solid btn-sm" id="add-mod"><svg class="ic"><use href="#i-plus"/></svg>Add mod</button>
         </div>
-        <label class="f">Message<textarea id="annText" maxlength="240"></textarea></label>
-        <label class="f">Link <span class="hint">— a page anchor like #glazed, or a full https:// address</span><input type="text" id="annLink" placeholder="#spawner-protect"></label>
-        <p class="hint">Visitors can dismiss the bar. Changing the message creates a fresh announcement, so everyone sees it again.</p>
+        <div class="mods" id="mods"></div>
       </div>
-      <div class="card stack">
-        <h2>Discord</h2>
-        <label class="f">Discord invite link<input type="url" id="discord" placeholder="https://discord.gg/…"></label>
+
+      <div data-pane="announce" class="hidden">
+        <div class="pane-h"><div><h2>Announcement</h2><p>The slim bar at the very top of the site.</p></div></div>
+        <div class="preview" id="ann-preview"></div>
+        <div class="box">
+          <label class="check" style="margin-bottom:18px"><input type="checkbox" id="ann-enabled"> Show the announcement bar</label>
+          <div class="row3">
+            <label class="field"><span>Title</span><input class="in" id="ann-title" maxlength="60"></label>
+            <label class="field"><span>Tag</span><input class="in" id="ann-tag" maxlength="14" placeholder="New"></label>
+            <label class="field"><span>Button text</span><input class="in" id="ann-linktext" maxlength="20" placeholder="Browse"></label>
+          </div>
+          <label class="field"><span>Text</span><input class="in" id="ann-text" maxlength="120"></label>
+          <label class="field"><span>Button goes to</span><select class="sel" id="ann-link"></select></label>
+          <label class="field hidden" id="ann-custom-wrap"><span>Custom link</span><input class="in" id="ann-custom" placeholder="https://…"></label>
+          <p style="color:var(--faint);font-size:.82rem">Changing the text shows the bar again for everyone who closed the old one.</p>
+        </div>
       </div>
-      <div class="card stack">
-        <h2>Theme</h2>
-        <p class="hint">Saved in <code>site-data.json</code>, so a change shows up for everyone straight away, never from a cache.</p>
-        <div class="themes" id="themes"></div>
+
+      <div data-pane="links" class="hidden">
+        <div class="pane-h"><div><h2>Links</h2><p>Used everywhere on the site.</p></div></div>
+        <div class="box">
+          <label class="field"><span>Discord invite</span><input class="in" id="lk-discord" placeholder="https://discord.gg/…"><small>Every "Join Discord" button uses this.</small></label>
+          <label class="field"><span>YouTube video (optional)</span><input class="in" id="lk-youtube" placeholder="https://youtu.be/…"></label>
+        </div>
       </div>
+
+      <div data-pane="activity" class="hidden">
+        <div class="pane-h">
+          <div><h2>Activity</h2><p>Every change to the site, newest first.</p></div>
+          <button class="btn btn-line btn-sm" id="act-refresh"><svg class="ic"><use href="#i-history"/></svg>Refresh</button>
+        </div>
+        <div class="acts" id="acts"></div>
+        <div style="margin-top:14px;text-align:center"><button class="btn btn-line btn-sm hidden" id="act-more">Load more</button></div>
+      </div>
+
+      <div class="log hidden" id="log" aria-live="polite"></div>
     </div>
   </section>
+</main>
 
-  <section id="p-activity" role="tabpanel" hidden>
-    <div class="acts" style="margin-bottom:14px"><button class="btn sm" id="actReload" type="button">Refresh</button><span class="hint" id="actNote"></span></div>
-    <ul class="log" id="log"></ul>
-  </section>
+<div class="pub" id="pub" role="region" aria-label="Unpublished changes">
+  <span class="txt"><span class="dot"></span>You have unpublished changes</span>
+  <button class="btn btn-line btn-sm" id="discard">Discard</button>
+  <button class="btn btn-solid btn-sm" id="publish"><svg class="ic"><use href="#i-check"/></svg>Publish</button>
 </div>
-
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-(function () {
+(() => {
   'use strict';
-  var $ = function (s, r) { return (r || document).querySelector(s); };
-  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-  var API = 'https://api.github.com';
-  var KEY = 'axiom-admin';
-
-  var ICONS = {
-    spawner: '<rect x="4" y="4" width="16" height="16" rx="2.2"/><path d="M4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16"/><rect x="10.3" y="10.3" width="3.4" height="3.4" rx=".6" fill="currentColor"/>',
-    meteor: '<circle cx="15.5" cy="8.5" r="4.5"/><path d="M12.3 11.7 4 20M9.6 8.2 6 12M15.8 13.4 12.4 16.8"/>',
-    glazed: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="m6.6 8.2 1.5 1M16 6.4l-1 1.7M18 13.6l-1.7-.4M8.2 17l1.3-1.3"/>',
-    rig: '<path d="M12 3 6 21M12 3l6 18M8.4 14.5h7.2M10.2 9h3.6M4 21h16"/>',
-    tpa: '<path d="M4 12h11m-4-4 4 4-4 4"/><path d="M20 5v14"/>',
-    sword: '<path d="M14.5 3.5h6v6L10 20l-6-6z"/><path d="m4 20 2.2-2.2M7.6 13.4l3 3"/>',
-    pickaxe: '<path d="M4.5 9C8 5 13.5 3.5 19 4.5c-1 1-2.5 1.5-4 2"/><path d="M15 6.5 5 20.5M15 6.5c1 1.5 1.5 3 1.5 4.5"/>',
-    eye: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/>',
-    bolt: '<path d="M13 2.5 4.5 13.5H12L11 21.5l8.5-11H12l1-8Z"/>',
-    shield: '<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6L12 3Z"/>',
-    box: '<path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="m3 8 9 5 9-5M12 13v8"/>',
-    chest: '<rect x="3.5" y="8" width="17" height="11" rx="1.8"/><path d="M3.5 12.5h17M12 11v4M5 8V7a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v1"/>',
-    radar: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><path d="M12 12 18.4 5.6"/>',
-    key: '<circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16 7l2.5 2.5M14 9l2 2"/>'
-  };
-  var THEMES = {
-    emerald: ['#04140a', '#15803d', '#23c55e', '#8ff0b4'],
-    mint: ['#0b2b16', '#22c55e', '#4ade80', '#c3f8d5'],
-    moss: ['#06170c', '#166534', '#1ea852', '#7fc995'],
-    jade: ['#04261d', '#047857', '#10b981', '#6ee7b7']
-  };
-  var FIELD_LABEL = { name: 'name', description: 'description', badges: 'badges', icon: 'icon', accent: 'colour', category: 'category', mc: 'version', url: 'download link', note: 'note', featured: 'featured', openSource: 'open source' };
-
-  var cfg = null, data = null, original = '', sha = '', busy = false;
-
-  /* ---------- helpers ---------- */
-  function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  function slug(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
-  function toast(msg, bad) {
-    var t = $('#toast'); t.textContent = msg; t.className = 'toast show' + (bad ? ' bad' : '');
-    clearTimeout(toast.t); toast.t = setTimeout(function () { t.className = 'toast'; }, 4200);
-  }
-  function b64decode(b) {
-    var bin = atob(b.replace(/\s/g, '')), bytes = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    return new TextDecoder().decode(bytes);
-  }
-  function b64encode(str) {
-    var bytes = new TextEncoder().encode(str), bin = '';
-    for (var i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
-    return btoa(bin);
-  }
-  function store(remember) { return remember ? window.localStorage : window.sessionStorage; }
-  function saveCfg(c, remember) {
-    try { window.localStorage.removeItem(KEY); window.sessionStorage.removeItem(KEY); store(remember).setItem(KEY, JSON.stringify(c)); } catch (e) {}
-  }
-  function loadCfg() {
-    try { var s = window.localStorage.getItem(KEY) || window.sessionStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; }
-  }
-  function clearCfg() { try { window.localStorage.removeItem(KEY); window.sessionStorage.removeItem(KEY); } catch (e) {} }
-
-  function gh(path, opts) {
-    opts = opts || {};
-    return fetch(API + path, {
-      method: opts.method || 'GET', cache: 'no-store',
-      headers: { 'Authorization': 'Bearer ' + cfg.token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' },
-      body: opts.body ? JSON.stringify(opts.body) : undefined
-    }).then(function (r) {
-      return r.text().then(function (t) {
-        var j = null; try { j = t ? JSON.parse(t) : null; } catch (e) {}
-        if (!r.ok) {
-          var msg = (j && j.message) || ('HTTP ' + r.status);
-          if (r.status === 401) msg = 'GitHub rejected the token (401). It may be wrong or expired.';
-          else if (r.status === 403) msg = 'GitHub said no (403): ' + msg + '. Check the token has Contents: Read and write on this repo.';
-          else if (r.status === 404) msg = 'Not found (404). Check the repository name, the branch, and that the token can see this repo.';
-          var e = new Error(msg); e.status = r.status; throw e;
-        }
-        return j;
-      });
-    });
-  }
-  function repoPath() { return '/repos/' + cfg.repo; }
-
-  /* ---------- login ---------- */
-  function guessRepo() {
-    var m = location.hostname.match(/^([^.]+)\.github\.io$/i);
-    if (!m) return '';
-    var seg = location.pathname.split('/').filter(Boolean)[0];
-    return m[1] + '/' + (seg && !/\.html$/i.test(seg) ? seg : m[1] + '.github.io');
-  }
-  function showLogin(err) {
-    $('#appView').hidden = true; $('#loginView').hidden = false;
-    var e = $('#loginErr'); e.hidden = !err; e.textContent = err || '';
-  }
-  function prefill() {
-    var c = loadCfg() || {};
-    $('#lRepo').value = c.repo || guessRepo();
-    $('#lBranch').value = c.branch || 'main';
-    $('#lName').value = c.name || '';
-  }
-  $('#loginForm').addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    var repo = $('#lRepo').value.trim().replace(/^https?:\/\/github\.com\//i, '').replace(/\.git$/i, '').replace(/\/+$/, '');
-    if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) return showLogin('Repository should look like owner/repo.');
-    cfg = { token: $('#lToken').value.trim(), repo: repo, branch: $('#lBranch').value.trim() || 'main', name: $('#lName').value.trim().replace(/\s+/g, ' ') };
-    var remember = $('#lRemember').checked, go = $('#lGo');
-    go.disabled = true; go.textContent = 'Checking…';
-    gh(repoPath()).then(function (r) {
-      if (r.permissions && r.permissions.push === false) throw new Error('This token can read the repo but not write to it. It needs Contents: Read and write.');
-      return loadData();
-    }).then(function () {
-      saveCfg(cfg, remember);
-      $('#lToken').value = '';
-      enterApp();
-    }).catch(function (e) { cfg = null; showLogin(e.message); })
-      .then(function () { go.disabled = false; go.textContent = 'Log in'; });
-  });
-
-  /* ---------- load / normalise ---------- */
-  function normalise(d) {
-    d = d && typeof d === 'object' ? d : {};
-    d.theme = THEMES[d.theme] ? d.theme : 'emerald';
-    d.announcement = Object.assign({ enabled: false, id: '', tag: '', text: '', linkText: '', link: '' }, d.announcement || {});
-    d.links = Object.assign({ discord: '' }, d.links || {});
-    d.mods = (Array.isArray(d.mods) ? d.mods : []).map(function (m) {
-      return Object.assign({ id: '', name: '', description: '', badges: [], icon: 'box', accent: '#23c55e', category: '', mc: '1.21.11', url: '', note: '', featured: false, openSource: false, updating: false }, m);
-    });
-    return d;
-  }
-  function loadData() {
-    return gh(repoPath() + '/contents/site-data.json?ref=' + encodeURIComponent(cfg.branch)).then(function (f) {
-      sha = f.sha;
-      data = normalise(JSON.parse(b64decode(f.content)));
-      original = JSON.stringify(data);
-    });
-  }
-
-  function enterApp() {
-    $('#loginView').hidden = true; $('#appView').hidden = false;
-    $('#who').textContent = cfg.name + ' · ' + cfg.repo + '@' + cfg.branch;
-    $('#appErr').hidden = true;
-    renderAll(); applyTheme(); refreshState();
-  }
+  const DATA_PATH = 'site-data.json';
+  const ICONS = ['spawner','meteor','glazed','rig','tpa','sword','pickaxe','shield','eye','star','box','bolt','map','crystal','potion','compass','chest'];
+  const SWATCHES = ['34, 197, 94','45, 212, 191','56, 189, 248','167, 139, 250','251, 113, 133','251, 146, 60','250, 204, 21','226, 232, 240'];
+  const NEW_CAT = '__new__';
 
   /* ---------- state ---------- */
-  function dirty() { return JSON.stringify(data) !== original; }
-  function refreshState() {
-    var d = dirty(), s = $('#state');
-    s.className = 'state' + (d ? ' dirty' : '');
-    $('span', s).textContent = d ? 'Unpublished changes' : 'No changes';
-    $('#publish').disabled = !d || busy;
-  }
-  window.addEventListener('beforeunload', function (e) { if (data && dirty()) { e.preventDefault(); e.returnValue = ''; } });
-  function applyTheme() { document.documentElement.setAttribute('data-theme', THEMES[data.theme] ? data.theme : 'emerald'); }
+  let cfg = { owner: '', repo: '', branch: 'main', token: '', name: '' };
+  let data = null, original = '', sha = null;
+  const open = new Set();
+  let keySeq = 0;
+  let actPage = 1;
 
-  /* ---------- mods UI ---------- */
-  function iconSvg(n) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (ICONS[n] || ICONS.box) + '</svg>'; }
-  function tileStyle(c) { return 'background:linear-gradient(145deg,' + esc(c) + ',color-mix(in srgb,' + esc(c) + ' 48%,#000))'; }
-  var openIds = {};
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const slug = v => String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'mod';
+  const isUrl = v => /^https?:\/\/[^\s"'<>]+$/i.test(String(v || '').trim());
+  const okRgb = v => /^\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*$/.test(v || '');
+  const rgbHex = rgb => '#' + String(rgb).split(',').map(n => Math.max(0, Math.min(255, parseInt(n, 10) || 0)).toString(16).padStart(2, '0')).join('');
+  const hexRgb = hex => (hex.replace('#', '').match(/.{2}/g) || ['22','c5','5e']).map(x => parseInt(x, 16)).join(', ');
+  const strip = d => JSON.stringify(d, (k, v) => (k.startsWith('_') ? undefined : v), 2) + '\n';
+  const dirty = () => !!data && strip(data) !== original;
+  const by = () => (cfg.name ? ` — by ${cfg.name}` : '');
 
-  function modHTML(m, i, n) {
-    var cats = Array.from(new Set(data.mods.map(function (x) { return x.category; }).filter(Boolean)));
-    var opts = Object.keys(ICONS).map(function (k) { return '<option value="' + k + '"' + (k === m.icon ? ' selected' : '') + '>' + k + '</option>'; }).join('');
-    function sw(f, label, cls) { return '<label class="sw ' + (cls || '') + (m[f] ? ' on' : '') + '"><input type="checkbox" data-f="' + f + '"' + (m[f] ? ' checked' : '') + '><i></i>' + label + '</label>'; }
-    return '<details class="mod" data-i="' + i + '"' + (openIds[m._k] ? ' open' : '') + '>' +
-      '<summary><span class="tile" style="' + tileStyle(m.accent) + '">' + iconSvg(m.icon) + '</span>' +
-      '<span class="t"><b>' + esc(m.name || 'Untitled mod') + '</b><span>' + esc(m.category || 'No category') + ' · ' + esc(m.mc) + '</span></span>' +
-      (m.updating ? '<span class="tag warn">Updating</span>' : '') + (m.openSource ? '<span class="tag">Open source</span>' : '') + (m.featured ? '<span class="tag">Featured</span>' : '') +
-      '<span class="acts">' +
-      '<button class="btn sm icon" type="button" data-act="up" aria-label="Move ' + esc(m.name) + ' up"' + (i === 0 ? ' disabled' : '') + '>↑</button>' +
-      '<button class="btn sm icon" type="button" data-act="down" aria-label="Move ' + esc(m.name) + ' down"' + (i === n - 1 ? ' disabled' : '') + '>↓</button></span></summary>' +
-      '<div class="mod-body">' +
-      '<div class="g2"><label class="f">Name<input type="text" data-f="name" value="' + esc(m.name) + '" maxlength="60"></label>' +
-      '<label class="f">Category <span class="hint">— becomes a tab</span><input type="text" data-f="category" list="cats" value="' + esc(m.category) + '" maxlength="30"></label></div>' +
-      '<label class="f">Description<textarea data-f="description" maxlength="400">' + esc(m.description) + '</textarea></label>' +
-      '<label class="f">Download link <span class="hint">— paste the full https:// link to the .jar</span><input type="url" data-f="url" value="' + esc(m.url) + '" placeholder="https://…" spellcheck="false"></label>' +
-      '<div class="g3"><label class="f">Icon<select data-f="icon">' + opts + '</select></label>' +
-      '<div class="f">Colour<div class="color"><input type="color" data-f="accent" data-c="pick" value="' + esc(m.accent) + '" aria-label="Pick colour"><input type="text" data-f="accent" data-c="hex" value="' + esc(m.accent) + '" maxlength="7" aria-label="Colour hex"></div></div>' +
-      '<label class="f">Minecraft version<input type="text" data-f="mc" value="' + esc(m.mc) + '" maxlength="12"></label></div>' +
-      '<label class="f">Badges <span class="hint">— comma separated, e.g. New, v1.0</span><input type="text" data-f="badges" value="' + esc((m.badges || []).join(', ')) + '"></label>' +
-      '<label class="f">Requirement / warning bar <span class="hint">— optional, e.g. “Requires Meteor Client to work.”</span><input type="text" data-f="note" value="' + esc(m.note) + '" maxlength="140"></label>' +
-      '<div class="switches">' + sw('updating', 'Updating — hide download', 'upd') + sw('openSource', 'Open source') + sw('featured', 'Featured') + '</div>' +
-      '<div class="acts"><a class="btn sm" href="' + esc(/^https?:\/\//i.test(m.url) ? m.url : '#') + '" target="_blank" rel="noopener noreferrer"' + (/^https?:\/\//i.test(m.url) ? '' : ' aria-disabled="true"') + '>Test link ↗</a><span class="sp" style="flex:1"></span>' +
-      '<button class="btn sm danger" type="button" data-act="del">Remove mod</button></div>' +
-      '</div></details>';
+  /* ---------- storage (never trusted to exist) ---------- */
+  const store = {
+    get(k) { try { return localStorage.getItem(k) || sessionStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v, keep) { try { (keep ? localStorage : sessionStorage).setItem(k, v); } catch (e) {} },
+    del(k) { try { localStorage.removeItem(k); sessionStorage.removeItem(k); } catch (e) {} },
+  };
+  const saveCfg = keep => { store.del('axiom_admin'); store.set('axiom_admin', JSON.stringify(cfg), keep); };
+
+  /* ---------- GitHub ---------- */
+  async function gh(path, opts = {}) {
+    const r = await fetch('https://api.github.com' + path, {
+      ...opts,
+      headers: { Authorization: `Bearer ${cfg.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.body ? { 'Content-Type': 'application/json' } : {}) },
+    });
+    if (opts.allow404 && r.status === 404) return null;
+    if (!r.ok) {
+      let msg = r.statusText; try { msg = (await r.json()).message || msg; } catch (e) {}
+      const err = new Error(msg); err.status = r.status; throw err;
+    }
+    return r.status === 204 ? null : r.json();
   }
-  var keySeq = 0;
+  const repoPath = () => `/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}`;
+  const b64ToText = b => new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\s/g, '')), c => c.charCodeAt(0)));
+  const textToB64 = t => { const bytes = new TextEncoder().encode(t); let s = ''; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s); };
+  const siteUrl = () => `https://${cfg.owner.toLowerCase()}.github.io/${cfg.repo}/`;
+
+  /* ---------- login ---------- */
+  function showLogin(msg) {
+    $('#login').classList.remove('hidden'); $('#app').classList.add('hidden');
+    $('#who').classList.add('hidden'); $('#logout').classList.add('hidden');
+    $('#owner').value = cfg.owner; $('#repo').value = cfg.repo; $('#branch').value = cfg.branch || 'main';
+    $('#name').value = cfg.name || '';
+    $('#login-err').textContent = msg || '';
+  }
+
+  async function signIn() {
+    const btn = $('#login-btn'); btn.disabled = true; $('#login-err').textContent = 'Signing in…';
+    try {
+      const repo = await gh(repoPath());
+      await loadData();
+      $('#login').classList.add('hidden'); $('#app').classList.remove('hidden');
+      $('#who').classList.remove('hidden'); $('#logout').classList.remove('hidden');
+      $('#who-text').textContent = repo.full_name + (cfg.name ? ` · ${cfg.name}` : '');
+      $('#view-site').href = siteUrl();
+      $('#login-err').textContent = '';
+    } catch (e) {
+      showLogin(e.status === 401 ? 'GitHub rejected that token. Check you copied all of it and that it hasn\'t expired.'
+        : e.status === 404 ? `Can't see ${cfg.owner}/${cfg.repo}. Check the spelling, and that the token was given access to this repository.`
+        : e.status === 403 ? 'That token can\'t read this repository. Give it "Contents: Read and write".'
+        : e.missing ? e.message
+        : 'Sign-in failed: ' + e.message);
+    } finally { btn.disabled = false; }
+  }
+
+  $('#login-form').addEventListener('submit', e => {
+    e.preventDefault();
+    cfg = { owner: $('#owner').value.trim(), repo: $('#repo').value.trim(), branch: $('#branch').value.trim() || 'main', token: $('#token').value.trim(), name: $('#name').value.trim().slice(0, 30) };
+    saveCfg($('#remember').checked);
+    try { localStorage.setItem('axiom_admin_keep', $('#remember').checked ? '1' : '0'); } catch (err) {}
+    signIn();
+  });
+  $('#logout').addEventListener('click', () => {
+    if (dirty() && !confirm('You have unpublished changes. Sign out anyway?')) return;
+    store.del('axiom_admin'); cfg = { owner: cfg.owner, repo: cfg.repo, branch: cfg.branch, token: '', name: cfg.name };
+    data = null; $('#token').value = ''; updatePub(); showLogin();
+  });
+
+  /* ---------- load ---------- */
+  async function loadData() {
+    const f = await gh(`${repoPath()}/contents/${DATA_PATH}?ref=${encodeURIComponent(cfg.branch)}`, { allow404: true });
+    if (!f) { const e = new Error(`There's no ${DATA_PATH} in ${cfg.owner}/${cfg.repo} yet. Upload the site files to the repo first.`); e.missing = true; throw e; }
+    sha = f.sha;
+    data = JSON.parse(b64ToText(f.content));
+    data.mods = Array.isArray(data.mods) ? data.mods : [];
+    data.announcement = data.announcement || { enabled: false };
+    data.links = data.links || {};
+    data.site = data.site || { version: '1.21.11', loader: 'Fabric' };
+    original = strip(data);
+    data.mods.forEach(m => { m._key = ++keySeq; });
+    open.clear();
+    renderAll(); updatePub();
+  }
+
+  function renderAll() { renderMods(); renderAnnouncement(); renderLinks(); }
+
+  /* ---------- mods ---------- */
+  const cats = () => {
+    const out = [];
+    data.mods.forEach(m => { const c = (m.category || '').trim(); if (c && !out.includes(c)) out.push(c); });
+    ['Clients', 'Utility', 'Macros'].forEach(c => { if (!out.includes(c)) out.push(c); });
+    return out;
+  };
+  const accOf = m => (okRgb(m.accent) ? m.accent : '34, 197, 94');
+
+  function chips(m) {
+    const out = [`<span class="chip">${esc(m.category || 'No category')}</span>`];
+    if (m.featured) out.push('<span class="chip g">Featured</span>');
+    if (m.new) out.push('<span class="chip g">New</span>');
+    if (m.openSource) out.push('<span class="chip g">Open source</span>');
+    if (m.updating) out.push('<span class="chip a">Updating</span>');
+    if (!m.updating && !isUrl(m.url)) out.push('<span class="chip r">No download link</span>');
+    return out.join('');
+  }
+
   function renderMods() {
-    data.mods.forEach(function (m) { if (!m._k) Object.defineProperty(m, '_k', { value: 'k' + (++keySeq), enumerable: false, writable: true }); });
-    var cats = Array.from(new Set(data.mods.map(function (x) { return x.category; }).filter(Boolean)));
-    $('#mods').innerHTML = '<datalist id="cats">' + cats.map(function (c) { return '<option value="' + esc(c) + '">'; }).join('') + '</datalist>' +
-      (data.mods.length ? data.mods.map(function (m, i) { return modHTML(m, i, data.mods.length); }).join('') : '<p class="hint">No mods yet. Add one below.</p>');
-  }
-
-  var modsEl = $('#mods');
-  modsEl.addEventListener('toggle', function (e) {
-    var d = e.target.closest('details.mod'); if (!d) return;
-    var m = data.mods[+d.dataset.i]; if (m) openIds[m._k] = d.open;
-  }, true);
-  modsEl.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-act]'); if (!b) return;
-    e.preventDefault(); e.stopPropagation();
-    var i = +b.closest('details.mod').dataset.i, act = b.dataset.act, m = data.mods[i];
-    if (act === 'up' && i > 0) data.mods.splice(i - 1, 0, data.mods.splice(i, 1)[0]);
-    else if (act === 'down' && i < data.mods.length - 1) data.mods.splice(i + 1, 0, data.mods.splice(i, 1)[0]);
-    else if (act === 'del') { if (!window.confirm('Remove “' + (m.name || 'this mod') + '”? It disappears from the site when you publish.')) return; data.mods.splice(i, 1); }
-    renderMods(); refreshState();
-    if (act === 'up' || act === 'down') { var ni = act === 'up' ? i - 1 : i + 1; var btn = $('details.mod[data-i="' + ni + '"] [data-act="' + act + '"]') || $('details.mod[data-i="' + ni + '"] summary'); if (btn) btn.focus(); }
-  });
-  function onField(e) {
-    var el = e.target, f = el.dataset.f; if (!f) return;
-    var card = el.closest('details.mod'); if (!card) return;
-    var m = data.mods[+card.dataset.i], v;
-    if (el.type === 'checkbox') { v = el.checked; el.closest('.sw').classList.toggle('on', v); }
-    else v = el.value;
-    if (f === 'badges') v = v.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-    if (f === 'accent') {
-      var hex = String(v).trim(); if (hex[0] !== '#') hex = '#' + hex;
-      var ok = /^#[0-9a-f]{6}$/i.test(hex);
-      if (el.dataset.c === 'hex') el.classList.toggle('bad', !ok);
-      if (!ok) return;
-      v = hex.toLowerCase();
-      $$('[data-f="accent"]', card).forEach(function (x) { if (x !== el) x.value = v; });
-    }
-    m[f] = v;
-    // live summary
-    if (f === 'name') $('summary .t b', card).textContent = m.name || 'Untitled mod';
-    if (f === 'category' || f === 'mc') $('summary .t span', card).textContent = (m.category || 'No category') + ' · ' + m.mc;
-    if (f === 'icon' || f === 'accent') { var t = $('summary .tile', card); t.style.cssText = tileStyle(m.accent); t.innerHTML = iconSvg(m.icon); }
-    if (f === 'url') { var a = $('.acts a', card); var good = /^https?:\/\//i.test(v); a.href = good ? v : '#'; if (good) a.removeAttribute('aria-disabled'); else a.setAttribute('aria-disabled', 'true'); }
-    if (f === 'updating' || f === 'openSource' || f === 'featured') {
-      $$('.tag', $('summary', card)).forEach(function (t) { t.remove(); });
-      var tags = (m.updating ? '<span class="tag warn">Updating</span>' : '') + (m.openSource ? '<span class="tag">Open source</span>' : '') + (m.featured ? '<span class="tag">Featured</span>' : '');
-      $('summary .t', card).insertAdjacentHTML('afterend', tags);
-    }
-    refreshState();
-  }
-  modsEl.addEventListener('input', onField);
-  modsEl.addEventListener('change', onField);
-
-  $('#addMod').addEventListener('click', function () {
-    var base = 'new-mod', id = base, n = 2;
-    while (data.mods.some(function (m) { return m.id === id; })) id = base + '-' + (n++);
-    var m = { id: id, name: 'New mod', description: '', badges: [], icon: 'box', accent: '#23c55e', category: (data.mods[0] && data.mods[0].category) || 'Utility', mc: '1.21.11', url: '', note: '', featured: false, openSource: false, updating: false };
-    data.mods.push(m); renderMods();
-    var last = data.mods[data.mods.length - 1]; openIds[last._k] = true; renderMods();
-    var card = $('details.mod[data-i="' + (data.mods.length - 1) + '"]'); card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    $('[data-f="name"]', card).focus(); $('[data-f="name"]', card).select();
-    refreshState();
-  });
-
-  /* ---------- site tab ---------- */
-  function renderSite() {
-    var a = data.announcement;
-    $('#annOn').checked = !!a.enabled; $('#swAnn').classList.toggle('on', !!a.enabled);
-    $('#annTag').value = a.tag; $('#annLinkText').value = a.linkText; $('#annText').value = a.text; $('#annLink').value = a.link;
-    $('#discord').value = data.links.discord;
-    $('#themes').innerHTML = Object.keys(THEMES).map(function (k) {
-      return '<button type="button" class="theme" data-t="' + k + '" aria-pressed="' + (data.theme === k) + '"><b style="text-transform:capitalize">' + k + '</b><span class="sw-row">' + THEMES[k].map(function (c) { return '<i style="background:' + c + '"></i>'; }).join('') + '</span></button>';
+    const list = $('#mods');
+    if (!data.mods.length) { list.innerHTML = '<div class="box" style="text-align:center;color:var(--mute)">No mods yet. Press <b>Add mod</b>.</div>'; return; }
+    list.innerHTML = data.mods.map((m, i) => {
+      const k = m._key; const acc = accOf(m); const icon = ICONS.includes(m.icon) ? m.icon : 'box';
+      const catOpts = cats().map(c => `<option value="${esc(c)}" ${c === m.category ? 'selected' : ''}>${esc(c)}</option>`).join('') + `<option value="${NEW_CAT}">New category…</option>`;
+      return `<article class="mod${open.has(k) ? ' open' : ''}" data-key="${k}" style="--acc:${acc}">
+        <div class="mod-h" data-act="toggle">
+          <span class="tile" aria-hidden="true" style="color:rgb(${acc});background:linear-gradient(150deg,rgba(${acc},.26),rgba(${acc},.07));border:1px solid rgba(${acc},.32)"><svg><use href="#m-${icon}"/></svg></span>
+          <div class="mod-t"><b>${esc(m.name || 'Untitled mod')}</b><small>${chips(m)}</small></div>
+          <button class="ib" data-act="up" title="Move up" aria-label="Move up" ${i === 0 ? 'disabled' : ''}><svg class="ic"><use href="#i-up"/></svg></button>
+          <button class="ib" data-act="down" title="Move down" aria-label="Move down" ${i === data.mods.length - 1 ? 'disabled' : ''}><svg class="ic" style="transform:rotate(180deg)"><use href="#i-up"/></svg></button>
+          <button class="ib chev" data-act="toggle" aria-label="Edit" aria-expanded="${open.has(k)}"><svg class="ic"><use href="#i-chev"/></svg></button>
+        </div>
+        <div class="mod-b">
+          <div class="switches">
+            <label class="sw"><input type="checkbox" data-f="featured" ${m.featured ? 'checked' : ''}><i></i><span><b>Featured</b><small>Big card at the top</small></span></label>
+            <label class="sw"><input type="checkbox" data-f="new" ${m.new ? 'checked' : ''}><i></i><span><b>New</b><small>Shows in "Just added"</small></span></label>
+            <label class="sw"><input type="checkbox" data-f="openSource" ${m.openSource ? 'checked' : ''}><i></i><span><b>Open source</b><small>Adds the open-source line</small></span></label>
+            <label class="sw warn"><input type="checkbox" data-f="updating" ${m.updating ? 'checked' : ''}><i></i><span><b>Updating</b><small>Hides the download for now</small></span></label>
+          </div>
+          <label class="field"><span>Download link</span>
+            <div class="with-btn"><input class="in" data-f="url" value="${esc(m.url)}" placeholder="https://…" spellcheck="false"><a class="btn btn-line btn-sm" data-act="test" href="${isUrl(m.url) ? esc(m.url) : '#'}" target="_blank" rel="noopener noreferrer"><svg class="ic"><use href="#i-ext"/></svg>Test link</a></div>
+            <small>Paste the direct download link from your file host. Press Test link to check it starts the download.</small></label>
+          <div class="row2">
+            <label class="field"><span>Name</span><input class="in" data-f="name" value="${esc(m.name)}" maxlength="40"></label>
+            <label class="field"><span>File name shown on the card</span><input class="in" data-f="file" value="${esc(m.file)}" placeholder="mymod-1.21.11-v1.jar" spellcheck="false"></label>
+          </div>
+          <label class="field"><span>Description</span><textarea class="ta" data-f="description" maxlength="240">${esc(m.description)}</textarea></label>
+          <div class="row3">
+            <label class="field"><span>Category</span><select class="sel" data-f="category">${catOpts}</select></label>
+            <label class="field"><span>Minecraft version</span><input class="in" data-f="mc" value="${esc(m.mc || '1.21.11')}"></label>
+            <label class="field"><span>Badges</span><input class="in" data-f="badges" value="${esc((m.badges || []).join(', '))}" placeholder="New, v1.0"></label>
+          </div>
+          <label class="field"><span>Requirement or warning</span><input class="in" data-f="note" value="${esc(m.note)}" placeholder="Optional — e.g. Requires Meteor Client to work."><small>Shows as an amber bar on the card.</small></label>
+          ${m.featured ? `<label class="field"><span>Feature list</span><textarea class="ta" data-f="features" placeholder="One per line">${esc((m.features || []).join('\n'))}</textarea><small>One per line. Shown on the featured card.</small></label>` : ''}
+          <div class="field"><span>Icon</span>
+            <div class="icons">${ICONS.map(ic => `<label title="${ic}"><input type="radio" name="icon-${k}" data-f="icon" value="${ic}" ${icon === ic ? 'checked' : ''}><span><svg><use href="#m-${ic}"/></svg></span></label>`).join('')}</div>
+          </div>
+          <div class="field"><span>Colour</span>
+            <div class="colors">${SWATCHES.map(s => `<button type="button" data-act="swatch" data-v="${s}" class="${s === acc ? 'on' : ''}" style="background:rgb(${s})" aria-label="Colour rgb(${s})"></button>`).join('')}
+              <input type="color" data-f="accent" value="${rgbHex(acc)}" aria-label="Pick any colour"></div>
+          </div>
+          <details class="more"><summary>Advanced</summary>
+            <label class="field" style="margin-top:10px"><span>Page ID</span><input class="in" data-f="id" value="${esc(m.id)}" spellcheck="false"><small>Used for links like #${esc(m.id || 'my-mod')}. Made from the name automatically.</small></label>
+          </details>
+          <button class="btn btn-line btn-sm mod-del" data-act="delete"><svg class="ic"><use href="#i-trash"/></svg>Remove mod</button>
+        </div>
+      </article>`;
     }).join('');
   }
-  function annChanged() {
-    var a = data.announcement;
-    a.enabled = $('#annOn').checked; a.tag = $('#annTag').value.trim(); a.linkText = $('#annLinkText').value.trim();
-    var t = $('#annText').value.trim(), l = $('#annLink').value.trim();
-    if (t !== a.text) a.id = 'ann-' + Date.now().toString(36);      // new message => visitors who dismissed it see it again
-    a.text = t; a.link = l;
-    $('#swAnn').classList.toggle('on', a.enabled);
-    refreshState();
+
+  const modOf = el => data.mods.find(m => m._key === Number(el.closest('.mod').dataset.key));
+  function refreshHead(card, m) {
+    const acc = accOf(m); card.style.setProperty('--acc', acc);
+    card.querySelector('.mod-t b').textContent = m.name || 'Untitled mod';
+    card.querySelector('.mod-t small').innerHTML = chips(m);
+    const tile = card.querySelector('.mod-h .tile');
+    tile.style.cssText = `color:rgb(${acc});background:linear-gradient(150deg,rgba(${acc},.26),rgba(${acc},.07));border:1px solid rgba(${acc},.32)`;
+    tile.querySelector('use').setAttribute('href', `#m-${ICONS.includes(m.icon) ? m.icon : 'box'}`);
   }
-  ['#annOn', '#annTag', '#annLinkText', '#annText', '#annLink'].forEach(function (s) { $(s).addEventListener('input', annChanged); });
-  $('#discord').addEventListener('input', function (e) { data.links.discord = e.target.value.trim(); refreshState(); });
-  $('#themes').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-t]'); if (!b) return;
-    data.theme = b.dataset.t; applyTheme();
-    $$('.theme').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-    refreshState();
+
+  $('#mods').addEventListener('input', e => {
+    const el = e.target; const f = el.dataset.f; if (!f) return;
+    const card = el.closest('.mod'); const m = modOf(el);
+    if (f === 'badges') m.badges = el.value.split(',').map(s => s.trim()).filter(Boolean);
+    else if (f === 'features') m.features = el.value.split('\n').map(s => s.trim()).filter(Boolean);
+    else if (f === 'accent') { m.accent = hexRgb(el.value); card.querySelectorAll('.colors button').forEach(b => b.classList.toggle('on', b.dataset.v === m.accent)); }
+    else if (['featured', 'new', 'openSource', 'updating'].includes(f)) m[f] = el.checked;
+    else if (f === 'category') return;   // handled on change
+    else m[f] = el.value;
+    if (f === 'name' && m._autoId) m.id = slug(m.name);
+    if (f === 'id') delete m._autoId;
+    if (f === 'url') { const t = card.querySelector('[data-act="test"]'); t.href = isUrl(m.url) ? m.url.trim() : '#'; }
+    if (f === 'featured') { renderMods(); }
+    else refreshHead(card, m);
+    updatePub();
+  });
+  $('#mods').addEventListener('change', e => {
+    const el = e.target;
+    if (el.dataset.f === 'icon' || el.type === 'checkbox') { el.dispatchEvent(new Event('input', { bubbles: true })); return; }
+    if (el.dataset.f !== 'category') return;
+    const m = modOf(el);
+    if (el.value === NEW_CAT) {
+      const name = (prompt('Name the new category (e.g. PvP, Visuals):') || '').trim().slice(0, 24);
+      if (name) m.category = name;
+      renderMods();
+    } else m.category = el.value;
+    refreshHead(el.closest('.mod'), m); updatePub();
+  });
+  $('#mods').addEventListener('click', e => {
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const act = b.dataset.act; const card = b.closest('.mod'); const m = modOf(b);
+    const i = data.mods.indexOf(m);
+    if (act === 'test') { if (!isUrl(m.url)) { e.preventDefault(); alert('Paste a download link that starts with https:// first.'); } return; }
+    if (act === 'toggle') {
+      if (e.target.closest('button') && e.target.closest('button') !== b) return;
+      open.has(m._key) ? open.delete(m._key) : open.add(m._key);
+      card.classList.toggle('open', open.has(m._key));
+      card.querySelector('.ib.chev').setAttribute('aria-expanded', open.has(m._key));
+      return;
+    }
+    e.stopPropagation();
+    if (act === 'up' || act === 'down') {
+      const j = act === 'up' ? i - 1 : i + 1; if (j < 0 || j >= data.mods.length) return;
+      [data.mods[i], data.mods[j]] = [data.mods[j], data.mods[i]]; renderMods(); updatePub();
+    } else if (act === 'delete') {
+      if (!confirm(`Remove ${m.name || 'this mod'} from the site?`)) return;
+      data.mods.splice(i, 1); open.delete(m._key); renderMods(); updatePub();
+    } else if (act === 'swatch') {
+      m.accent = b.dataset.v; card.querySelector('[data-f="accent"]').value = rgbHex(m.accent);
+      card.querySelectorAll('.colors button').forEach(x => x.classList.toggle('on', x === b));
+      refreshHead(card, m); updatePub();
+    }
+  });
+  $('#add-mod').addEventListener('click', () => {
+    const m = { _key: ++keySeq, _autoId: true, id: 'new-mod', name: 'New mod', category: 'Utility', icon: 'box', accent: '34, 197, 94',
+      featured: false, new: true, openSource: false, updating: false, badges: ['New'], description: 'Join the Discord for the full breakdown.',
+      features: [], note: '', mc: (data.site && data.site.version) || '1.21.11', file: '', url: '' };
+    data.mods.push(m); open.add(m._key); renderMods(); updatePub();
+    document.querySelector(`.mod[data-key="${m._key}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  function renderAll() { openIds = {}; renderMods(); renderSite(); }
-
-  /* ---------- tabs ---------- */
-  function showTab(name) {
-    $$('.tab').forEach(function (t) { t.setAttribute('aria-selected', t.dataset.tab === name ? 'true' : 'false'); });
-    ['mods', 'site', 'activity'].forEach(function (n) { $('#p-' + n).hidden = n !== name; });
-    if (name === 'activity') loadActivity();
+  /* ---------- announcement ---------- */
+  function renderAnnouncement() {
+    const a = data.announcement;
+    $('#ann-enabled').checked = !!a.enabled;
+    $('#ann-title').value = a.title || ''; $('#ann-tag').value = a.tag || ''; $('#ann-text').value = a.text || ''; $('#ann-linktext').value = a.linkText || '';
+    const opts = [['', 'No button'], ['#downloads', 'Downloads'], ...data.mods.map(m => ['#' + slug(m.id || m.name), m.name]), ['#discord', 'Discord section'], ['custom', 'Custom link…']];
+    $('#ann-link').innerHTML = opts.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('');
+    const known = opts.some(([v]) => v === (a.link || ''));
+    $('#ann-link').value = known ? (a.link || '') : 'custom';
+    $('#ann-custom').value = known ? '' : (a.link || '');
+    $('#ann-custom-wrap').classList.toggle('hidden', known);
+    previewAnnouncement();
   }
-  $$('.tab').forEach(function (t) { t.addEventListener('click', function () { showTab(t.dataset.tab); }); });
+  function previewAnnouncement() {
+    const a = data.announcement;
+    $('#ann-preview').innerHTML = a.enabled
+      ? `<div class="announce"><div class="announce-in"><span class="pill-tag">${esc(a.tag || 'New')}</span><span><b>${esc(a.title)}</b> <span>${esc(a.text)}</span></span>${a.link && a.linkText ? `<a class="go" href="#" onclick="return false">${esc(a.linkText)}</a>` : ''}</div></div>`
+      : '<div style="padding:14px 16px;color:var(--faint);font-size:.88rem">The bar is hidden.</div>';
+  }
+  function annChanged() {
+    const a = data.announcement;
+    a.enabled = $('#ann-enabled').checked; a.title = $('#ann-title').value; a.tag = $('#ann-tag').value;
+    a.text = $('#ann-text').value; a.linkText = $('#ann-linktext').value;
+    const sel = $('#ann-link').value;
+    $('#ann-custom-wrap').classList.toggle('hidden', sel !== 'custom');
+    a.link = sel === 'custom' ? $('#ann-custom').value.trim() : sel;
+    previewAnnouncement(); updatePub();
+  }
+  ['#ann-enabled', '#ann-title', '#ann-tag', '#ann-text', '#ann-linktext', '#ann-link', '#ann-custom']
+    .forEach(s => { $(s).addEventListener('input', annChanged); $(s).addEventListener('change', annChanged); });
+
+  /* ---------- links ---------- */
+  function renderLinks() { $('#lk-discord').value = data.links.discord || ''; $('#lk-youtube').value = data.links.youtube || ''; }
+  $('#lk-discord').addEventListener('input', e => { data.links.discord = e.target.value.trim(); updatePub(); });
+  $('#lk-youtube').addEventListener('input', e => { data.links.youtube = e.target.value.trim(); updatePub(); });
+
+  /* ---------- panes ---------- */
+  $$('.side button').forEach(b => b.addEventListener('click', () => {
+    $$('.side button').forEach(x => x.classList.toggle('on', x === b));
+    $$('[data-pane]').forEach(p => { if (p.tagName !== 'BUTTON') p.classList.toggle('hidden', p.dataset.pane !== b.dataset.pane); });
+    if (b.dataset.pane === 'activity') loadActivity(false);
+  }));
 
   /* ---------- activity ---------- */
   function ago(iso) {
-    var s = Math.max(1, Math.round((Date.now() - new Date(iso).getTime()) / 1000));
+    const s = (Date.now() - new Date(iso).getTime()) / 1000;
     if (s < 60) return 'just now';
-    var m = Math.round(s / 60); if (m < 60) return m + ' min ago';
-    var h = Math.round(m / 60); if (h < 24) return h + ' h ago';
-    var d = Math.round(h / 24); if (d < 30) return d + (d === 1 ? ' day ago' : ' days ago');
-    return new Date(iso).toLocaleDateString();
+    if (s < 3600) return `${Math.round(s / 60)} min ago`;
+    if (s < 86400) return `${Math.round(s / 3600)} h ago`;
+    if (s < 172800) return 'yesterday';
+    return new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
   }
-  function loadActivity() {
-    var log = $('#log'); log.innerHTML = '<li><span class="hint">Loading…</span></li>'; $('#actNote').textContent = '';
-    gh(repoPath() + '/commits?path=site-data.json&sha=' + encodeURIComponent(cfg.branch) + '&per_page=30').then(function (list) {
-      if (!list.length) { log.innerHTML = '<li><span class="hint">No commits yet.</span></li>'; return; }
-      log.innerHTML = list.map(function (c) {
-        var first = (c.commit.message || '').split('\n')[0], who = null, msg = first;
-        var m = first.match(/^([\s\S]*) — by (.+)$/);
-        if (m) { msg = m[1]; who = m[2]; }
-        var by = who || (c.author && c.author.login) || c.commit.author.name || 'unknown';
-        return '<li><span class="av" aria-hidden="true">' + esc(by.charAt(0).toUpperCase()) + '</span><div class="m"><b>' + esc(msg) + '</b><span>' + esc(by) + (who ? '' : ' (outside the admin panel)') + ' · ' + esc(ago(c.commit.author.date)) + '</span></div>' +
-          '<a href="' + esc(c.html_url) + '" target="_blank" rel="noopener noreferrer">' + esc(c.sha.slice(0, 7)) + ' ↗</a></li>';
+  async function loadActivity(more) {
+    actPage = more ? actPage + 1 : 1;
+    const list = $('#acts');
+    if (!more) list.innerHTML = '<p style="color:var(--mute)">Loading…</p>';
+    try {
+      const commits = await gh(`${repoPath()}/commits?sha=${encodeURIComponent(cfg.branch)}&per_page=20&page=${actPage}`);
+      const html = commits.map(c => {
+        const msg = (c.commit.message || '').split('\n')[0];
+        const m = msg.match(/\s—\sby\s(.+)$/);
+        const who = m ? m[1] : (c.author && c.author.login) || c.commit.author.name || 'Someone';
+        const what = m ? msg.slice(0, m.index) : msg;
+        return `<div class="act"><span class="av">${esc(who.charAt(0).toUpperCase())}</span><div><b>${esc(what)}</b><small>${esc(who)} · ${esc(ago(c.commit.author.date))}</small></div></div>`;
       }).join('');
-      $('#actNote').textContent = 'Last ' + list.length + ' changes to site-data.json';
-    }).catch(function (e) { log.innerHTML = '<li><div class="err">' + esc(e.message) + '</div></li>'; });
+      if (more) list.insertAdjacentHTML('beforeend', html); else list.innerHTML = html || '<p style="color:var(--mute)">No changes yet.</p>';
+      $('#act-more').classList.toggle('hidden', commits.length < 20);
+    } catch (e) { list.innerHTML = `<p style="color:var(--red)">Couldn't load the activity: ${esc(e.message)}</p>`; }
   }
-  $('#actReload').addEventListener('click', loadActivity);
+  $('#act-refresh').addEventListener('click', () => loadActivity(false));
+  $('#act-more').addEventListener('click', () => loadActivity(true));
 
   /* ---------- publish ---------- */
-  function diffSummary(oldD, newD) {
-    var parts = [], om = {}, nm = {};
-    oldD.mods.forEach(function (m) { om[m.id] = m; }); newD.mods.forEach(function (m) { nm[m.id] = m; });
-    var added = newD.mods.filter(function (m) { return !om[m.id]; }).map(function (m) { return m.name; });
-    var removed = oldD.mods.filter(function (m) { return !nm[m.id]; }).map(function (m) { return m.name; });
-    if (added.length) parts.push('added ' + added.join(', '));
-    if (removed.length) parts.push('removed ' + removed.join(', '));
-    newD.mods.forEach(function (m) {
-      var o = om[m.id]; if (!o) return;
-      var ch = [];
-      if (m.updating !== o.updating) parts.push(m.updating ? 'set ' + m.name + ' to Updating' : 'put ' + m.name + ' back online');
-      Object.keys(FIELD_LABEL).forEach(function (f) { if (JSON.stringify(m[f]) !== JSON.stringify(o[f])) ch.push(FIELD_LABEL[f]); });
-      if (ch.length) parts.push('edited ' + o.name + ' (' + ch.join(', ') + ')');
-    });
-    var oo = oldD.mods.filter(function (m) { return nm[m.id]; }).map(function (m) { return m.id; }).join();
-    var nn = newD.mods.filter(function (m) { return om[m.id]; }).map(function (m) { return m.id; }).join();
-    if (oo !== nn) parts.push('reordered mods');
-    if (JSON.stringify(oldD.announcement) !== JSON.stringify(newD.announcement)) parts.push(newD.announcement.enabled ? 'changed the announcement' : 'hid the announcement');
-    if (oldD.links.discord !== newD.links.discord) parts.push('changed the Discord link');
-    if (oldD.theme !== newD.theme) parts.push('theme → ' + newD.theme);
-    var s = parts.join('; ') || 'republished the site';
-    s = s.charAt(0).toUpperCase() + s.slice(1);
-    var by = ' — by ' + cfg.name, max = 200;
-    if (s.length + by.length > max) s = s.slice(0, max - by.length - 1).replace(/[;, ]+$/, '') + '…';
-    return s + by;
-  }
+  function updatePub() { $('#pub').classList.toggle('show', dirty()); }
+  addEventListener('beforeunload', e => { if (dirty()) { e.preventDefault(); e.returnValue = ''; } });
+
   function validate() {
-    var errs = [], ids = {};
-    data.mods.forEach(function (m, i) {
-      var label = m.name || ('Mod #' + (i + 1));
-      if (!m.name.trim()) errs.push('Mod #' + (i + 1) + ' needs a name.');
-      if (!m.id) m.id = slug(m.name) || 'mod-' + (i + 1);
-      if (ids[m.id]) m.id = m.id + '-' + (i + 1); ids[m.id] = 1;
-      if (m.url && !/^https?:\/\/\S+$/i.test(m.url)) errs.push(label + ': the download link must start with https://');
-      if (!m.url && !m.updating) errs.push(label + ': add a download link, or switch on “Updating”.');
-      if (!/^#[0-9a-f]{6}$/i.test(m.accent)) errs.push(label + ': colour must look like #23c55e.');
+    const ids = new Set();
+    for (const m of data.mods) {
+      if (!String(m.name || '').trim()) return 'Every mod needs a name.';
+      if (!m.updating && !isUrl(m.url)) return `${m.name} needs a download link that starts with https:// — or switch on Updating.`;
+      m.id = slug(m.id || m.name);
+      while (ids.has(m.id)) m.id += '-2';
+      ids.add(m.id);
+    }
+    if (data.links.discord && !isUrl(data.links.discord)) return 'The Discord invite needs to be a full link starting with https://';
+    return null;
+  }
+
+  function describe() {
+    const before = JSON.parse(original); const parts = [];
+    const oldById = new Map((before.mods || []).map(m => [m.id, m]));
+    const newIds = new Set(data.mods.map(m => m.id));
+    const clean = m => JSON.stringify(m, (k, v) => (k.startsWith('_') ? undefined : v));
+    data.mods.forEach(m => {
+      const o = oldById.get(m.id);
+      if (!o) { parts.push(`Added mod ${m.name}`); return; }
+      if (!!o.updating !== !!m.updating) parts.push(`${m.name} set to ${m.updating ? 'Updating' : 'live'}`);
+      if (o.url !== m.url) parts.push(`Changed download link for ${m.name}`);
+      if (!!o.openSource !== !!m.openSource) parts.push(`${m.name} ${m.openSource ? 'marked' : 'unmarked'} open source`);
+      const strip2 = x => { const c = JSON.parse(clean(x)); delete c.updating; delete c.url; delete c.openSource; return JSON.stringify(c); };
+      if (strip2(o) !== strip2(m)) parts.push(`Edited ${m.name}`);
     });
-    var l = data.links.discord; if (l && !/^https?:\/\/\S+$/i.test(l)) errs.push('The Discord link must start with https://');
-    var a = data.announcement; if (a.enabled && !a.text) errs.push('The announcement is switched on but has no message.');
-    return errs;
+    (before.mods || []).forEach(o => { if (!newIds.has(o.id)) parts.push(`Removed mod ${o.name}`); });
+    if ((before.mods || []).map(m => m.id).join() !== data.mods.map(m => m.id).filter(id => oldById.has(id)).join() && !parts.some(p => /Added|Removed/.test(p))) parts.push('Reordered mods');
+    if (JSON.stringify(before.announcement) !== JSON.stringify(data.announcement)) parts.push('Updated the announcement');
+    if (JSON.stringify(before.links) !== JSON.stringify(data.links)) parts.push('Updated links');
+    if (!parts.length) return 'Updated site';
+    return parts.length > 3 ? `${parts.slice(0, 3).join(', ')} and ${parts.length - 3} more` : parts.join(', ');
   }
-  function out() {
-    // stable, readable JSON with a trailing newline
-    return JSON.stringify(data, null, 2) + '\n';
-  }
-  $('#publish').addEventListener('click', function () {
-    if (busy || !dirty()) return;
-    var errs = validate();
-    var box = $('#appErr');
-    if (errs.length) { box.hidden = false; box.innerHTML = '<b>Fix these before publishing:</b><br>' + errs.map(esc).join('<br>'); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
-    box.hidden = true; busy = true; refreshState();
-    var btn = $('#publish'); btn.textContent = 'Publishing…';
-    var oldData = JSON.parse(original), message = diffSummary(oldData, data);
-    // check nobody else published since we loaded
-    gh(repoPath() + '/contents/site-data.json?ref=' + encodeURIComponent(cfg.branch)).then(function (cur) {
-      if (cur.sha !== sha && !window.confirm('Someone else published since you opened this page. Publishing now will overwrite their changes.\n\nPublish anyway? (Cancel, then press Reload to see theirs first.)')) {
-        throw new Error('Cancelled — press Reload to pick up the newer version.');
-      }
-      return gh(repoPath() + '/contents/site-data.json', { method: 'PUT', body: { message: message, content: b64encode(out()), sha: cur.sha, branch: cfg.branch } });
-    }).then(function (res) {
-      sha = res.content.sha; original = JSON.stringify(data);
-      toast('Published. It goes live in about a minute.');
-      if (!$('#p-activity').hidden) loadActivity();
-    }).catch(function (e) {
-      box.hidden = false; box.textContent = 'Publish failed: ' + e.message;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }).then(function () { busy = false; btn.textContent = 'Publish'; refreshState(); });
+
+  function log(html, cls) { const el = $('#log'); el.classList.remove('hidden'); const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; el.appendChild(d); }
+
+  $('#publish').addEventListener('click', async () => {
+    const problem = validate(); if (problem) { alert(problem); return; }
+    const btn = $('#publish'); btn.disabled = true; $('#discard').disabled = true; $('#log').innerHTML = '';
+    try {
+      // a changed announcement gets a new id so it shows again for everyone
+      const before = JSON.parse(original).announcement || {};
+      const sig = x => [x.enabled, x.tag, x.title, x.text, x.linkText, x.link].join('|');
+      if (sig(before) !== sig(data.announcement)) data.announcement.id = 'a' + Date.now().toString(36);
+      const message = describe() + by();
+      log('Publishing…');
+      const cur = await gh(`${repoPath()}/contents/${DATA_PATH}?ref=${encodeURIComponent(cfg.branch)}`, { allow404: true });
+      const json = strip(data);
+      const res = await gh(`${repoPath()}/contents/${DATA_PATH}`, { method: 'PUT', body: JSON.stringify({ message, content: textToB64(json), branch: cfg.branch, ...(cur ? { sha: cur.sha } : {}) }) });
+      sha = res.content.sha; original = json;
+      log(`✓ ${esc(message)}`, 'ok');
+      log(`Done. Your site updates in about a minute — <a href="${esc(siteUrl())}" target="_blank" rel="noopener">open the live site</a>.`, 'ok');
+      renderMods();
+    } catch (e) {
+      log('✗ ' + esc(e.message) + (e.status === 403 ? ' — your token needs "Contents: Read and write" on this repo.' : e.status === 409 ? ' — someone else changed the site at the same time. Reload and try again.' : ''), 'bad');
+      log('Nothing was saved. Fix the problem and press Publish again.', 'bad');
+    } finally { btn.disabled = false; $('#discard').disabled = false; updatePub(); }
+  });
+  $('#discard').addEventListener('click', async () => {
+    if (!confirm('Throw away all unpublished changes?')) return;
+    data = JSON.parse(original); data.mods.forEach(m => { m._key = ++keySeq; }); open.clear(); renderAll(); updatePub();
   });
 
-  $('#reload').addEventListener('click', function () {
-    if (dirty() && !window.confirm('Discard your unpublished changes and reload from GitHub?')) return;
-    loadData().then(function () { enterApp(); toast('Reloaded from GitHub.'); }).catch(function (e) { $('#appErr').hidden = false; $('#appErr').textContent = e.message; });
-  });
-  $('#logout').addEventListener('click', function () {
-    if (data && dirty() && !window.confirm('You have unpublished changes. Log out anyway?')) return;
-    clearCfg(); cfg = null; data = null; showLogin(); prefill(); document.documentElement.setAttribute('data-theme', 'emerald');
-  });
-
-  /* ---------- boot ---------- */
-  prefill();
-  var saved = loadCfg();
-  if (saved && saved.token) {
-    cfg = saved;
-    loadData().then(enterApp).catch(function (e) { cfg = null; showLogin('Couldn’t sign you back in: ' + e.message); });
-  }
+  /* ---------- start ---------- */
+  let saved = null; try { saved = JSON.parse(store.get('axiom_admin') || 'null'); } catch (e) {}
+  if (saved) cfg = { ...cfg, ...saved };
+  if (cfg.token && cfg.owner && cfg.repo) { showLogin(); signIn(); } else showLogin();
 })();
 </script>
 </body>
