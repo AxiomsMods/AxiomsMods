@@ -25,7 +25,7 @@
       "accent": "251, 146, 60",
       "featured": true,
       "new": true,
-      "openSource": false,
+      "openSource": true,
       "updating": false,
       "badges": [
         "New",
@@ -70,7 +70,7 @@
       "accent": "56, 189, 248",
       "featured": false,
       "new": false,
-      "openSource": false,
+      "openSource": true,
       "updating": false,
       "badges": [
         "Pairs with Meteor"
