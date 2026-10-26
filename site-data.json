@@ -28,8 +28,13 @@
     "staff": [
       {
         "name": "k35c",
-        "role": "Owner",
+        "role": "Developer",
         "online": true
+      },
+      {
+        "name": "xt3p",
+        "role": "Developer",
+        "online": false
       }
     ]
   },
