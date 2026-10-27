@@ -45,6 +45,7 @@ ready(function () {
   safely(initSky);
   safely(initTerms);
   safely(initTicket);
+  safely(initUnlock);
   safely(initTabs);
   safely(initCards);
   safely(initAnnouncement);
@@ -85,6 +86,7 @@ function render(d) {
   if (discord) $$('.js-discord').forEach(function (a) { a.href = discord; });
   if (d.discord) setCounts(d.discord.members, d.discord.online, false);
   safely(function () { renderExtras(d); });
+  if ($('#unlock')) safely(function () { renderUnlock(d); });
 
   var mods = liveMods(d);
   var grid = $('#grid');
@@ -137,10 +139,17 @@ function badgeList(m) {
   return out.join('');
 }
 
+function channelFor(m) { return safeUrl(m && m.subUrl) || safeUrl(DATA && DATA.links && DATA.links.youtube); }
+function unlockedKey(id) { return 'axiom_unlocked_' + id; }
+
 function downloadHtml(m) {
   if (m.updating) return '<span class="dl off" aria-disabled="true"><svg class="ic"><use href="#i-clock"/></svg>Updating — back soon</span>';
   var url = safeUrl(m.url);
   if (!url) return '<span class="dl off" aria-disabled="true"><svg class="ic"><use href="#i-clock"/></svg>Link coming soon</span>';
+  if (m.subLock && channelFor(m)) {
+    return '<a class="dl sub" href="unlock.html?mod=' + encodeURIComponent(slug(m.id || m.name)) + '" data-id="' + esc(slug(m.id || m.name)) + '"><svg class="ic"><use href="#b-youtube"/></svg>Subscribe to unlock</a>' +
+      '<p class="hint"><svg class="ic"><use href="#i-lock"/></svg>Free. Subscribe to our YouTube to get this download.</p>';
+  }
   return '<a class="dl" href="' + esc(url) + '" rel="noreferrer" data-id="' + esc(slug(m.id || m.name)) + '"><svg class="ic"><use href="#i-download"/></svg>Download</a>' +
     '<p class="hint"><svg class="ic"><use href="#i-shield"/></svg>Adblocker on — ignore any other button on that page.</p>';
 }
@@ -374,6 +383,7 @@ function initCards() {
     if (share) { shareMod(share.getAttribute('data-share')); return; }
     var a = e.target.closest ? e.target.closest('a.dl') : null; if (!a) return;
     if (!termsAgreed()) { e.preventDefault(); openTerms(a.href); return; }
+    if (a.classList.contains('sub')) return;
     if (!reduceMotion) {
       var r = a.getBoundingClientRect(); var size = Math.max(r.width, r.height) * 2;
       var dot = document.createElement('span'); dot.className = 'ripple';
@@ -386,7 +396,7 @@ function initCards() {
     if (needs.length) {
       var n = needs[0];
       toast(mod.name + ' needs ' + n.name, 'It won\'t load on its own. Grab both and put them in your mods folder.',
-        { warn: true, icon: 'i-alert', action: { text: 'Download ' + n.name, href: safeUrl(n.url) }, ms: 9000 });
+        { warn: true, icon: 'i-alert', action: { text: (n.subLock && channelFor(n) ? 'Get ' : 'Download ') + n.name, href: n.subLock && channelFor(n) ? 'unlock.html?mod=' + slug(n.id || n.name) : safeUrl(n.url) }, ms: 9000 });
     } else {
       toast('Downloading ' + (mod ? mod.name : 'your mod'), 'Remember: only the real download button.');
     }
@@ -705,7 +715,7 @@ function initSky() {
   // click empty sky to launch a shooting star from where you clicked
   document.addEventListener('click', function (e) {
     if (reduceMotion) return;
-    if (e.target.closest && e.target.closest('a,button,input,textarea,select,summary,label,.card,.notice,.qa,.join,.tabbar,.launch,.modal,.step,.folder')) return;
+    if (e.target.closest && e.target.closest('a,button,input,textarea,select,summary,label,.card,.notice,.qa,.join,.tabbar,.launch,.modal,.ul-card,.step,.folder')) return;
     shoot(e.clientX, e.clientY, (Math.PI / 180) * (20 + Math.random() * 20));
   });
   var rt;
@@ -817,7 +827,7 @@ function initTerms() {
     termsMem = true; store(TERMS_KEY, 'yes');
     closeModal(m);
     var go = pendingDownload; pendingDownload = null;
-    if (go) { toast('Thanks, you\'re all set', 'Your download is starting.'); setTimeout(function () { location.href = go; }, 350); }
+    if (go) { toast('Thanks, you\'re all set', /unlock\.html/.test(go) ? 'Taking you to the unlock page.' : 'Your download is starting.'); setTimeout(function () { location.href = go; }, 350); }
     else toast('Thanks, you\'re all set', 'Enjoy the mods. Adblocker on!', { icon: 'i-check' });
   });
   if (!termsAgreed() && !/^#mod\//.test(location.hash)) setTimeout(function () { if (!termsAgreed() && !openModalEl) openTerms(); }, 900);
@@ -975,6 +985,129 @@ function initTicket() {
         : 'Couldn\'t send your ticket. Check your connection, or make a ticket in the Discord instead.');
     }).then(function () { sending = false; send.classList.remove('busy'); send.disabled = false; $('#tk-send-txt').textContent = 'Send ticket'; });
   });
+}
+
+/* =========================================================
+   Subscribe to unlock (unlock.html)
+   Opening the channel starts a 20 second check, then the
+   download unlocks. Remembered on this browser afterwards.
+   ========================================================= */
+var UNLOCK_SECS = 20;
+var ul = { id: '', mod: null, started: 0, done: false, timer: null };
+
+function subscribeUrl(u) {
+  // youtube.com channel links can open the "Subscribe?" prompt straight away
+  if (/^https:\/\/(www\.|m\.)?youtube\.com\/(@[\w.-]+|channel\/[\w-]+|c\/[\w.-]+|user\/[\w.-]+)\/?$/i.test(u)) return u.replace(/\/$/, '') + '?sub_confirmation=1';
+  return u;
+}
+
+function renderUnlock(d) {
+  var m = location.search.match(/[?&]mod=([\w-]+)/);
+  ul.id = m ? m[1] : '';
+  var mod = null;
+  liveMods(d).forEach(function (x) { if (slug(x.id || x.name) === ul.id) mod = x; });
+  ul.mod = mod;
+  var card = $('#ul-card'), missing = $('#ul-missing');
+  var channel = mod ? (channelFor(mod) || safeUrl(d.links && d.links.youtube)) : '';
+  if (!mod || (!safeUrl(mod.url) && !mod.updating) || !channel) { card.hidden = true; missing.hidden = false; return; }
+  card.hidden = false; missing.hidden = true;
+  document.title = 'Unlock ' + mod.name + ' — Axiom Mods';
+  $('#ul-name').textContent = mod.name;
+  $('#ul-meta').textContent = (d.site && d.site.loader || 'Fabric') + ' ' + (mod.mc || '1.21.11') + (mod.file ? ' · ' + mod.file : '');
+  $('#ul-icon').setAttribute('href', '#m-' + (MOD_ICONS.indexOf(mod.icon) >= 0 ? mod.icon : 'box'));
+  $('#unlock').style.setProperty('--acc', safeRgb(mod.accent));
+  $('#ul-yt').href = subscribeUrl(channel);
+  // not locked any more (switched off in the admin panel), or already unlocked here
+  if (!mod.subLock || store(unlockedKey(ul.id)) === 'yes') finishUnlock(true);
+  else if (ul.done) finishUnlock(true);
+}
+
+var UL_LINES = [
+  [0, 'Connecting to YouTube…'],
+  [3, 'Checking for live subscriber requests…'],
+  [8, 'Looking for your subscription…'],
+  [13, 'Confirming with the channel…'],
+  [17, 'Almost there…']
+];
+
+function initUnlock() {
+  if (!$('#unlock')) return;
+  var C = 2 * Math.PI * 28;
+  var bar = $('#ul-bar'); bar.style.strokeDasharray = C; bar.style.strokeDashoffset = C;
+  $('#ul-yt').addEventListener('click', function () {
+    if (ul.done || ul.started) return;     // the link still opens; the check only runs once
+    ul.started = Date.now();
+    $('#st1').setAttribute('data-state', 'done');
+    $('#st2').setAttribute('data-state', 'active');
+    $('#ul-yt').innerHTML = '<svg class="ic"><use href="#b-youtube"/></svg>Open YouTube again';
+    var shown = -1;
+    var log = $('#ul-log');
+    (function tick() {
+      var t = (Date.now() - ul.started) / 1000;
+      var p = Math.min(1, t / UNLOCK_SECS);
+      bar.style.strokeDashoffset = C * (1 - p);
+      $('#ul-line').style.width = (p * 100) + '%';
+      $('#ul-secs').textContent = Math.max(0, Math.ceil(UNLOCK_SECS - t));
+      for (var i = UL_LINES.length - 1; i >= 0; i--) {
+        if (t >= UL_LINES[i][0]) {
+          if (i !== shown) {
+            if (shown >= 0) log.insertAdjacentHTML('afterbegin', '<li><svg class="ic"><use href="#i-check"/></svg>' + esc(UL_LINES[shown][1].replace('…', '')) + '</li>');
+            shown = i; $('#ul-status').textContent = UL_LINES[i][1];
+          }
+          break;
+        }
+      }
+      if (p >= 1) { finishUnlock(false); return; }
+      ul.timer = setTimeout(tick, 100);
+    })();
+  });
+  $('#unlock').addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a.dl') : null; if (!a) return;
+    if (!termsAgreed()) { e.preventDefault(); openTerms(a.href); return; }
+    var mod = ul.mod;
+    var needs = (mod && mod.requires || []).map(modById).filter(function (x) { return x && !x.updating && safeUrl(x.url); });
+    if (needs.length) toast(mod.name + ' needs ' + needs[0].name, 'It won\'t load on its own. Grab both and put them in your mods folder.',
+      { warn: true, icon: 'i-alert', action: { text: 'Get ' + needs[0].name, href: needs[0].subLock ? 'unlock.html?mod=' + slug(needs[0].id || needs[0].name) : safeUrl(needs[0].url) }, ms: 9000 });
+    else toast('Downloading ' + (mod ? mod.name : 'your mod'), 'Remember: only the real download button.');
+  });
+}
+
+function finishUnlock(instant) {
+  var mod = ul.mod; if (!mod) return;
+  ul.done = true; clearTimeout(ul.timer);
+  store(unlockedKey(ul.id), 'yes');
+  ['st1', 'st2'].forEach(function (s) { $('#' + s).setAttribute('data-state', 'done'); });
+  $('#st3').setAttribute('data-state', 'active');
+  $('#ul-status').textContent = 'Subscription confirmed. Thanks for the support!';
+  $('#ul-secs').textContent = '';
+  $('#ul-check').classList.add('ok');
+  var bar = $('#ul-bar'); if (bar) bar.style.strokeDashoffset = 0;
+  $('#ul-line').style.width = '100%';
+  var wrap = $('#ul-dl-wrap');
+  var url = safeUrl(mod.url);
+  wrap.innerHTML = mod.updating || !url
+    ? '<span class="dl off"><svg class="ic"><use href="#i-clock"/></svg>Updating — back soon</span>'
+    : '<a class="dl ul-dl" href="' + esc(url) + '" rel="noreferrer" data-id="' + esc(ul.id) + '"><svg class="ic"><use href="#i-download"/></svg>Download ' + esc(mod.name) + '</a>' +
+      '<p class="hint"><svg class="ic"><use href="#i-shield"/></svg>Adblocker on — ignore any other button on that page.</p>';
+  $('#ul-card').classList.add('unlocked');
+  var tag = $('.ul-tag'); if (tag) tag.innerHTML = '<svg class="ic"><use href="#i-unlock"/></svg>Unlocked';
+  if (!instant) {
+    toast(mod.name + ' unlocked', 'Your download is ready.', { icon: 'i-unlock' });
+    if (!reduceMotion) burstAt($('#ul-dl-wrap'));
+  }
+}
+
+function burstAt(el) {
+  if (!el) return;
+  var r = el.getBoundingClientRect(); var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  for (var i = 0; i < 22; i++) {
+    var p = document.createElement('span'); p.className = 'ul-spark';
+    var a = Math.random() * Math.PI * 2, d = 60 + Math.random() * 120;
+    p.style.left = cx + 'px'; p.style.top = cy + 'px';
+    p.style.setProperty('--dx', Math.cos(a) * d + 'px'); p.style.setProperty('--dy', Math.sin(a) * d + 'px');
+    document.body.appendChild(p);
+    (function (q) { setTimeout(function () { if (q.parentNode) q.parentNode.removeChild(q); }, 1000); })(p);
+  }
 }
 
 })();

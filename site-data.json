@@ -28,12 +28,7 @@
     "staff": [
       {
         "name": "k35c",
-        "role": "Developer",
-        "online": true
-      },
-      {
-        "name": "xt3p",
-        "role": "Developer",
+        "role": "Owner",
         "online": true
       }
     ]
@@ -64,7 +59,8 @@
       "file": "vexxoprotect-v1.0-1.21.11.jar",
       "url": "https://www.dropbox.com/scl/fi/wasfvtzata7utzyzxmlu3/vexxoprotect-v1.0-1.21.11.jar?rlkey=9xs8bwbv707f8peqajdpmbap5&st=vvc6wpwk&dl=1",
       "updated": "2026-10-24",
-      "requires": []
+      "requires": [],
+      "subLock": false
     },
     {
       "id": "meteor-client",
@@ -86,7 +82,8 @@
       "file": "meteor-client-1.21.11-81.jar",
       "url": "https://www.dropbox.com/scl/fi/ax6maw2kvllba3r9j7a7y/meteor-client-1.21.11-81.jar?rlkey=sip03dt7k66tujsoziey7qn7u&st=uso3f85u&dl=1",
       "updated": "2026-10-12",
-      "requires": []
+      "requires": [],
+      "subLock": false
     },
     {
       "id": "glazed",
@@ -110,7 +107,8 @@
       "updated": "2026-10-20",
       "requires": [
         "meteor-client"
-      ]
+      ],
+      "subLock": false
     },
     {
       "id": "rig-master",
@@ -130,7 +128,8 @@
       "file": "Rigmaster-1.21.11-v3.jar",
       "url": "https://www.dropbox.com/scl/fi/fdpmxw7pflp3jlc7d1cr0/Rigmaster-1.21.11-v3.jar?rlkey=djrj0mpd18972i6rjxy5n0g91&st=vf81p97f&dl=1",
       "updated": "2026-10-08",
-      "requires": []
+      "requires": [],
+      "subLock": false
     },
     {
       "id": "tpa-macro-v2",
@@ -152,7 +151,8 @@
       "file": "Tpamacro-1.21.11-v1.jar",
       "url": "https://www.dropbox.com/scl/fi/ulic244mj2yqvvvx3o5vt/Tpamacro-1.21.11-v1.jar?rlkey=85gtrjpvulhgsd728tcmcm9t1&st=9cljpe86&dl=1",
       "updated": "2026-10-15",
-      "requires": []
+      "requires": [],
+      "subLock": false
     }
   ]
 }

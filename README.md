@@ -7,7 +7,7 @@ A short list of tested Fabric mods for Minecraft 1.21.11.
 1. Make a new GitHub repository (for example `axiom-mods`). Public is fine.
 2. Upload **all** of these files to the root of the repo, together:
    `index.html`, `style.css`, `script.js`, `admin.html`, `terms.html`,
-   `site-data.json`, `favicon.svg`, `README.md`
+   `site-data.json`, `favicon.svg`, `unlock.html`, `README.md`
 3. Go to the repo's **Settings → Pages**. Under "Build and deployment" pick
    **Deploy from a branch**, branch **main**, folder **/ (root)**, and press Save.
 4. After a minute your site is live at `https://YOUR-NAME.github.io/axiom-mods/`.
@@ -64,6 +64,16 @@ and put your name in "Your name for the activity log".
 
 Nothing changes on the live site until you press **Publish**.
 
+## Subscribe to unlock
+
+In **Mods**, open a mod and switch on **Subscribe to unlock**. Its Download button turns
+into a red **Subscribe to unlock** button that goes to `unlock.html`. There, the visitor
+opens your YouTube channel, a 20 second "checking" countdown runs, then the download
+appears. It's remembered on their browser, so they only do it once per mod.
+
+It uses your channel from **Links → YouTube channel**, or a different one you type on
+that mod. The countdown is a timer — it can't really see who subscribed.
+
 ## Tickets
 
 The "Make a ticket" form asks for the visitor's Discord username, what it's about, which
@@ -106,6 +116,7 @@ Swap them for your real file host's links in the admin panel when you're ready.
 | `script.js` | The starfield, download tabs, cards, FAQ and everything else that moves. |
 | `admin.html` | The admin panel. |
 | `site-data.json` | Mods, categories, announcement and links. Edited by the admin panel. |
+| `unlock.html` | The subscribe-to-unlock page. |
 | `terms.html` | Terms of service — bans and anything that happens to your PC aren't on us. |
 | `favicon.svg` | The diamond logo. |
 

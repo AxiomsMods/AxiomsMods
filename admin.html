@@ -101,6 +101,14 @@
   .mod-b { display: none; padding: 4px 18px 20px; border-top: 1px solid var(--line); }
   .mod.open .mod-b { display: block; }
 
+  .sub-box { margin: -6px 0 18px; padding: 12px; border-radius: 14px; border: 1px solid var(--line); }
+  .sub-box.on { border-color: rgba(255,70,70,.4); background: rgba(255,40,40,.05); }
+  .sub-box .sw { border: 0; padding: 0; background: none !important; }
+  .sub-box .sw input:checked + i { background: rgba(255,70,70,.7); }
+  .sub-box .field { margin: 12px 0 0; }
+  .sub-box:not(.on) .field { display: none; }
+  .chip { white-space: nowrap; }
+  .chip.yt { color: #ff8a8a; border-color: rgba(255,70,70,.4); background: rgba(255,40,40,.08); }
   .switches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0 18px; }
   .sw { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border-radius: 13px; border: 1px solid var(--line); cursor: pointer; transition: border-color .25s, background .25s; }
   .sw.on { border-color: rgba(34,197,94,.4); background: rgba(34,197,94,.07); }
@@ -221,6 +229,9 @@
   <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M14 4.5c3-1.3 5.5-1 5.5-1s.3 2.5-1 5.5l-6.5 6.5-4-4L14 4.5Z"/><path d="m8 11.5-3.5.5-1.5 2.5 4 .5M12.5 16l-.5 3.5-2.5 1.5-.5-4M7.5 16.5c-1.5.5-2.5 2.5-2.5 2.5s2-1 2.5-2.5"/><circle cx="15" cy="9" r="1.4"/></symbol>
   <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4.5 14v-2a7.5 7.5 0 0 1 15 0v2"/><rect x="3.5" y="13.5" width="4" height="6" rx="1.4"/><rect x="16.5" y="13.5" width="4" height="6" rx="1.4"/><path d="M18.5 19.5c0 1.2-1.5 2-4 2h-1.5"/></symbol>
   <symbol id="i-paste" viewBox="0 0 24 24"><rect x="5.5" y="4.5" width="13" height="16" rx="2"/><path d="M9 4.5V3.5h6v1M9 11h6M9 15h4"/></symbol>
+
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.3"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.5a4 4 0 0 1 7.6-1.7"/><circle cx="12" cy="15.5" r="1.3"/></symbol>
 
   <!-- Mod icons -->
   <symbol id="m-spawner" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M3.5 9h17M3.5 15h17M9 3.5v17M15 3.5v17"/><path fill="currentColor" fill-opacity=".45" d="M12 10.3c1.2 1 1.6 1.9 1.6 2.6a1.6 1.6 0 0 1-3.2 0c0-.7.4-1.6 1.6-2.6Z"/></symbol>
@@ -508,6 +519,7 @@
     if (m.new) out.push('<span class="chip g">New</span>');
     if (m.openSource) out.push('<span class="chip g">Open source</span>');
     if (m.updating) out.push('<span class="chip a">Updating</span>');
+    if (m.subLock) out.push('<span class="chip yt">Sub to unlock</span>');
     if (!m.updating && !isUrl(m.url)) out.push('<span class="chip r">No download link</span>');
     return out.join('');
   }
@@ -532,6 +544,10 @@
             <label class="sw${m.new ? ' on' : ''}"><input type="checkbox" data-f="new" ${m.new ? 'checked' : ''}><i></i><span><b>New</b><small>Shows in "Just added"</small></span></label>
             <label class="sw${m.openSource ? ' on' : ''}"><input type="checkbox" data-f="openSource" ${m.openSource ? 'checked' : ''}><i></i><span><b>Open source</b><small>Adds the open-source line</small></span></label>
             <label class="sw warn${m.updating ? ' on' : ''}"><input type="checkbox" data-f="updating" ${m.updating ? 'checked' : ''}><i></i><span><b>Updating</b><small>Hides the download for now</small></span></label>
+          </div>
+          <div class="sub-box${m.subLock ? ' on' : ''}">
+            <label class="sw${m.subLock ? ' on' : ''}"><input type="checkbox" data-f="subLock" ${m.subLock ? 'checked' : ''}><i></i><span><b>Subscribe to unlock</b><small>The Download button becomes a red Subscribe button. People open your YouTube, wait 20 seconds, then get the download.</small></span></label>
+            <label class="field"><span>YouTube channel for this mod (optional)</span><input class="in" data-f="subUrl" value="${esc(m.subUrl || '')}" placeholder="${esc(data.links.youtube || 'https://www.youtube.com/@yourchannel')}" spellcheck="false"><small>Leave empty to use your channel from Links${data.links.youtube ? '' : ' (not set yet)'}.</small></label>
           </div>
           <label class="field"><span>Download link</span>
             <div class="with-btn"><input class="in" data-f="url" value="${esc(m.url)}" placeholder="https://…" spellcheck="false"><a class="btn btn-line btn-sm" data-act="test" href="${isUrl(m.url) ? esc(m.url) : '#'}" target="_blank" rel="noopener noreferrer"><svg class="ic"><use href="#i-ext"/></svg>Test link</a></div>
@@ -584,7 +600,8 @@
     if (f === 'badges') m.badges = el.value.split(',').map(s => s.trim()).filter(Boolean);
     else if (f === 'features') m.features = el.value.split('\n').map(s => s.trim()).filter(Boolean);
     else if (f === 'accent') { m.accent = hexRgb(el.value); card.querySelectorAll('.colors button').forEach(b => b.classList.toggle('on', b.dataset.v === m.accent)); }
-    else if (['featured', 'new', 'openSource', 'updating'].includes(f)) m[f] = el.checked;
+    else if (['featured', 'new', 'openSource', 'updating', 'subLock'].includes(f)) { m[f] = el.checked; if (f === 'subLock') el.closest('.sub-box').classList.toggle('on', el.checked); }
+    else if (f === 'subUrl') m.subUrl = el.value.trim();
     else if (f === 'category' || f === 'requires') return;   // handled on change
     else m[f] = el.value;
     if (f === 'name' && m._autoId) m.id = slug(m.name);
@@ -791,6 +808,7 @@
     const ids = new Set();
     for (const m of data.mods) {
       if (!String(m.name || '').trim()) return 'Every mod needs a name.';
+      if (m.subLock && !isUrl(m.subUrl || data.links.youtube)) return `${m.name} is set to Subscribe to unlock, but there's no YouTube channel. Add one in Links, or on the mod.`;
       if (!m.updating && !isUrl(m.url)) return `${m.name} needs a download link that starts with https:// — or switch on Updating.`;
       m.id = slug(m.id || m.name);
       while (ids.has(m.id)) m.id += '-2';
@@ -814,8 +832,9 @@
       if (!o) { parts.push(`Added mod ${m.name}`); return; }
       if (!!o.updating !== !!m.updating) parts.push(`${m.name} set to ${m.updating ? 'Updating' : 'live'}`);
       if (o.url !== m.url) parts.push(`Changed download link for ${m.name}`);
+      if (!!o.subLock !== !!m.subLock) parts.push(`${m.name} ${m.subLock ? 'now needs a subscribe' : 'no longer needs a subscribe'}`);
       if (!!o.openSource !== !!m.openSource) parts.push(`${m.name} ${m.openSource ? 'marked' : 'unmarked'} open source`);
-      const strip2 = x => { const c = JSON.parse(clean(x)); delete c.updating; delete c.url; delete c.openSource; return JSON.stringify(c); };
+      const strip2 = x => { const c = JSON.parse(clean(x)); delete c.updating; delete c.url; delete c.openSource; delete c.subLock; delete c.subUrl; return JSON.stringify(c); };
       if (strip2(o) !== strip2(m)) parts.push(`Edited ${m.name}`);
     });
     (before.mods || []).forEach(o => { if (!newIds.has(o.id)) parts.push(`Removed mod ${o.name}`); });
